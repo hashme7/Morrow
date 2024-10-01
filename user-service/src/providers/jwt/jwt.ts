@@ -13,7 +13,7 @@ class Jwt {
         }
     }
 
-     createAccessToken(id: string, role: string): string {
+    createAccessToken(id: string, role: string): string {
         try {
             const payload = { id, role };
             return sign(payload, this._secretKey, { expiresIn: "24h" });

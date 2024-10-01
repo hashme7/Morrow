@@ -280,6 +280,7 @@ class UseCases {
       };
     }
   }
+  
   async createTeam(message:ConsumeMessage){
     const response = JSON.parse(message.content.toString())
     await this.repository.createTeam(response);

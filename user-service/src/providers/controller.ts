@@ -15,6 +15,7 @@ const nodemailerInstance = new Nodemailer();
 const githubClient = new Github();
 
 
+
 const repositoryInstance = new Repository();
 
 const useCasesInstance = new UseCases(repositoryInstance,nodemailerInstance,jwtInstance,githubClient);

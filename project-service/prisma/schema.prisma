@@ -17,8 +17,8 @@ datasource db {
 model Project {
   id                  Int      @id @default(autoincrement())
   name                String
-  projectStartDate    DateTime
-  projectEndDate      DateTime
+  projectStartDate    DateTime?
+  projectEndDate      DateTime?
   plannedStartDate    DateTime?
   plannedEndDate      DateTime?
   projectDescription  String?

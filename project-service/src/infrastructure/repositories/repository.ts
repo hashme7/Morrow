@@ -15,8 +15,8 @@ export class Repository {
         data: { 
           teamId:String(id),
           name:projectData.name,
-          projectStartDate: new Date(projectData.projectStartDate),
-          projectEndDate: new Date(projectData.projectEndDate),
+          projectStartDate: projectData.projectStartDate?new Date(projectData.projectStartDate):null,
+          projectEndDate:projectData.projectEndDate? new Date(projectData.projectEndDate) :null,
           plannedStartDate: projectData.plannedStartDate
             ? new Date(projectData.plannedStartDate)
             : null,

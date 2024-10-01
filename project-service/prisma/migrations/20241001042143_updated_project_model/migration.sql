@@ -2,8 +2,8 @@
 CREATE TABLE "Project" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "projectStartDate" TIMESTAMP(3) NOT NULL,
-    "projectEndDate" TIMESTAMP(3) NOT NULL,
+    "projectStartDate" TIMESTAMP(3),
+    "projectEndDate" TIMESTAMP(3),
     "plannedStartDate" TIMESTAMP(3),
     "plannedEndDate" TIMESTAMP(3),
     "projectDescription" TEXT,
