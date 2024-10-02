@@ -9,10 +9,12 @@ export class Controller {
   }
   async createProject(req: Request, res: Response) {
     try {
+      console.log(req.body)
       const data = req.body;
       const response =await this.useCases.createProject(data);
-      return res.status(response.status).json({message:response.message});
+      res.status(response.status).json({message:response.message});
     } catch (error) {
+      console.log(`error on project creation ${error}`)
         return {
             status:500,
             message:"Internel Server Error"

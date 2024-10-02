@@ -11,6 +11,7 @@ export class UseCases {
     data: IPorjectReq
   ): Promise<{ status: number; message: string }> {
     try {
+      console.log(data)
       const project = await this.repository.create(data);
       const message = {
         projectId:project.id,

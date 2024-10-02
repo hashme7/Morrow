@@ -18,6 +18,7 @@ class UseCases {
     createProject(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(data);
                 const project = yield this.repository.create(data);
                 const message = {
                     projectId: project.id,

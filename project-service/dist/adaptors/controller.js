@@ -18,11 +18,13 @@ class Controller {
     createProject(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(req.body);
                 const data = req.body;
                 const response = yield this.useCases.createProject(data);
-                return res.status(response.status).json({ message: response.message });
+                res.status(response.status).json({ message: response.message });
             }
             catch (error) {
+                console.log(`error on project creation ${error}`);
                 return {
                     status: 500,
                     message: "Internel Server Error"
