@@ -27,7 +27,7 @@ class Controller {
                 console.log(`error on project creation ${error}`);
                 return {
                     status: 500,
-                    message: "Internel Server Error"
+                    message: "Internel Server Error",
                 };
             }
         });

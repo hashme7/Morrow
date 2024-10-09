@@ -19,7 +19,7 @@ class Jwt {
             return sign(payload, this._secretKey, { expiresIn: "24h" });
         } catch (error) {
             console.log(error);
-            return 'error on create acess token'
+            return 'error on create acess token' 
         }
     }
 
