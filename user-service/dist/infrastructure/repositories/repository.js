@@ -31,10 +31,25 @@ class Repository {
             }
         });
     }
+    updateFullName(name, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield userModel_1.default.findOneAndUpdate({ _id: userId }, { $set: { fullName: name } }, { new: true });
+                console.log(user);
+                if (!user)
+                    return null;
+                return user;
+            }
+            catch (error) {
+                console.error(`Error on updating the `);
+                throw error;
+            }
+        });
+    }
     verifyOtp(userId, code) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const otpRecord = yield verificationCodeModel_1.default.findOne({ user: userId });
+                const otpRecord = yield verificationCodeModel_1.default.findOne({ user: userId }).sort({ _id: -1 });
                 if (!otpRecord)
                     return false;
                 const isOtpValid = otpRecord.code == code;

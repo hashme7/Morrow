@@ -9,4 +9,5 @@ export interface IRepository{
     findByEmail(email:string):Promise<IUser | null >
     insertOne(userData:IUser):Promise<IUser>
     createTeam(data:IAddTeamMessage):Promise<ITeam>
+    updateFullName(name:string,userId:ObjectId):Promise<IUser | null>
 }

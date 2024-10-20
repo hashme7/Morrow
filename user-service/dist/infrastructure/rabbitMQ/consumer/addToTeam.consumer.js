@@ -16,8 +16,8 @@ exports.AddTeamConsumer = void 0;
 const amqplib_1 = __importDefault(require("amqplib"));
 const rabbitMQConfig_1 = require("../config/rabbitMQConfig");
 class AddTeamConsumer {
-    constructor(usecase) {
-        this.usecase = usecase;
+    constructor(createTeamCases) {
+        this.createTeamCases = createTeamCases;
         this.init();
     }
     init() {
@@ -35,7 +35,7 @@ class AddTeamConsumer {
                     try {
                         const projectData = message.content.toString();
                         this.channel.ack(message);
-                        yield this.usecase.createTeam(message);
+                        yield this.createTeamCases.execute(message);
                     }
                     catch (error) {
                         console.log(error);

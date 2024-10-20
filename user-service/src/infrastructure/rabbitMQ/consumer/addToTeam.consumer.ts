@@ -1,12 +1,12 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import { rabbitMQConfig } from "../config/rabbitMQConfig";
-import { IUseCase } from "../../../interfaces/use-case.interface";
+import { ICreateTeamCases, IUseCase } from "../../../interfaces/use-case.interface";
 
 export class AddTeamConsumer {
   private channel!: Channel;
-  private usecase!: IUseCase;
-  constructor(usecase: IUseCase) {
-    this.usecase = usecase;
+  private createTeamCases!: ICreateTeamCases;
+  constructor(createTeamCases: ICreateTeamCases) {
+    this.createTeamCases = createTeamCases;
     this.init();
   }
   private async init() {
@@ -21,7 +21,7 @@ export class AddTeamConsumer {
         try {
           const projectData = message.content.toString();
           this.channel.ack(message);
-          await this.usecase.createTeam(message);
+          await this.createTeamCases.execute(message);
         } catch (error) {
           console.log(error);
         }

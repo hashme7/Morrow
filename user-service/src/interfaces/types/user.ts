@@ -9,7 +9,9 @@ export interface IUser {
     isProjectManager?: boolean;   
     registrationTime?: Date; 
     isVerified?: boolean;  
-    role: string; 
+    role?: string; 
+    createdAt?:Date,
+    updatedAt?:Date,
 }
 
 export interface ITeam{

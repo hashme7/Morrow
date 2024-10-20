@@ -10,15 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 class UserAuthController {
-    constructor(useCases) {
-        console.log(`user controller is initialized...`);
-        this.useCases = useCases;
+    constructor(signUpCases, verifyOtpCases, resendOtpCases, loginCases, updateFullNameCases, googleLoginCases, githubLoginCases, validateTokenCases) {
+        this.signUpCases = signUpCases;
+        this.verifyOtpCases = verifyOtpCases;
+        this.resendOtpCases = resendOtpCases;
+        this.loginCases = loginCases;
+        this.updateFullNameCases = updateFullNameCases;
+        this.googleLoginCases = googleLoginCases;
+        this.githubLoginCases = githubLoginCases;
+        this.validateTokenCases = validateTokenCases;
     }
     signup(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const userData = req.body;
-                const response = yield this.useCases.signup(userData);
+                const response = yield this.signUpCases.execute(userData);
                 res.status(response.status).json(response.data);
             }
             catch (error) {
@@ -30,7 +36,7 @@ class UserAuthController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { otp, userId } = req.body;
-                const response = yield this.useCases.verifyOtp(userId, otp);
+                const response = yield this.verifyOtpCases.execute(userId, otp);
                 res.status(response.status).json(response.message);
             }
             catch (error) {
@@ -42,7 +48,7 @@ class UserAuthController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { userId } = req.body;
-                const response = yield this.useCases.resendOtp(userId);
+                const response = yield this.resendOtpCases.execute(userId);
                 res.status(response.status).json(response.message);
             }
             catch (error) {
@@ -54,7 +60,7 @@ class UserAuthController {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;
             try {
-                const result = yield this.useCases.login(email, password);
+                const result = yield this.loginCases.execute(email, password);
                 if (result.status === 200 && result.tokens) {
                     const { accessToken, refreshToken } = result.tokens;
                     res.cookie("accessToken", accessToken, {
@@ -95,8 +101,12 @@ class UserAuthController {
                 if (!token) {
                     res.status(401).json({ message: "Missing token" });
                 }
-                const { status, message, tokens } = yield this.useCases.googleLogin(token);
-                res.status(status).json({ message: message, refreshToken: tokens.refreshToken, accessToken: tokens.accessToken });
+                const { status, message, tokens } = yield this.googleLoginCases.execute(token);
+                res.status(status).json({
+                    message: message,
+                    refreshToken: tokens.refreshToken,
+                    accessToken: tokens.accessToken,
+                });
             }
             catch (error) {
                 console.log(error);
@@ -111,8 +121,12 @@ class UserAuthController {
                 if (!code) {
                     return res.status(401).json({ message: "missing code for github" });
                 }
-                const { status, message, tokens } = yield this.useCases.gitHubLogin(code);
-                res.status(status).json({ message: message, refreshToken: tokens === null || tokens === void 0 ? void 0 : tokens.refreshToken, accessToken: tokens === null || tokens === void 0 ? void 0 : tokens.accessToken });
+                const { status, message, tokens } = yield this.githubLoginCases.execute(code);
+                res.status(status).json({
+                    message: message,
+                    refreshToken: tokens === null || tokens === void 0 ? void 0 : tokens.refreshToken,
+                    accessToken: tokens === null || tokens === void 0 ? void 0 : tokens.accessToken,
+                });
             }
             catch (error) {
                 console.log(error);
@@ -130,12 +144,25 @@ class UserAuthController {
                 return res.status(400).json({ message: "Token not provided" });
             }
             try {
-                const { status, valid, message } = yield this.useCases.validateToken(token);
+                const { status, valid, message } = yield this.validateTokenCases.execute(token);
                 res.status(status).json({ status, valid, message });
             }
             catch (error) {
                 console.error("Error validating token:", error);
                 res.status(500).json({ message: "Internal server error" });
+            }
+        });
+    }
+    updateFullName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { name, userId } = req.body;
+            try {
+                const { status, message } = yield this.updateFullNameCases.execute(name, userId);
+                res.status(status).json({ message: message });
+            }
+            catch (error) {
+                console.log(`error on updateFullName ${error}`);
+                res.status(500).json({ message: "Internel server error" });
             }
         });
     }

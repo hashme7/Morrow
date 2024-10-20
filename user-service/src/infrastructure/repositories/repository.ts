@@ -21,9 +21,20 @@ class Repository implements IRepository {
       throw error;
     }
   }
+  async updateFullName(name:string,userId:ObjectId):Promise<IUser | null>{
+    try{
+      const user = await User.findOneAndUpdate({_id:userId},{$set:{fullName:name}},{new:true});
+      console.log(user)
+      if(!user)return null;
+      return user;
+    }catch(error){
+      console.error(`Error on updating the `)
+      throw error;
+    }
+  }
   async verifyOtp(userId: ObjectId, code: number): Promise<boolean> {
     try {
-      const otpRecord = await VerificationCode.findOne({ user: userId });
+      const otpRecord = await VerificationCode.findOne({ user: userId }).sort({_id:-1});
       if (!otpRecord) return false;
       const isOtpValid = otpRecord.code == code ;
       return isOtpValid;

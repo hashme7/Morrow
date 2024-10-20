@@ -28,6 +28,7 @@ router
 router
     .route("/validate-token")
     .get(controller_1.authControllerInstance.validateToken.bind(controller_1.authControllerInstance));
+router.route('/Full-Name').post();
 router
     .route("/logout")
     .post(controller_1.authControllerInstance.logout.bind(controller_1.authControllerInstance));
