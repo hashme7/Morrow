@@ -11,24 +11,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Controller = void 0;
 class Controller {
-    constructor(useCases) {
-        this.useCases = useCases;
+    constructor(createProjectCases, getProjectByUserIdCases) {
+        this.createProjectCases = createProjectCases;
+        this.getProjectByUserIdCases = getProjectByUserIdCases;
         console.log("controller......");
     }
     createProject(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.body);
+                const { userId } = req.query;
                 const data = req.body;
-                const response = yield this.useCases.createProject(data);
+                const response = yield this.createProjectCases.execute(data, userId);
                 res.status(response.status).json({ message: response.message });
             }
             catch (error) {
                 console.log(`error on project creation ${error}`);
-                return {
-                    status: 500,
-                    message: "Internel Server Error",
-                };
+                res.status(500).json({ message: "Internel Server Error" });
+            }
+        });
+    }
+    getProject(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { userId } = req.params;
+            try {
+                const response = yield this.getProjectByUserIdCases.execute(userId);
+                res.status(response.status).json({ message: response.message, data: response.data });
+            }
+            catch (error) {
+                console.log(`Error on get project : ${error}`);
+                res.status(500).json({ message: "Internel Server Error" });
             }
         });
     }

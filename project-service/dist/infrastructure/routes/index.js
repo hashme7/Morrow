@@ -9,5 +9,7 @@ const routes = express_1.default.Router();
 routes
     .route("/create")
     .post(controller_1.controllerInstance.createProject.bind(controller_1.controllerInstance));
-routes.route('/').get(() => { console.log('hit on /'); });
+routes
+    .route("/getprojects/:userId")
+    .get(controller_1.controllerInstance.getProject.bind(controller_1.controllerInstance));
 exports.default = routes;

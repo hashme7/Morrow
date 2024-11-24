@@ -17,11 +17,11 @@ class updateFullName {
     execute(name, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.repository.updateFullName(name, userId);
+                const updatedUser = yield this.repository.updateFullName(name, userId);
                 return {
                     status: 201,
                     message: "full name updated success fully",
-                    valid: true,
+                    data: updatedUser,
                 };
             }
             catch (error) {

@@ -6,6 +6,8 @@ const routes = express.Router();
 routes
   .route("/create")
   .post(controllerInstance.createProject.bind(controllerInstance));
-routes.route('/').get(()=>{console.log('hit on /')})
+routes
+.route("/getprojects/:userId")
+.get(controllerInstance.getProject.bind(controllerInstance));
 
 export default routes;

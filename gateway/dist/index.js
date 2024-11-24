@@ -17,6 +17,7 @@ app.use(express_1.default.json());
 app.use((0, morgan_1.default)('tiny'));
 app.use('/project', (0, express_http_proxy_1.default)('http://localhost:4000'));
 app.use('/', (0, express_http_proxy_1.default)('http://localhost:3000'));
+app.use('/task', (0, express_http_proxy_1.default)('http://localhost:5000'));
 app.listen(8000, () => {
     console.log(`gateway service is running on port :http://localhost:8000`);
 });

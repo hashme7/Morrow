@@ -13,7 +13,7 @@ const teamMemberSchema = new mongoose.Schema({
     }
 })
 
-const teamMember = mongoose.model('Team_Member',teamMemberSchema);
+const TeamMember = mongoose.model('Team_Member',teamMemberSchema);
 
 
-export default teamMember;
+export default TeamMember;

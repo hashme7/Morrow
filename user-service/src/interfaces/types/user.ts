@@ -1,11 +1,15 @@
-import { ObjectId } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 
 export interface IUser {
-    id?: ObjectId;              
+    image?:string | null,
+    _id?: mongoose.Types.ObjectId;              
     username: string;           
     password: string;           
-    email: string;            
+    email: string;   
+    phone?:number | null,
+    fullName?:string | null,
+    basedIn?:string | null,
     isProjectManager?: boolean;   
     registrationTime?: Date; 
     isVerified?: boolean;  
@@ -15,7 +19,15 @@ export interface IUser {
 }
 
 export interface ITeam{
-    id?:ObjectId;
+    _id:mongoose.Types.ObjectId;
     name:string,
     projectId:number;
+}
+
+export interface ITeamIds{
+    team_id:mongoose.Types.ObjectId;
+}
+export interface IRequest{
+    teamId:mongoose.Types.ObjectId;
+    userId:mongoose.Types.ObjectId;
 }

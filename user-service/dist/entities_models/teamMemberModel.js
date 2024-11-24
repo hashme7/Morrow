@@ -16,5 +16,5 @@ const teamMemberSchema = new mongoose_1.default.Schema({
         required: true,
     }
 });
-const teamMember = mongoose_1.default.model('Team_Member', teamMemberSchema);
-exports.default = teamMember;
+const TeamMember = mongoose_1.default.model('Team_Member', teamMemberSchema);
+exports.default = TeamMember;

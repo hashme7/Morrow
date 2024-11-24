@@ -12,8 +12,8 @@ const teamSchema = new mongoose_1.default.Schema({
     projectId: {
         type: Number,
         required: true,
-        unique: true,
+        unique: true
     },
-});
+}, { timestamps: true });
 const Team = mongoose_1.default.model("Team", teamSchema);
 exports.default = Team;

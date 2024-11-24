@@ -1,20 +1,9 @@
 import { IUser } from './types/user';
-import { response } from './types/response';
-import { ObjectId } from 'mongoose';
+import { IAddMember, response } from './types/response';
+import mongoose, { ObjectId } from 'mongoose';
 import { ConsumeMessage } from 'amqplib';
 
 
-export interface IUseCase {
-    createTeam(message: ConsumeMessage): unknown;
-    // googleLogin(token:string): any;
-    // verifyOtp(userId:ObjectId,otp: any): Promise<response>;
-    // signup(userData:IUser):Promise<response>
-    // resendOtp(userId:ObjectId):Promise<response>;
-    // login(email: string, password: string):Promise<response>;
-    validateToken(token:string):Promise<response>;
-    // gitHubLogin(code:string):Promise<response>;
-    // updateFullName(name:string,userId:ObjectId):Promise<response>;
-}
 
 export interface ISignUpCases {
     execute(userData:IUser):Promise<response>
@@ -23,14 +12,14 @@ export interface IVerifyCases {
     execute(userId:ObjectId,otp:number):Promise<response>
 }
 export interface IResendOtpCases {
-    execute(userId:ObjectId):Promise<response>
+    execute(userId:mongoose.Types.ObjectId):Promise<response>
 }
 
 export interface ILoginCases{
     execute(email:string,password:string):Promise<response>
 }
 export interface IUpdateNameCases{
-    execute(name: string, userId: ObjectId): Promise<response>
+    execute(name: string, userId: mongoose.Types.ObjectId): Promise<response>
 }
 export interface IGoogleLoginCases {
     execute(token:string):any;
@@ -43,4 +32,46 @@ export interface IValidateTokenCases{
 }
 export interface ICreateTeamCases{
     execute(message:ConsumeMessage):unknown;
+}
+export interface IGetUserCases{
+    execute(userId:mongoose.Types.ObjectId):Promise<response>
+}
+export interface IChangeEmailCases{
+    execute(userId : mongoose.Types.ObjectId,email:string):Promise<response>
+}
+
+
+export interface IChangePasswordCases{
+    execute(cpassword: string,newPassword:string, userId: mongoose.Types.ObjectId):Promise<response>
+}
+
+export interface IGetTeamIds {
+    execute(userId:string):Promise<response>
+}
+
+export interface IAddTeamMembers{
+    execute(userId:mongoose.Types.ObjectId,teamId:mongoose.Types.ObjectId):Promise<IAddMember>;
+}
+
+export interface IGetTeamMembers{
+    execute(projectId:string,page:number,limit:number):Promise<response>;
+}
+
+export interface IUpdateImg{
+    execute(img:string,userId:mongoose.Types.ObjectId):Promise<response>
+}
+
+export interface IGetAllUsers{
+    execute(limit:number,page:number):Promise<response>;
+}
+export interface ICreateRequest{
+    execute(projectId:number,userId:mongoose.Types.ObjectId):Promise<response>;
+}
+export interface IGetRequests{
+    execute(userId:mongoose.Types.ObjectId):Promise<response>;
+}
+
+
+export interface IUpdateProfile{
+    execute(userId:string, field:string, value:string):Promise<response>;
 }

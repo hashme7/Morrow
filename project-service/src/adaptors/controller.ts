@@ -1,24 +1,33 @@
 import { Request, Response } from "express";
-import { IUsecase } from "../interfaces/usecase.interface";
+import { ICreateProjectCases, IGetProjectsByUserId } from "../interfaces/usecase.interface";
 
 export class Controller {
-  private readonly useCases;
-  constructor(useCases: IUsecase) {
-    this.useCases = useCases;
+  private readonly createProjectCases:ICreateProjectCases;
+  private readonly getProjectByUserIdCases:IGetProjectsByUserId;
+  constructor(createProjectCases: ICreateProjectCases,getProjectByUserIdCases:IGetProjectsByUserId) {
+    this.createProjectCases = createProjectCases;
+    this.getProjectByUserIdCases = getProjectByUserIdCases;
     console.log("controller......");
   }
   async createProject(req: Request, res: Response) {
     try {
-      console.log(req.body);
+      const {userId} = req.query;
       const data = req.body;
-      const response = await this.useCases.createProject(data);
+      const response = await this.createProjectCases.execute(data,userId as string);
       res.status(response.status).json({ message: response.message });
     } catch (error) {
       console.log(`error on project creation ${error}`);
-      return {
-        status: 500,
-        message: "Internel Server Error",
-      };
+      res.status(500).json({message:"Internel Server Error"});
+    }
+  }
+  async getProject(req:Request,res:Response){
+    const {userId} = req.params;
+    try{
+      const response = await this.getProjectByUserIdCases.execute(userId);
+      res.status(response.status).json({message:response.message,data:response.data});
+    }catch(error){
+      console.log(`Error on get project : ${error}`);
+      res.status(500).json({message:"Internel Server Error"})
     }
   }
 }

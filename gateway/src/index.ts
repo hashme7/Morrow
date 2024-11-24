@@ -16,6 +16,7 @@ app.use(morgan('tiny'));
 
 app.use('/project',proxy('http://localhost:4000'));
 app.use('/',proxy('http://localhost:3000'));
+app.use('/task',proxy('http://localhost:5000'))
 
 
 app.listen(8000,()=>{

@@ -7,6 +7,5 @@ export class ProjectEntity {
       public plannedStartDate: Date,
       public plannedEndDate?: Date,
       public projectDescription?: string,
-      public teamId?: string,
     ) {}
   }
