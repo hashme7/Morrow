@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run tsc-watch\" \"npm run serve\"",
+    "clean": "del ./dist/*",
+    "build": "npm run clean && tsc",
+    "dev": "git add . && git commit -m \"Updates\" && npm run build &&  concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
-    "serve": "nodemon ./dist/index.js",
-    "generate:proto": "./src/grpc/proto.gen.sh"
+    "serve": "nodemon ./dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +36,7 @@
     "mongodb": "^6.9.0",
     "mongoose": "^8.8.0",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.3",
+    "morrow-common": "^1.5.19",
     "nodemon": "^3.1.7",
     "pg": "^8.13.0",
     "prisma": "^5.20.0",

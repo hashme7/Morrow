@@ -14,7 +14,6 @@ class Controller {
     constructor(createProjectCases, getProjectByUserIdCases) {
         this.createProjectCases = createProjectCases;
         this.getProjectByUserIdCases = getProjectByUserIdCases;
-        console.log("controller......");
     }
     createProject(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,7 +34,9 @@ class Controller {
             const { userId } = req.params;
             try {
                 const response = yield this.getProjectByUserIdCases.execute(userId);
-                res.status(response.status).json({ message: response.message, data: response.data });
+                res
+                    .status(response.status)
+                    .json({ message: response.message, data: response.data });
             }
             catch (error) {
                 console.log(`Error on get project : ${error}`);

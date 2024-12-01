@@ -20,7 +20,6 @@ class getProjectsByUserId {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield this.grpcClient.getTeamIds(userId);
-                console.log(response, "__________________________________************");
                 const projects = yield this.repository.getProjectsByTeamIds(response.teamIds);
                 return { status: 200, data: projects };
             }
