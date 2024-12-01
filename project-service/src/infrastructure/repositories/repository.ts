@@ -69,4 +69,18 @@ export class Repository {
       throw error;
     }
   }
+  async getProjectByTeamId(teamId:string){
+    try {
+      const project = await prisma.project.findFirst({
+        where:{
+          teamId:teamId,
+        }
+      })
+      console.log(project)
+      return project;
+    } catch (error) {
+      console.log(`error on getting project by team id  ${error}`);
+      throw error;
+    }
+  }
 }

@@ -5,7 +5,7 @@ import { RabbitMQService } from "../infrastructure/rabbitMQ";
 import { CreateProject } from "../usecases/createProjectUsecase";
 import { UpdateTeamId } from "../usecases/updateTeamIdUsecases";
 import { getProjectsByUserId } from '../usecases/getProjectUseCases';
-import { GrpcClient } from '../infrastructure/grpc/grpcClient';
+import { GrpcClient } from '../infrastructure/grpc/userServiceClient';
 
 //providers
 const rabbitMQInstance = new RabbitMQService();

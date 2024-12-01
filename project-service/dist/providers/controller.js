@@ -8,12 +8,12 @@ const rabbitMQ_1 = require("../infrastructure/rabbitMQ");
 const createProjectUsecase_1 = require("../usecases/createProjectUsecase");
 const updateTeamIdUsecases_1 = require("../usecases/updateTeamIdUsecases");
 const getProjectUseCases_1 = require("../usecases/getProjectUseCases");
-const grpcClient_1 = require("../infrastructure/grpc/grpcClient");
+const userServiceClient_1 = require("../infrastructure/grpc/userServiceClient");
 //providers
 const rabbitMQInstance = new rabbitMQ_1.RabbitMQService();
 const repositoryInstance = new repository_1.Repository();
 //grpc
-const grpcClientInstance = new grpcClient_1.GrpcClient();
+const grpcClientInstance = new userServiceClient_1.GrpcClient();
 const updateTeamIdInstace = new updateTeamIdUsecases_1.UpdateTeamId(repositoryInstance);
 new updateTeamConsumer_1.UpdateTeamConsumer(updateTeamIdInstace);
 const getProjectsByUserIdInstance = new getProjectUseCases_1.getProjectsByUserId(repositoryInstance, grpcClientInstance);

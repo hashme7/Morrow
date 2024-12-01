@@ -1,5 +1,5 @@
-import { IRepository } from "../interfaces/repository.interface";
 import { UserServiceClient } from "morrow-common";
+import { IRepository } from "../interfaces/repository.interface";
 
 export class getProjectsByUserId {
   constructor(
