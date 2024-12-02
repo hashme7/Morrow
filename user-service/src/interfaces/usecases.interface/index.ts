@@ -1,5 +1,5 @@
-import { IUser } from './types/user';
-import { IAddMember, response } from './types/response';
+import { IUser } from '../types/user';
+import { IAddMember, response } from '../types/response';
 import mongoose, { ObjectId } from 'mongoose';
 import { ConsumeMessage } from 'amqplib';
 

@@ -22,8 +22,12 @@ class GetRequests {
                 const requests = yield this.repository.getRequests(userId);
                 const teamIds = requests.map((req) => req.teamId.toString());
                 const response = yield this.grpcProjectClient.getProjectByTeamId(teamIds);
-                // const combinedRequests =  response.projects.
-                return { status: 200, message: "requests ", response };
+                let requestHash = new Map();
+                for (let req of requests) {
+                    requestHash.set(req.teamId, req.note);
+                }
+                const combinedRequests = response.projects.map((project) => (Object.assign(Object.assign({}, project), { note: requestHash.get(project.teamId) })));
+                return { status: 200, message: "requests ", data: combinedRequests };
             }
             catch (error) {
                 console.log(`Error on GetRequests ${error} `);

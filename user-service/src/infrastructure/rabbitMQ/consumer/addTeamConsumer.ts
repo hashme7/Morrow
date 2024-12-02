@@ -1,6 +1,6 @@
 import amqplib, { Channel, Connection } from "amqplib";
 import { rabbitMQConfig } from "../config/rabbitMQConfig";
-import { ICreateTeamCases } from "../../../interfaces/use-case.interface";
+import { ICreateTeamCases } from "../../../interfaces/usecases.interface";
 
 export class AddTeamConsumer {
   private channel!: Channel;

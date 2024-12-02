@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { IRepository } from '../interfaces/repository.interface';
 import { response } from '../interfaces/types/response';
 

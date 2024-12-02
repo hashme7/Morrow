@@ -1,4 +1,4 @@
-import { ICreateRequest } from '../interfaces/use-case.interface';
+import { ICreateRequest } from '../interfaces/usecases.interface/index.js';
 import { IRepository } from "../interfaces/repository.interface";
 import { Types } from 'mongoose';
 

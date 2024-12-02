@@ -1,6 +1,6 @@
 import mongoose, { Document, ObjectId } from "mongoose";
-import { IRequest, ITeam, IUser } from "./types/user";
-import { IAddMember, IAddTeamMessage } from "./types/response";
+import { IRequest, ITeam, IUser } from "../types/user";
+import { IAddMember, IAddTeamMessage } from "../types/response";
 
 export interface IRepository {
   markUserAsVerified(userId: ObjectId): Promise<void>;

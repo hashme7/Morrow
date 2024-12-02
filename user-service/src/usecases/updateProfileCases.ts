@@ -1,5 +1,5 @@
 import { IRepository } from "../interfaces/repository.interface";
-import { IUpdateProfile } from "../interfaces/use-case.interface";
+import { IUpdateProfile } from "../interfaces/usecases.interface";
 import {ObjectId} from 'mongodb';
 
 export class UpdateProfile implements IUpdateProfile {

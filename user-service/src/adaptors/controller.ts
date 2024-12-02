@@ -9,7 +9,7 @@ import {
   IGetUserCases,
   IUpdateImg,
   IUpdateProfile,
-} from "../interfaces/use-case.interface";
+} from "../interfaces/usecases.interface/index.js";
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 
