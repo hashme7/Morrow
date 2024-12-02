@@ -15,9 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongodb_1 = require("mongodb");
 class UserAuthController {
-    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, 
-    // private readonly getRequests:IGetRequests
-    updateProfileCases) {
+    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, getRequestDetails, updateProfileCases) {
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
@@ -25,6 +23,7 @@ class UserAuthController {
         this.updateImg = updateImg;
         this.getAllUsers = getAllUsers;
         this.createRequest = createRequest;
+        this.getRequestDetails = getRequestDetails;
         this.updateProfileCases = updateProfileCases;
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
@@ -169,16 +168,19 @@ class UserAuthController {
             }
         });
     }
-    // async getRequest(req:Request,res:Response){
-    //   try {
-    //     const {userId}= req.query;
-    //     const {status,data,message} = await this.getRequests.execute(new ObjectId(userId as string));
-    //     res.status(status).json({data,message});
-    //   } catch (error) {
-    //     console.log( `Error on get Request : ${error}`);
-    //     res.status(500).json({message:`Internel server error`});
-    //   }
-    // }
+    getRequest(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { userId } = req.query;
+                const { status, data, message } = yield this.getRequestDetails.execute(new mongodb_1.ObjectId(userId));
+                res.status(status).json({ data, message });
+            }
+            catch (error) {
+                console.log(`Error on get Request : ${error}`);
+                res.status(500).json({ message: `Internel server error` });
+            }
+        });
+    }
     logout(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

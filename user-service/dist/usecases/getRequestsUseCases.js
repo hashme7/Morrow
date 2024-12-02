@@ -11,15 +11,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetRequests = void 0;
 class GetRequests {
-    constructor(repository) {
+    constructor(repository, grpcProjectClient) {
         this.repository = repository;
+        this.grpcProjectClient = grpcProjectClient;
         this.repository = repository;
     }
     execute(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const data = yield this.repository.getRequests(userId);
-                return { status: 200, message: "requests ", data };
+                const requests = yield this.repository.getRequests(userId);
+                const teamIds = requests.map((req) => req.teamId.toString());
+                const response = yield this.grpcProjectClient.getProjectByTeamId(teamIds);
+                // const combinedRequests =  response.projects.
+                return { status: 200, message: "requests ", response };
             }
             catch (error) {
                 console.log(`Error on GetRequests ${error} `);

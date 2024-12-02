@@ -28,9 +28,9 @@ router
 router
     .route("/createRequest")
     .post(controller_1.authControllerInstance.sendRequest.bind(controller_1.authControllerInstance));
-// router
-//   .route("/getRequest")
-//   .get(authControllerInstance.getRequest.bind(authControllerInstance));
+router
+    .route("/getRequest")
+    .get(controller_1.authControllerInstance.getRequest.bind(controller_1.authControllerInstance));
 router
     .route("/logout")
     .post(controller_1.authControllerInstance.logout.bind(controller_1.authControllerInstance));

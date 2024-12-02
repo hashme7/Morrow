@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProjectRpcServer = void 0;
+exports.UserService = void 0;
 // Implementation of the UserServiceServer interface
-class ProjectRpcServer {
+class UserService {
     constructor(repository) {
         this.getTeamIds = (call, callback) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -31,4 +31,4 @@ class ProjectRpcServer {
         this["getTeamIds"] = this.getTeamIds;
     }
 }
-exports.ProjectRpcServer = ProjectRpcServer;
+exports.UserService = UserService;
