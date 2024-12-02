@@ -1,19 +1,19 @@
 import { ObjectId } from "mongodb";
 import prisma from "../../models/prismaClient";
 import { IPorjectReq } from "../../interfaces/Types/useCasesTypes";
+import { IRepository } from "../../interfaces/repository.interface";
+import { IProject } from "../../interfaces/Types/EntitiesTypes";
 
-export class Repository {
+export class Repository implements IRepository{
   constructor() {
     console.log("project repository is initialized.....");
   }
   async create(projectData: IPorjectReq) {
     try {
-      const id = new ObjectId();
       const sanitizedDescription = projectData.projectDescription?.replace(
         /\0/g,
         ""
       );
-
       const plannedStartDate = new Date(
         projectData.plannedStartDate.year,
         projectData.plannedStartDate.month - 1,
@@ -24,12 +24,9 @@ export class Repository {
         projectData.plannedEndDate.month - 1,
         projectData.plannedEndDate.day
       );
-
       const project = await prisma.project.create({
         data: {
           name: projectData.name,
-          projectStartDate: null,
-          projectEndDate: null,
           plannedStartDate: plannedStartDate,
           plannedEndDate: plannedEndDate,
           projectDescription: sanitizedDescription,
@@ -47,7 +44,6 @@ export class Repository {
         where: { id: projectId },
         data: { teamId: teamId },
       });
-      console.log(`Project ID ${projectId} updated with Team ID: ${teamId}`);
       return updatedProject;
     } catch (error) {
       console.error(`Error updating Team ID for project ${projectId}: `, error);
@@ -69,15 +65,18 @@ export class Repository {
       throw error;
     }
   }
-  async getProjectByTeamId(teamId:string){
+  async getProjectByTeamId(teamId:string):Promise<IProject>{
     try {
       const project = await prisma.project.findFirst({
         where:{
           teamId:teamId,
         }
       })
-      console.log(project)
-      return project;
+      if(project){
+        return project;
+      }else{
+        throw new Error("no project are ther");
+      }
     } catch (error) {
       console.log(`error on getting project by team id  ${error}`);
       throw error;

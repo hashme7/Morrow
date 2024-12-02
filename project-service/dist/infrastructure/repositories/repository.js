@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Repository = void 0;
-const mongodb_1 = require("mongodb");
 const prismaClient_1 = __importDefault(require("../../models/prismaClient"));
 class Repository {
     constructor() {
@@ -23,15 +22,12 @@ class Repository {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const id = new mongodb_1.ObjectId();
                 const sanitizedDescription = (_a = projectData.projectDescription) === null || _a === void 0 ? void 0 : _a.replace(/\0/g, "");
                 const plannedStartDate = new Date(projectData.plannedStartDate.year, projectData.plannedStartDate.month - 1, projectData.plannedStartDate.day);
                 const plannedEndDate = new Date(projectData.plannedEndDate.year, projectData.plannedEndDate.month - 1, projectData.plannedEndDate.day);
                 const project = yield prismaClient_1.default.project.create({
                     data: {
                         name: projectData.name,
-                        projectStartDate: null,
-                        projectEndDate: null,
                         plannedStartDate: plannedStartDate,
                         plannedEndDate: plannedEndDate,
                         projectDescription: sanitizedDescription,
@@ -51,7 +47,6 @@ class Repository {
                     where: { id: projectId },
                     data: { teamId: teamId },
                 });
-                console.log(`Project ID ${projectId} updated with Team ID: ${teamId}`);
                 return updatedProject;
             }
             catch (error) {
@@ -74,6 +69,27 @@ class Repository {
             }
             catch (error) {
                 console.log(`error on finding project with teamids : ${error}`);
+                throw error;
+            }
+        });
+    }
+    getProjectByTeamId(teamId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const project = yield prismaClient_1.default.project.findFirst({
+                    where: {
+                        teamId: teamId,
+                    }
+                });
+                if (project) {
+                    return project;
+                }
+                else {
+                    throw new Error("no project are ther");
+                }
+            }
+            catch (error) {
+                console.log(`error on getting project by team id  ${error}`);
                 throw error;
             }
         });

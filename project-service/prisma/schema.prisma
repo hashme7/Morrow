@@ -19,8 +19,8 @@ model Project {
   name                String
   projectStartDate    DateTime?
   projectEndDate      DateTime?
-  plannedStartDate    DateTime?
-  plannedEndDate      DateTime?
+  plannedStartDate    DateTime
+  plannedEndDate      DateTime
   projectDescription  String?
   teamId              String?
   createdAt           DateTime @default(now())
