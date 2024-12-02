@@ -2,6 +2,8 @@ import express from 'express';
 import proxy from 'express-http-proxy';
 import cors from 'cors';
 import morgan from 'morgan'
+import cookieParser from 'cookie-parser'
+import {authenticate} from "morrow-common/dist/middlewares/authMiddleware"
 
 const app = express();
 
@@ -13,12 +15,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use(cookieParser());
 
-app.use('/project',proxy('http://localhost:4000'));
-app.use('/',proxy('http://localhost:3000'));
-app.use('/task',proxy('http://localhost:5000'))
-
-
+app.use('/project',authenticate,proxy('http://localhost:4000'));
+app.use('/user',authenticate,proxy('http://localhost:3000'));
+app.use('/',proxy('http://localhost:1000'));
+app.use('/task',authenticate,proxy('http://localhost:5000'));
+app.use('/communicate',authenticate,proxy('http://localhost:2000'));
+   
 app.listen(8000,()=>{
     console.log(`gateway service is running on port :http://localhost:8000`)
-})
+})     
