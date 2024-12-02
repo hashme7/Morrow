@@ -26,7 +26,10 @@ class GetRequests {
                 for (let req of requests) {
                     requestHash.set(req.teamId, req.note);
                 }
-                const combinedRequests = projects.map((project) => (Object.assign(Object.assign({}, project), { note: requestHash.get(project.teamId) })));
+                const combinedRequests = projects.map((project) => {
+                    var _a, _b;
+                    return (Object.assign(Object.assign({}, project), { note: String(requestHash.get(project.teamId)), projectStartDate: (_a = project.projectStartDate) !== null && _a !== void 0 ? _a : null, projectEndDate: (_b = project.projectEndDate) !== null && _b !== void 0 ? _b : null }));
+                });
                 return { status: 200, message: "requests ", data: combinedRequests };
             }
             catch (error) {

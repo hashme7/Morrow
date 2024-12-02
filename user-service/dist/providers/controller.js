@@ -40,4 +40,4 @@ const sendRequest = new sendRequestUsecases_1.SendRequest(repositoryInstance);
 const updateProfile = new updateProfileCases_1.UpdateProfile(repositoryInstance);
 const getRequest = new getRequestsUseCases_1.GetRequests(repositoryInstance, projectRpcClient);
 new addTeamConsumer_1.AddTeamConsumer(createTeamInstance);
-exports.authControllerInstance = new controller_1.default(getUserInstance, changePasswordInstance, changeEmailInstance, getTeamMembers, updateImg, getAllUsers, sendRequest, updateProfile);
+exports.authControllerInstance = new controller_1.default(getUserInstance, changePasswordInstance, changeEmailInstance, getTeamMembers, updateImg, getAllUsers, sendRequest, updateProfile, getRequest);

@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongodb_1 = require("mongodb");
 class UserAuthController {
-    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, getRequestDetails, updateProfileCases) {
+    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, updateProfileCases, getRequestDetails) {
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
@@ -23,8 +23,8 @@ class UserAuthController {
         this.updateImg = updateImg;
         this.getAllUsers = getAllUsers;
         this.createRequest = createRequest;
-        this.getRequestDetails = getRequestDetails;
         this.updateProfileCases = updateProfileCases;
+        this.getRequestDetails = getRequestDetails;
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
