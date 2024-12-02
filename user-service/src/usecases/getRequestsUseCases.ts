@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { IRepository } from "../interfaces/repository.interface";
 import { IGrpcProjectClient } from "../interfaces/grpc";
+import { IFinalRequests } from "../interfaces/types/response";
 
 export class GetRequests {
   constructor(
@@ -22,7 +23,9 @@ export class GetRequests {
       }
       const combinedRequests = projects.map((project) => ({
         ...project,
-        note: requestHash.get(project.teamId),
+        note: String(requestHash.get(project.teamId)),
+        projectStartDate: project.projectStartDate ?? null, 
+        projectEndDate: project.projectEndDate ?? null,
       }));
       return { status: 200, message: "requests ", data: combinedRequests };
     } catch (error) {

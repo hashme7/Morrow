@@ -46,7 +46,6 @@ export interface IGetRequests{
     execute(userId:mongoose.Types.ObjectId):Promise<response>;
 }
 
-
 export interface IUpdateProfile{
     execute(userId:string, field:string, value:string):Promise<response>;
 }

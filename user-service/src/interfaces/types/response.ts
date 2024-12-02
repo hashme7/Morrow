@@ -1,5 +1,6 @@
 import mongoose, { Document } from "mongoose";
 import { IUser } from "./user";
+import { IProject } from "./project";
 
 export interface response {
     status:number,
@@ -9,7 +10,7 @@ export interface response {
       refreshToken?:string | null | undefined
       user?:IUser |null
     },
-    data?:IUser  | {team_id:mongoose.Types.ObjectId}[]| null | IUser[] | string[],
+    data?:IUser  | {team_id:mongoose.Types.ObjectId}[]| null | IUser[] | string[] | IFinalRequests[],
     valid?:boolean,
     userId?:mongoose.Types.ObjectId,
     totalItems?:number,
@@ -26,4 +27,17 @@ export interface IAddTeamMessage{
 export interface IAddMember extends Document{
   team_id:mongoose.Types.ObjectId,
   user_account:mongoose.Types.ObjectId,
+}
+export interface IFinalRequests {
+  note: string;
+  projectStartDate: Date | null;
+  projectEndDate: Date | null;
+  id: number;
+  name: string;
+  projectDescription: string;
+  teamId: string;
+  plannedStartDate: Date | undefined;
+  plannedEndDate: Date | undefined;
+  createdAt?: Date | undefined;
+  updatedAt?: Date | undefined;
 }

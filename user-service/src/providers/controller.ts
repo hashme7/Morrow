@@ -55,5 +55,7 @@ export const authControllerInstance = new UserAuthController(
   updateImg,
   getAllUsers,
   sendRequest,
-  updateProfile
+  updateProfile,
+  getRequest
 );
+

@@ -22,8 +22,8 @@ class UserAuthController {
     private readonly updateImg: IUpdateImg,
     private readonly getAllUsers: IGetAllUsers,
     private readonly createRequest: ICreateRequest,
+    private readonly updateProfileCases: IUpdateProfile,
     private readonly getRequestDetails:IGetRequests,
-    private readonly updateProfileCases: IUpdateProfile
   ) {
     this.getUserCases = getUserCases;
     this.changePasswordCases = changePasswordCases;

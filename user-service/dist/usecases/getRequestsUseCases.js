@@ -21,17 +21,17 @@ class GetRequests {
             try {
                 const requests = yield this.repository.getRequests(userId);
                 const teamIds = requests.map((req) => req.teamId.toString());
-                const response = yield this.grpcProjectClient.getProjectByTeamId(teamIds);
+                const { projects } = yield this.grpcProjectClient.getProjectByTeamId(teamIds);
                 let requestHash = new Map();
                 for (let req of requests) {
                     requestHash.set(req.teamId, req.note);
                 }
-                const combinedRequests = response.projects.map((project) => (Object.assign(Object.assign({}, project), { note: requestHash.get(project.teamId) })));
+                const combinedRequests = projects.map((project) => (Object.assign(Object.assign({}, project), { note: requestHash.get(project.teamId) })));
                 return { status: 200, message: "requests ", data: combinedRequests };
             }
             catch (error) {
-                console.log(`Error on GetRequests ${error} `);
-                throw error;
+                console.error(`Error fetching requests: ${error}`);
+                throw new Error("Failed to retrieve requests");
             }
         });
     }
