@@ -15,16 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongodb_1 = require("mongodb");
 class UserAuthController {
-    constructor(signUpCases, verifyOtpCases, resendOtpCases, loginCases, googleLoginCases, githubLoginCases, validateTokenCases, getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, 
+    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, 
     // private readonly getRequests:IGetRequests
     updateProfileCases) {
-        this.signUpCases = signUpCases;
-        this.verifyOtpCases = verifyOtpCases;
-        this.resendOtpCases = resendOtpCases;
-        this.loginCases = loginCases;
-        this.googleLoginCases = googleLoginCases;
-        this.githubLoginCases = githubLoginCases;
-        this.validateTokenCases = validateTokenCases;
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
@@ -33,13 +26,6 @@ class UserAuthController {
         this.getAllUsers = getAllUsers;
         this.createRequest = createRequest;
         this.updateProfileCases = updateProfileCases;
-        this.signUpCases = signUpCases;
-        this.verifyOtpCases = verifyOtpCases;
-        this.resendOtpCases = resendOtpCases;
-        this.loginCases = loginCases;
-        this.googleLoginCases = googleLoginCases;
-        this.githubLoginCases = githubLoginCases;
-        this.validateTokenCases = validateTokenCases;
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
@@ -47,144 +33,6 @@ class UserAuthController {
         this.updateImg = updateImg;
         this.getAllUsers = getAllUsers;
         this.createRequest = createRequest;
-        // this.getRequests = getRequests
-    }
-    signup(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const userData = req.body;
-                const response = yield this.signUpCases.execute(userData);
-                res.status(response.status).json(response.data);
-            }
-            catch (error) {
-                console.log(`error on userAuth controller ${error} `);
-            }
-        });
-    }
-    verifyOtp(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { otp, userId } = req.body;
-                const response = yield this.verifyOtpCases.execute(userId, otp);
-                res.status(response.status).json(response.message);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    resendOtp(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { userId } = req.body;
-                const response = yield this.resendOtpCases.execute(userId);
-                res.status(response.status).json(response.message);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    login(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { email, password } = req.body;
-            try {
-                const result = yield this.loginCases.execute(email, password);
-                if (result.status === 200 && result.tokens) {
-                    const { accessToken, refreshToken } = result.tokens;
-                    const { userId } = result;
-                    res.cookie("accessToken", accessToken, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                        sameSite: "lax",
-                        maxAge: 24 * 60 * 60 * 1000,
-                    });
-                    res.cookie("refreshToken", refreshToken, {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                        sameSite: "lax",
-                        maxAge: 7 * 24 * 60 * 60 * 1000,
-                    });
-                    res.status(200).json({
-                        message: "Login successful",
-                        accessToken,
-                        refreshToken,
-                        userId,
-                    });
-                }
-                else {
-                    res
-                        .status(result.status)
-                        .json({ message: result.message, token: result.tokens });
-                }
-            }
-            catch (error) {
-                console.log("Error on login:", error);
-                res.status(500).json({ message: "Internal server error" });
-            }
-        });
-    }
-    googleLogin(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                console.log(`on google login......`);
-                const { token } = req.body;
-                if (!token) {
-                    res.status(401).json({ message: "Missing token" });
-                }
-                const { status, message, tokens, userId } = yield this.googleLoginCases.execute(token);
-                res.status(status).json({
-                    message: message,
-                    refreshToken: tokens.refreshToken,
-                    accessToken: tokens.accessToken,
-                    userId,
-                });
-            }
-            catch (error) {
-                console.log(error);
-                res.status(500).json({ message: "Internel Server Error" });
-            }
-        });
-    }
-    gitHubLogin(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { code } = req.body;
-                if (!code) {
-                    res.status(401).json({ message: "missing code for github" });
-                }
-                const { status, message, tokens, userId } = yield this.githubLoginCases.execute(code);
-                res.status(status).json({
-                    message: message,
-                    refreshToken: tokens === null || tokens === void 0 ? void 0 : tokens.refreshToken,
-                    accessToken: tokens === null || tokens === void 0 ? void 0 : tokens.accessToken,
-                    userId,
-                });
-            }
-            catch (error) {
-                console.log(error);
-                res.status(500).json({ message: "Internel Server Error" });
-            }
-        });
-    }
-    validateToken(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            try {
-                const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
-                if (!token) {
-                    res.status(400).json({ message: "Token not provided" });
-                }
-                else {
-                    const { status, valid, message } = yield this.validateTokenCases.execute(token);
-                    res.status(status).json({ status, valid, message });
-                }
-            }
-            catch (error) {
-                console.error("Error validating token:", error);
-                res.status(500).json({ message: "Internal server error" });
-            }
-        });
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

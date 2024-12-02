@@ -79,7 +79,7 @@ class Repository implements IRepository {
       throw error;
     }
   }
-  async findUsersByIds(membersId: mongoose.Types.ObjectId[]) {
+  async findUsersByIds(membersId: string[]) {
     try {
       const users = await User.find({
         _id: { $in: membersId },
@@ -138,7 +138,7 @@ class Repository implements IRepository {
         { team_id: teamId },
         { user_account: 1, _id: 0 }
       ).exec();
-      const userIds = teamMembers.map((member) => member.user_account);
+      const userIds = teamMembers.map((member) => String(member.user_account));
       return userIds;
     } catch (error) {
       console.log(`Error on get team members : ${error}`);
@@ -146,7 +146,7 @@ class Repository implements IRepository {
     }
   }
   async addTeamMembers(
-    userId: mongoose.Types.ObjectId,
+    userId: mongoose.Types.ObjectId,  
     teamId: mongoose.Types.ObjectId
   ) {
     try {
@@ -246,7 +246,7 @@ class Repository implements IRepository {
     const updateData: { [key: string]: any } = {};
     updateData[field] = value;
     const result = await User.updateOne({_id:userId},{ $set: updateData })
-    if (result.nModified === 0) {
+    if (result.modifiedCount === 0) {
       throw new Error("No changes made. User not found or field value is the same.");
     }
   }

@@ -33,9 +33,9 @@ export interface IRepository {
   ): Promise<mongoose.Types.ObjectId | null>;
   getTeamMembers(
     teamId: mongoose.Types.ObjectId
-  ): Promise<mongoose.Types.ObjectId[]>;
+  ): Promise<string[]>;
   findUsersByIds(
-    membersId: mongoose.Types.ObjectId[],
+    membersId: string[],
     page: number,
     limit: number
   ): Promise<IUser[]>;

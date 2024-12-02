@@ -159,7 +159,7 @@ class Repository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const teamMembers = yield teamMemberModel_1.default.find({ team_id: teamId }, { user_account: 1, _id: 0 }).exec();
-                const userIds = teamMembers.map((member) => member.user_account);
+                const userIds = teamMembers.map((member) => String(member.user_account));
                 return userIds;
             }
             catch (error) {
@@ -271,7 +271,7 @@ class Repository {
             const updateData = {};
             updateData[field] = value;
             const result = yield userModel_1.default.updateOne({ _id: userId }, { $set: updateData });
-            if (result.nModified === 0) {
+            if (result.modifiedCount === 0) {
                 throw new Error("No changes made. User not found or field value is the same.");
             }
         });

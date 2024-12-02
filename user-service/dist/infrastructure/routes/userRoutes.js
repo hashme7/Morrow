@@ -8,27 +8,6 @@ const controller_1 = require("../../providers/controller");
 const multerConfig_1 = __importDefault(require("../middlewares/multerConfig"));
 const router = express_1.default.Router();
 router
-    .route("/sign-up")
-    .post(controller_1.authControllerInstance.signup.bind(controller_1.authControllerInstance));
-router
-    .route("/verify-otp")
-    .post(controller_1.authControllerInstance.verifyOtp.bind(controller_1.authControllerInstance));
-router
-    .route("/resend-otp")
-    .post(controller_1.authControllerInstance.resendOtp.bind(controller_1.authControllerInstance));
-router
-    .route("/login")
-    .post(controller_1.authControllerInstance.login.bind(controller_1.authControllerInstance));
-router
-    .route("/google-login")
-    .post(controller_1.authControllerInstance.googleLogin.bind(controller_1.authControllerInstance));
-router
-    .route("/github-login")
-    .post(controller_1.authControllerInstance.gitHubLogin.bind(controller_1.authControllerInstance));
-router
-    .route("/validate-token")
-    .get(controller_1.authControllerInstance.validateToken.bind(controller_1.authControllerInstance));
-router
     .route("/user-details/:userId")
     .get(controller_1.authControllerInstance.getUser.bind(controller_1.authControllerInstance));
 router

@@ -10,18 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectRpcServer = void 0;
+// Implementation of the UserServiceServer interface
 class ProjectRpcServer {
     constructor(repository) {
-        this.repository = repository;
-        this.repository = repository;
-    }
-    getTeamIds(call, callback) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const requestData = call.request;
-            const teamIds = yield this.repository.getTeamIdsByUserId(requestData.userId);
-            const response = { teamIds };
-            callback(null, response);
+        this.getTeamIds = (call, callback) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { userId } = call.request;
+                const teamIds = yield repository.getTeamIdsByUserId(userId);
+                const response = { teamIds };
+                callback(null, response);
+            }
+            catch (error) {
+                console.error("Error in getTeamIds:", error);
+                callback({
+                    code: 13,
+                    message: "Unknown error occurred",
+                }, null);
+            }
         });
+        this["getTeamIds"] = this.getTeamIds;
     }
 }
 exports.ProjectRpcServer = ProjectRpcServer;

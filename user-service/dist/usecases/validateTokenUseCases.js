@@ -19,7 +19,7 @@ class ValidateToken {
                 console.log(`validateToken`, token);
                 const decoded = morrow_common_1.JWTService.verifyToken(token);
                 console.log(`decoded:
-            
+          
             `, decoded);
                 if (decoded) {
                     console.log("token valid");

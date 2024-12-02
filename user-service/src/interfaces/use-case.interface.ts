@@ -5,31 +5,6 @@ import { ConsumeMessage } from 'amqplib';
 
 
 
-export interface ISignUpCases {
-    execute(userData:IUser):Promise<response>
-}
-export interface IVerifyCases {
-    execute(userId:ObjectId,otp:number):Promise<response>
-}
-export interface IResendOtpCases {
-    execute(userId:mongoose.Types.ObjectId):Promise<response>
-}
-
-export interface ILoginCases{
-    execute(email:string,password:string):Promise<response>
-}
-export interface IUpdateNameCases{
-    execute(name: string, userId: mongoose.Types.ObjectId): Promise<response>
-}
-export interface IGoogleLoginCases {
-    execute(token:string):any;
-}
-export interface IGithubLoginCases{
-    execute(code:string):Promise<response>
-}
-export interface IValidateTokenCases{
-    execute(token:string):Promise<response>
-}
 export interface ICreateTeamCases{
     execute(message:ConsumeMessage):unknown;
 }

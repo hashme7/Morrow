@@ -11,6 +11,10 @@ const requestSchema =new mongoose.Schema({
         ref:"User",
         required:true,
     },
+    note:{
+        type:String,
+        required:true,
+    },
     isAccepted:{
         type:Boolean,
         default:false,
