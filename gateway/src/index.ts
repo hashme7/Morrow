@@ -12,7 +12,7 @@ const corsOptions = {
     credentials: true,  
   };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); 
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(cookieParser());
