@@ -14,9 +14,9 @@ class ProjectService {
     constructor(repository) {
         this.getProjectDetails = (call, callback) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const { teamId } = call.request;
-                const response = yield repository.getProjectByTeamId(teamId);
-                callback(null, response);
+                const { teamIds } = call.request;
+                const projects = yield repository.getProjectsByTeamIds(teamIds);
+                callback(null, { projects });
             }
             catch (error) {
                 console.log(`Error in getProjectDetails : ${error}`);

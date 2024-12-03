@@ -1,4 +1,4 @@
-import { IProject } from "../Types/EntitiesTypes";
+import { IProject } from "../Types";
 import { IPorjectReq } from "../Types/useCasesTypes";
 
 
