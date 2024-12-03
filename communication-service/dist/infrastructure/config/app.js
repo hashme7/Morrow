@@ -7,6 +7,7 @@ exports.createServer = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
+const chatRoutes_1 = __importDefault(require("../routes/chatRoutes"));
 const createServer = () => {
     try {
         const app = (0, express_1.default)();
@@ -21,7 +22,7 @@ const createServer = () => {
         };
         app.use((0, cors_1.default)(corsOptions));
         app.options("*", (0, cors_1.default)(corsOptions));
-        // app.use("/", userRouter);
+        app.use("/", chatRoutes_1.default);
         return app;
     }
     catch (error) {

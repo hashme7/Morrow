@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const chatController_1 = require("../adaptors/chatController");
+const socketio_1 = require("../infrastructure/framework/socketio");
+const chatRepository_1 = require("../infrastructure/repository/chatRepository");
+const redis_1 = require("../infrastructure/service/redis");
+const redisService = new redis_1.RedisService("localhost", 6379);
+const chatRepository = new chatRepository_1.ChatRepository();
+const webSocketService = new socketio_1.WebSocketServer(443, redisService, chatRepository);
+webSocketService.start();
+const chatController = new chatController_1.ChatController(webSocketService);
+exports.default = chatController;

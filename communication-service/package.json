@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run tsc-watch\" \"npm run serve\"",
+    "clean": "del ./dist/*",
+    "build": "npm run clean && tsc",
+    "dev": "git add . && git commit -m \"Updates\" && npm run build && concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
     "serve": "nodemon ./dist/index.js"
   },
@@ -13,11 +15,17 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "del-cli": "^6.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "http": "^0.0.1-security",
+    "ioredis": "^5.4.1",
     "mongoose": "^8.8.2",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.7"
+    "morrow-common": "^1.5.14",
+    "nodemon": "^3.1.7",
+    "socket.io": "^4.8.1",
+    "socket.io-redis": "^6.1.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

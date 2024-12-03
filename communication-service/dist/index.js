@@ -20,7 +20,7 @@ dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../.env") });
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, DBConfig_1.DBConfig)();
-        const port = process.env.PORT || 3000;
+        const port = process.env.PORT || 2000;
         const app = (0, http_1.createServer)();
         app === null || app === void 0 ? void 0 : app.listen(port, () => console.log(`communication-service successfully running on port ${port}`));
     }

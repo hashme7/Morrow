@@ -1,18 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
-
-export interface ITask extends Document {
-  teamId: mongoose.Types.ObjectId;
-  name: string;
-  description: string;
-  plannedStartDate: Date;
-  plannedEndDate: Date;
-  actualStartDate?: Date;
-  actualEndDate?: Date;
-  status: string;
-  priority: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import mongoose, { Schema } from "mongoose";
+import { ITask } from "../interfaces/response.interface";
 
 const TaskSchema = new Schema<ITask>(
   {
@@ -25,6 +12,7 @@ const TaskSchema = new Schema<ITask>(
     actualEndDate: { type: Date },
     status: { type: String },
     priority: { type: String },
+    subTaskIds:[{ type: Schema.Types.ObjectId, ref: "SubTask" }],
   },
   { timestamps: true }
 );

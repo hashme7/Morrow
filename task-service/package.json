@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run tsc-watch\" \"npm run serve\"",
+    "clean": "del ./dist/*",
+    "build": "npm run clean && tsc",
+    "dev": "npm run build &&  concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
     "serve": "nodemon ./dist/index.js"
   },
@@ -17,7 +19,7 @@
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.1",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.2"
+    "morrow-common": "^1.5.14"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -25,6 +27,7 @@
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.9.0",
     "concurrently": "^9.1.0",
+    "del-cli": "^6.0.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"

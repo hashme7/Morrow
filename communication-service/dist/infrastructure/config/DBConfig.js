@@ -18,7 +18,7 @@ const DBConfig = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const DB_URL = process.env.MONGO_URL;
         yield mongoose_1.default.connect(DB_URL);
-        console.log("user-service : database is succesfully connected");
+        console.log("communication-service : database is succesfully connected");
     }
     catch (error) {
         console.log("error on connecting database on user-service", error);
