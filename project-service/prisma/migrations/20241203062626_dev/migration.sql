@@ -6,7 +6,7 @@ CREATE TABLE "Project" (
     "projectEndDate" TIMESTAMP(3),
     "plannedStartDate" TIMESTAMP(3) NOT NULL,
     "plannedEndDate" TIMESTAMP(3) NOT NULL,
-    "projectDescription" TEXT,
+    "projectDescription" TEXT NOT NULL,
     "teamId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

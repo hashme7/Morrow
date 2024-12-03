@@ -14,7 +14,7 @@ export interface IProject {
   projectEndDate: Date | null;    
   plannedStartDate: Date; 
   plannedEndDate: Date;    
-  projectDescription: string | null; 
+  projectDescription:string; 
   teamId: string | null;
   createdAt?: Date;
   updatedAt?: Date;

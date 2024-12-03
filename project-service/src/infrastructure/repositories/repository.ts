@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb";
 import prisma from "../../models/prismaClient";
-import { IPorjectReq } from "../../interfaces/Types/useCasesTypes";
+import { IPorjectReq } from "../../interfaces/Types/request.interface";
 import { IRepository } from "../../interfaces/repository.interface";
 import { IProject } from "../../interfaces/Types";
 
-export class Repository implements IRepository{
+export class Repository {
   constructor() {
     console.log("project repository is initialized.....");
   }

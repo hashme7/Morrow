@@ -1,4 +1,4 @@
-import { IPorjectReq } from "../interfaces/Types/useCasesTypes";
+import { IPorjectReq } from "../interfaces/Types/request.interface";
 import { IUpdateProjectCases } from "../interfaces/usecase.interface";
 
 export class CreateProject {

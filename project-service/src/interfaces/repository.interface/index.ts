@@ -1,5 +1,5 @@
 import { IProject } from "../Types";
-import { IPorjectReq } from "../Types/useCasesTypes";
+import { IPorjectReq } from "../Types/request.interface";
 
 
 export interface IRepository{

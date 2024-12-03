@@ -1,6 +1,6 @@
 import { Message } from "amqplib";
 import { IResponse } from "./Types/response.interface";
-import { IPorjectReq } from "./Types/useCasesTypes";
+import { IPorjectReq } from "./Types/request.interface";
 
 export interface IUsecase{
     createProject(data:IPorjectReq):Promise<{status:number,message:string}>;
