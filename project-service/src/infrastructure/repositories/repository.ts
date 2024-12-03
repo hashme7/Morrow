@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import prisma from "../../models/prismaClient";
 import { IPorjectReq } from "../../interfaces/Types/useCasesTypes";
 import { IRepository } from "../../interfaces/repository.interface";
-import { IProject } from "../../interfaces/Types/EntitiesTypes";
+import { IProject } from "../../interfaces/Types";
 
 export class Repository implements IRepository{
   constructor() {
