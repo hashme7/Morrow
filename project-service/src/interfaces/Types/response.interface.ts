@@ -1,4 +1,4 @@
-import { IProject } from './EntitiesTypes';
+import { IProject } from './index';
 export interface IResponse{
     status:number,
     message?:string
