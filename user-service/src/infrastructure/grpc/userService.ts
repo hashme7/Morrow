@@ -5,7 +5,7 @@ import { UserServiceServer } from "morrow-common";
 
 // Implementation of the UserServiceServer interface
 export class UserService implements UserServiceServer {
-  [name: string]: import("@grpc/grpc-js").UntypedHandleCall;
+  [name: string]:handleUnaryCall<any, any>;
 
   getTeamIds: handleUnaryCall<UserRequest, TeamResponse>;
 

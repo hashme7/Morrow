@@ -1,5 +1,5 @@
-import { Server, ServerCredentials } from "@grpc/grpc-js";
 import { UserServiceServer, UserServiceService } from "morrow-common/dist/grpc/user";
+import { Server,ServerCredentials } from "@grpc/grpc-js";
 
 export class GrpcServer {
   private readonly server: Server;
@@ -10,7 +10,7 @@ export class GrpcServer {
   }
 
   start(): void {
-    this.server.addService(UserServiceService, this.userService);
+    this.server.addService(UserServiceService, this.userService );
     this.server.bindAsync(
       "localhost:8080",
       ServerCredentials.createInsecure(),
