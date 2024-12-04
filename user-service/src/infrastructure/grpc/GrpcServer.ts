@@ -1,4 +1,4 @@
-import { UserServiceServer, UserServiceService } from "morrow-common/dist/grpc/cmn";
+import { UserServiceServer, UserServiceService } from "morrow-common/dist/types";
 import { Server,ServerCredentials } from "@grpc/grpc-js";
 
 export class GrpcServer {
