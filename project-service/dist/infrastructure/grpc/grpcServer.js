@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GrpcServer = void 0;
-const grpc_js_1 = require("@grpc/grpc-js");
 const cmn_1 = require("morrow-common/dist/grpc/cmn");
+const grpc_js_1 = require("@grpc/grpc-js");
 class GrpcServer {
     constructor(projectService) {
         this.projectService = projectService;
