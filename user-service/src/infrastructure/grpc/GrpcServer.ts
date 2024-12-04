@@ -10,7 +10,7 @@ export class GrpcServer {
   }
 
   start(): void {
-    this.server.addService(UserServiceService, this.userService);
+    this.server.addService(UserServiceService, this.userService );
     this.server.bindAsync(
       "localhost:8080",
       ServerCredentials.createInsecure(),
