@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(cookieParser());
 
-app.use('/project',authenticate,proxy('http://localhost:4000'));
+app.use('/project',authenticate,proxy('http://localhost:4000'));   
 app.use('/user',authenticate,proxy('http://localhost:3000'));
 app.use('/',proxy('http://localhost:1000'));
 app.use('/task',authenticate,proxy('http://localhost:5000'));
