@@ -1,5 +1,5 @@
 import { credentials,ServiceError } from '@grpc/grpc-js';
-import { UserServiceClient, UserRequest, TeamResponse } from "morrow-common/dist/grpc/user";
+import { UserServiceClient, UserRequest, TeamResponse } from "morrow-common/dist";
 
 export class GrpcClient {
   private client: UserServiceClient;

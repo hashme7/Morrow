@@ -1,7 +1,7 @@
 import {
   ProjectServiceServer,
   ProjectServiceService,
-} from "morrow-common/dist/grpc/cmn";
+} from "morrow-common/dist";
 import { Server, ServerCredentials } from "@grpc/grpc-js";
 
 export class GrpcServer {

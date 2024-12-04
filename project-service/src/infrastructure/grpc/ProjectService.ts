@@ -3,7 +3,7 @@ import {
   ProjectsResponse,
   ProjectRequest,
   ProjectServiceServer,
-} from "morrow-common/dist/grpc/cmn";
+} from "morrow-common/dist";
 import { IRepository } from "../../interfaces/repository.interface";
 
 export class ProjectService implements ProjectServiceServer {
