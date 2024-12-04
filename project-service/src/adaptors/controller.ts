@@ -13,6 +13,7 @@ export class Controller {
     try {
       const { userId } = req.query;
       const data = req.body;
+      console.log(data,"data.....");
       const response = await this.createProjectCases.execute(
         data,
         userId as string  

@@ -20,6 +20,7 @@ class Controller {
             try {
                 const { userId } = req.query;
                 const data = req.body;
+                console.log(data, "data.....");
                 const response = yield this.createProjectCases.execute(data, userId);
                 res.status(response.status).json({ message: response.message });
             }
