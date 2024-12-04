@@ -1,4 +1,4 @@
-import { ProjectRequest, ProjectsResponse, ProjectServiceClient } from "morrow-common/dist/types";
+import { ProjectRequest, ProjectsResponse, ProjectServiceClient } from "morrow-common/dist";
 import { credentials,  ServiceError } from "@grpc/grpc-js";
 import { IGrpcProjectClient } from "../../interfaces/grpc";
 
