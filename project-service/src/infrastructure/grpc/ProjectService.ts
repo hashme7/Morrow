@@ -7,7 +7,7 @@ import {
 import { IRepository } from "../../interfaces/repository.interface";
 
 export class ProjectService implements ProjectServiceServer {
-  [name: string]: import("@grpc/grpc-js").UntypedHandleCall;
+  [name: string]: handleUnaryCall<ProjectRequest,ProjectsResponse>;   
   getProjectDetails!: handleUnaryCall<ProjectRequest, ProjectsResponse>;
   constructor(repository: IRepository) {
     this.getProjectDetails = async (
@@ -16,9 +16,14 @@ export class ProjectService implements ProjectServiceServer {
     ): Promise<void> => {
       try {
         const { teamIds } = call.request;
-        const projects = await repository.getProjectsByTeamIds(
+        const projects = (await repository.getProjectsByTeamIds(
           teamIds
-        );
+        )).map((project) => ({
+          ...project,
+          teamId: project.teamId || "", // Default `null` to an empty string or handle as needed
+          projectStartDate:project.plannedStartDate || "",
+          projectEndDate:project.projectEndDate || undefined,
+        }));;
         callback(null, {projects});
       } catch (error) {
         console.log(`Error in getProjectDetails : ${error}`);
