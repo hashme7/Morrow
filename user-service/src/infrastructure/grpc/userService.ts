@@ -29,7 +29,7 @@ export class UserService implements UserServiceServer {
           null
         );
       }
-    };
+    }; 
 
     this["getTeamIds"] = this.getTeamIds;
   }
