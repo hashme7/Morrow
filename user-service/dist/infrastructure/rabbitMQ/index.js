@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RabbitMQService = void 0;
 const amqplib_1 = __importDefault(require("amqplib"));
 const rabbitMQConfig_1 = require("./config/rabbitMQConfig");
-const morrow_common_1 = require("morrow-common");
+const dist_1 = require("morrow-common/dist");
 class RabbitMQService {
     constructor() {
         this.maxRetries = 5;
@@ -33,7 +33,7 @@ class RabbitMQService {
                 console.log(`Error connecting RabbitMQ: ${error}`);
                 if (attempt <= this.maxRetries) {
                     console.log(`Retrying to connect to RabbitMQ in ${this.retryDelay / 1000} seconds...`);
-                    yield (0, morrow_common_1.delay)(this.retryDelay);
+                    yield (0, dist_1.delay)(this.retryDelay);
                     return this.connect(attempt + 1);
                 }
                 else {

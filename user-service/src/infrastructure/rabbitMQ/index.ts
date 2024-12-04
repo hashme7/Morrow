@@ -1,6 +1,6 @@
 import amqplib, { Connection, Channel } from "amqplib";
 import { rabbitMQConfig } from "./config/rabbitMQConfig";
-import {delay} from 'morrow-common'
+import {delay} from 'morrow-common/dist'
 
 export class RabbitMQService {
   private connection: Connection | undefined;
@@ -11,7 +11,7 @@ export class RabbitMQService {
     this.connect();
   }
   private async connect(attempt: number = 1): Promise<void> {
-    try {
+    try { 
       this.connection = await amqplib.connect(rabbitMQConfig.uri!);
       this.channel = await this.connection.createChannel();
       console.log(`RabbitMQ is connected successfully.`);
