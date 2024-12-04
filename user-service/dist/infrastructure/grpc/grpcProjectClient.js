@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GrpcProjectClient = void 0;
-const types_1 = require("morrow-common/dist/types");
+const dist_1 = require("morrow-common/dist");
 const grpc_js_1 = require("@grpc/grpc-js");
 class GrpcProjectClient {
     constructor() {
-        this.client = new types_1.ProjectServiceClient("localhost:7070", grpc_js_1.credentials.createInsecure());
+        this.client = new dist_1.ProjectServiceClient("localhost:7070", grpc_js_1.credentials.createInsecure());
         console.log(`grpc client for project server is running`);
     }
     getProjectByTeamId(teamIds) {
