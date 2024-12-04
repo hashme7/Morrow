@@ -1,4 +1,4 @@
-import grpc,{ credentials,ServiceError } from '@grpc/grpc-js';
+import { credentials,ServiceError } from '@grpc/grpc-js';
 import { UserServiceClient, UserRequest, TeamResponse } from "morrow-common/dist/grpc/user";
 
 export class GrpcClient {
