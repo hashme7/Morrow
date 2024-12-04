@@ -25,7 +25,7 @@ export class UserService implements UserServiceServer {
           {
             code: 13,
             message: "Unknown error occurred",
-          },
+          },  
           null
         );
       }
