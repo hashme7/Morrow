@@ -29,7 +29,7 @@ router
   .route("/createRequest")
   .post(authControllerInstance.sendRequest.bind(authControllerInstance));
 router
-  .route("/getRequest")
+  .route("/getRequests")
   .get(authControllerInstance.getRequest.bind(authControllerInstance));
 router
   .route("/logout")
