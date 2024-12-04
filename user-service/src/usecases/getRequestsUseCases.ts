@@ -21,7 +21,7 @@ export class GetRequests {
       for (let req of requests) {
         requestHash.set(req.teamId, req.note);
       }
-      const combinedRequests = projects.map((project) => ({
+      const combinedRequests = projects.map((project: { teamId: string; projectStartDate: string | Date; projectEndDate: string | undefined; }) => ({
         ...project,
         note: String(requestHash.get(project.teamId)),
         projectStartDate: project.projectStartDate ?? null, 
