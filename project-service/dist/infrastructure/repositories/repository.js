@@ -22,7 +22,7 @@ class Repository {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const sanitizedDescription = (_a = projectData.projectDescription) === null || _a === void 0 ? void 0 : _a.replace(/\0/g, "");
+                const sanitizedDescription = (_a = projectData.description) === null || _a === void 0 ? void 0 : _a.replace(/\0/g, "");
                 const plannedStartDate = new Date(projectData.plannedStartDate.year, projectData.plannedStartDate.month - 1, projectData.plannedStartDate.day);
                 const plannedEndDate = new Date(projectData.plannedEndDate.year, projectData.plannedEndDate.month - 1, projectData.plannedEndDate.day);
                 const project = yield prismaClient_1.default.project.create({

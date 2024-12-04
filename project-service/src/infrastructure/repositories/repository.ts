@@ -10,7 +10,7 @@ export class Repository {
   }
   async create(projectData: IPorjectReq) {
     try {
-      const sanitizedDescription = projectData.projectDescription?.replace(
+      const sanitizedDescription = projectData.description?.replace(
         /\0/g,
         ""
       );

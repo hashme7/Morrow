@@ -25,6 +25,6 @@ export interface IPorjectReq {
       month: number;
       day: number;
     };
-    projectDescription: string;
-    teamId: string;
+    description: string;
+    teamId?: string;
   }
