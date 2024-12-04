@@ -19,7 +19,4 @@ export const authenticate = (
   } else {
     next();
   }
-  // if (decoded) {
-  //   res.status(403).json({ message: `Access denied  ${decoded}` })
-  // }
 };
