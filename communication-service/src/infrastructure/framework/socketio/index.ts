@@ -2,7 +2,6 @@ import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
-import { timeStamp } from "console";
 
 export class WebSocketServer  {
   public io: Server;
