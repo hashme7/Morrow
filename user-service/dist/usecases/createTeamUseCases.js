@@ -21,11 +21,14 @@ class CreateTeam {
             const response = JSON.parse(message.content.toString());
             const newTeam = yield this.repository.createTeam(response);
             if (newTeam) {
-                const newMember = yield this.repository.addTeamMembers(response.userId, newTeam._id);
+                yield this.repository.addTeamMembers(response.userId, newTeam._id);
                 yield this.rabbitMQ.publish(rabbitMQConfig_1.rabbitMQConfig.queueName2, {
                     projectId: newTeam.projectId,
-                    teamId: newTeam._id
+                    teamId: newTeam._id.toString().trim(),
                 });
+            }
+            else {
+                throw new Error("error creating team and team Members");
             }
         });
     }

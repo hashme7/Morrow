@@ -36,15 +36,23 @@ class RedisService {
         });
         this.addErrorListeners();
     }
-    getPublisher() {
+    connect() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.client;
+            try {
+                yield this.client.ping();
+                console.log('Redis client connected');
+            }
+            catch (error) {
+                console.error('Error connecting to Redis:', error);
+                throw error;
+            }
         });
     }
-    getSubcriber() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.subscriber;
-        });
+    getSubscriber() {
+        return this.subscriber;
+    }
+    getPublisher() {
+        return this.client;
     }
     publish(channel, message) {
         return __awaiter(this, void 0, void 0, function* () {

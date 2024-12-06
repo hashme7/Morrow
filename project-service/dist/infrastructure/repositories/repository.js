@@ -58,13 +58,15 @@ class Repository {
     getProjectsByTeamIds(teamIds) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(teamIds, "teamIds:[]");
                 const projects = yield prismaClient_1.default.project.findMany({
                     where: {
                         teamId: {
-                            in: teamIds,
+                            in: teamIds.map((id) => id.trim()),
                         }
                     }
                 });
+                console.log(`Projects fetched successfully: ${JSON.stringify(projects, null, 2)}`);
                 return projects;
             }
             catch (error) {

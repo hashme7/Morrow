@@ -19,3 +19,10 @@ export interface IProject {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export type IDate = {
+    calender?: { identifier: string };
+    year: number;
+    month: number;
+    day: number;
+}

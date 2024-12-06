@@ -3,7 +3,7 @@ import {
   ProjectsResponse,
   ProjectRequest,
   ProjectServiceServer,
-} from "morrow-common/dist";
+} from "morrow-common/dist/grpc/cmn";
 import { IRepository } from "../../interfaces/repository.interface";
 
 export class ProjectService implements ProjectServiceServer {
@@ -20,16 +20,17 @@ export class ProjectService implements ProjectServiceServer {
           teamIds
         )).map((project) => ({
           ...project,
-          teamId: project.teamId || "", // Default `null` to an empty string or handle as needed
+          teamId: project.teamId || "",
           projectStartDate:project.plannedStartDate || "",
           projectEndDate:project.projectEndDate || undefined,
-        }));;
+        }));
+        
         callback(null, {projects});
       } catch (error) {
         console.log(`Error in getProjectDetails : ${error}`);
         callback({ code: 13, message: "unkown error occured." }, null);
       }
     };
-    this["getProjectDetails"] = this.getProjectDetails;
+    this["getProjectDetails"] = this.getProjectDetails;   
   }
 }

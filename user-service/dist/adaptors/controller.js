@@ -158,8 +158,8 @@ class UserAuthController {
     sendRequest(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { projectId, userId } = req.query;
-                const { status, message } = yield this.createRequest.execute(Number(projectId), new mongodb_1.ObjectId(userId));
+                const { projectId, userId, note } = req.query;
+                const { status, message } = yield this.createRequest.execute(Number(projectId), new mongodb_1.ObjectId(userId), note);
                 res.status(status).json({ message });
             }
             catch (error) {

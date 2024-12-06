@@ -18,6 +18,7 @@ class UpdateTeamId {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = JSON.parse(message.content.toString());
+                console.log(response.projectId, response.teamId, "fajskdfjkajsdfkajsdkfjaksjdf=+++++++++++++++++++++++++++++++++++++++++");
                 yield this.repository.updateTeamId(response.projectId, response.teamId);
                 return { status: 200, message: "teamid updated succefuly on project" };
             }

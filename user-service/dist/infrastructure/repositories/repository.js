@@ -134,7 +134,7 @@ class Repository {
                 console.log(userId);
                 const teamIds = yield teamMemberModel_1.default.find({ user_account: userId }, { team_id: 1, _id: 0 }).exec();
                 const teamIdsList = teamIds.map((team) => team.team_id.toString());
-                console.log("Mapped Team IDs:", teamIdsList);
+                console.log('teamIdsList                  ', teamIdsList);
                 return teamIdsList;
             }
             catch (error) {
@@ -172,8 +172,8 @@ class Repository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const newMember = new teamMemberModel_1.default({
-                    team_id: teamId,
                     user_account: userId,
+                    team_id: teamId,
                 });
                 yield newMember.save();
                 return newMember;
@@ -235,12 +235,13 @@ class Repository {
             }
         });
     }
-    createRequest(teamId, userId) {
+    createRequest(teamId, userId, note) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const newRequest = new requestModal_1.default({
                     team_id: teamId,
-                    user_account: userId
+                    user_account: userId,
+                    note: note
                 });
                 yield newRequest.save();
             }
@@ -252,8 +253,20 @@ class Repository {
     }
     getRequest(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const RequestData = yield requestModal_1.default.find({ userId: userId });
-            return RequestData;
+            try {
+                console.log(userId, 'requestsssssss..........');
+                const RequestData = yield requestModal_1.default.find({ user_account: userId });
+                return RequestData;
+            }
+            catch (error) {
+                console.log(`errror      
+      
+      ******************************
+      ${error}
+      
+      `);
+                throw error;
+            }
         });
     }
     changePassword(userId, newPassword) {

@@ -108,10 +108,10 @@ class Repository implements IRepository {
       console.log(userId);
       const teamIds = await TeamMember.find(
         { user_account: userId },
-        { team_id: 1, _id: 0 }
+        { team_id: 1,_id:0}
       ).exec();
       const teamIdsList = teamIds.map((team) => team.team_id.toString());
-      console.log("Mapped Team IDs:", teamIdsList);
+      console.log('teamIdsList                  ',teamIdsList)
       return teamIdsList;
     } catch (error) {
       console.log(`error on finding teamIds:${error}`);
@@ -151,8 +151,8 @@ class Repository implements IRepository {
   ) {
     try {
       const newMember = new TeamMember({
-        team_id: teamId,
         user_account: userId,
+        team_id: teamId,
       });
       await newMember.save();
       return newMember;
@@ -212,11 +212,12 @@ class Repository implements IRepository {
     }
   }
 
-  async createRequest(teamId:mongoose.Types.ObjectId,userId:mongoose.Types.ObjectId){
+  async createRequest(teamId:mongoose.Types.ObjectId,userId:mongoose.Types.ObjectId,note:string){
     try {
       const newRequest = new Requests({
         team_id:teamId,
-        user_account:userId
+        user_account:userId,
+        note:note
       });
       await newRequest.save();
     } catch (error) {
@@ -226,8 +227,16 @@ class Repository implements IRepository {
   }
 
   async getRequest(userId:mongoose.Types.ObjectId){
-    const RequestData =await Requests.find({userId:userId});
-    return RequestData;
+    try {
+      const RequestData =await Requests.find({user_account:userId});
+      return RequestData;
+    } catch (error) {
+      console.log(`errror on get request
+      ${error}
+      
+      `)
+      throw error;
+    }
   }
 
   async changePassword(userId: mongoose.Types.ObjectId, newPassword: string) {

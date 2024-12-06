@@ -19,9 +19,24 @@ class getProjectsByUserId {
     execute(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield this.grpcClient.getTeamIds(userId);
-                const projects = yield this.repository.getProjectsByTeamIds(response.teamIds);
-                return { status: 200, data: projects };
+                const { teamIds } = yield this.grpcClient.getTeamIds(userId);
+                console.log('teamIds i got from user-servcier', teamIds, typeof teamIds[0], typeof teamIds);
+                const projects = yield this.repository.getProjectsByTeamIds(teamIds);
+                console.log(`
+        
+        `);
+                console.log(projects);
+                console.log(`
+        
+
+
+
+       projcts response from getProjects,
+        
+
+
+        `);
+                return { status: 200, message: "project retrieved successfylly", data: projects };
             }
             catch (error) {
                 console.log(`Error on executing the getProjectByUserId: ${error}`);

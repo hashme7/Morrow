@@ -3,7 +3,7 @@ import proxy from 'express-http-proxy';
 import cors from 'cors';
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
-import {authenticate} from "morrow-common/dist/middlewares/authMiddleware"
+import {authenticate} from "morrow-common/dist"
 
 const app = express();
 

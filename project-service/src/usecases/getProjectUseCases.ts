@@ -10,11 +10,26 @@ export class getProjectsByUserId {
   }
   async execute(userId: string) {
     try {
-      const response = await this.grpcClient.getTeamIds(userId);
+      const {teamIds} = await this.grpcClient.getTeamIds(userId);
+      console.log('teamIds i got from user-servcier',teamIds,typeof teamIds[0],typeof teamIds)
       const projects = await this.repository.getProjectsByTeamIds(
-        response.teamIds
+        teamIds
       );
-      return { status: 200, data: projects };
+      console.log(`
+        
+        `)
+        console.log(projects);
+      console.log(`
+        
+
+
+
+       projcts response from getProjects,
+        
+
+
+        `)
+      return { status: 200,message:"project retrieved successfylly", data: projects };
     } catch (error) {
       console.log(`Error on executing the getProjectByUserId: ${error}`);
       return { status: 500 };

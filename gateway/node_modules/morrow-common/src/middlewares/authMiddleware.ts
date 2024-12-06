@@ -12,8 +12,10 @@ export const authenticate = (
     const refreshToken = req.cookies.refreshToken;
     const decodedRT = JWTService.verifyToken(refreshToken);
     if (decodedRT) {
+      console.log('authorized....')
       next();
     }else{
+      console.log("unauthorized........");
       res.status(401).json({message:"unathorised"});
     }
   } else {

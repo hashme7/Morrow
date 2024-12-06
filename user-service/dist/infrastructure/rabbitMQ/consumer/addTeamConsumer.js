@@ -35,11 +35,12 @@ class AddTeamConsumer {
                     try {
                         const projectData = message.content.toString();
                         console.log(projectData, "projecy");
-                        this.channel.ack(message);
                         yield this.createTeamCases.execute(message);
+                        this.channel.ack(message);
                     }
                     catch (error) {
                         console.log(error);
+                        throw error;
                     }
                 }
             }));

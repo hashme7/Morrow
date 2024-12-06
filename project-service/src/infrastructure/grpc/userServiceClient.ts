@@ -1,5 +1,5 @@
 import { credentials,ServiceError } from '@grpc/grpc-js';
-import { UserServiceClient, UserRequest, TeamResponse } from "morrow-common/dist";
+import { UserServiceClient, UserRequest, TeamResponse } from "morrow-common/dist/grpc/cmn.js";
 
 export class GrpcClient {
   private client: UserServiceClient;
@@ -18,7 +18,6 @@ export class GrpcClient {
           console.error("Error in getTeamIds:", err);
           return reject(err);
         }
-        console.log("Response:", response);
         resolve(response);
       });
     });

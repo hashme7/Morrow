@@ -40,7 +40,7 @@ export interface IGetAllUsers{
     execute(limit:number,page:number):Promise<response>;
 }
 export interface ICreateRequest{
-    execute(projectId:number,userId:mongoose.Types.ObjectId):Promise<response>;
+    execute(projectId:number,userId:mongoose.Types.ObjectId,note:string):Promise<response>;
 }
 export interface IGetRequests{
     execute(userId:mongoose.Types.ObjectId):Promise<response>;

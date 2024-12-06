@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "del ./dist/*",
     "build": "npm run clean && tsc",
-    "dev": "git add . && git commit -m \"Updates\" && npm run build && concurrently \"npm run tsc-watch\" \"npm run serve\"",
+    "dev": "npm run build && concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
     "serve": "nodemon ./dist/index.js"
   },
@@ -30,7 +30,7 @@
     "mongodb": "^6.9.0",
     "mongoose": "^8.6.2",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.52",
+    "morrow-common": "^1.5.53",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.15",
     "nodemon": "^3.1.4",

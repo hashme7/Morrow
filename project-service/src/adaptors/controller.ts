@@ -13,7 +13,6 @@ export class Controller {
     try {
       const { userId } = req.query;
       const data = req.body;
-      console.log(data,"data.....");
       const response = await this.createProjectCases.execute(
         data,
         userId as string  
@@ -27,10 +26,15 @@ export class Controller {
   async getProject(req: Request, res: Response) {
     const { userId } = req.params;
     try {
-      const response = await this.getProjectByUserIdCases.execute(userId);
+      const {status,message,data} = await this.getProjectByUserIdCases.execute(userId);
+      console.log(`status,message
+        
+        ${status}${message}${data}
+        
+        `,)
       res
-        .status(response.status)
-        .json({ message: response.message, data: response.data });
+        .status(status)
+        .json({ message: message, data:data });
     } catch (error) {
       console.log(`Error on get project : ${error}`);
       res.status(500).json({ message: "Internel Server Error" });

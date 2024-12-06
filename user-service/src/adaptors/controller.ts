@@ -147,10 +147,11 @@ class UserAuthController {
   }
   async sendRequest(req: Request, res: Response) {
     try {
-      const { projectId, userId } = req.query;
+      const { projectId, userId,note } = req.query;
       const { status, message } = await this.createRequest.execute(
         Number(projectId),
-        new ObjectId(userId as string)
+        new ObjectId(userId as string),
+        note as string
       );
       res.status(status).json({ message });
     } catch (error) {

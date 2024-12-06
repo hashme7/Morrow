@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetRequests = void 0;
+// import { IFinalRequests } from "../interfaces/types/response";
 class GetRequests {
     constructor(repository, grpcProjectClient) {
         this.repository = repository;
@@ -20,6 +21,14 @@ class GetRequests {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const requests = yield this.repository.getRequests(userId);
+                console.log(`++++${userId} ++++++++++++++++++++++++++++++++++++
+        ++++++++++++++++++++++++++++
+        +++++++++++++++
+       ${requests} ,requestsslll
+        +++++++++++++
+        _++++++++++++++++++
+        +++++++++++++++++++++++++++++
+        `);
                 const teamIds = requests.map((req) => req.teamId.toString());
                 const { projects } = yield this.grpcProjectClient.getProjectByTeamId(teamIds);
                 let requestHash = new Map();

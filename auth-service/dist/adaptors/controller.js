@@ -113,6 +113,7 @@ class Controller {
                 }
                 const { status, valid, message, userId } = yield this.authenticateToken.execute(token);
                 if (valid) {
+                    console.log('validate complete....', status);
                     res.status(status).json({ status, valid, message, userId });
                     return;
                 }
@@ -181,6 +182,7 @@ class Controller {
                 }
                 const { status, message, tokens, userId } = yield this.googleAuth.execute(token);
                 if (!(tokens === null || tokens === void 0 ? void 0 : tokens.accessToken) || !(tokens === null || tokens === void 0 ? void 0 : tokens.refreshToken)) {
+                    console.log('tokens created......');
                     res.status(304).json({ message: "tokens not created..." });
                     return;
                 }
@@ -216,6 +218,7 @@ class Controller {
                 }
                 const { status, message, tokens, userId } = yield this.gitHubAuth.execute(code);
                 if (!(tokens === null || tokens === void 0 ? void 0 : tokens.accessToken) || !(tokens === null || tokens === void 0 ? void 0 : tokens.refreshToken)) {
+                    console.log("tokens not created.....");
                     res.status(304).json({ message: "tokens not created..." });
                     return;
                 }

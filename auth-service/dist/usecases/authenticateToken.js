@@ -18,20 +18,10 @@ class AuthenticateToken {
     execute(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(`validateToken`, token);
                 const decoded = morrow_common_1.JWTService.verifyToken(token);
-                console.log(`decoded:
-                  `, decoded);
                 if (decoded) {
                     const userData = yield this.repository.findById(decoded.id);
-                    console.log(`
-                
-                
-                ${userData}
-                
-                `);
                     if (userData) {
-                        console.log(userData._id, "fkajsdkfjakjdfkajdskfjaksjdfkajdskfjakdjfkajkdfkajkdfjkajsdkjfkajdskfjakjdfkajs");
                         return {
                             status: 200,
                             message: "Token is valid",
@@ -40,11 +30,6 @@ class AuthenticateToken {
                         };
                     }
                     else {
-                        console.log(`
-                  
-                 no user data is found....... 
-                  
-                  `);
                         return {
                             status: 200,
                             message: "Token is valid user not foud",
@@ -61,7 +46,6 @@ class AuthenticateToken {
                 }
             }
             catch (error) {
-                console.error(`Error validating token: ${error}`);
                 return {
                     valid: false,
                     status: 500,
@@ -70,6 +54,5 @@ class AuthenticateToken {
             }
         });
     }
-    ;
 }
 exports.AuthenticateToken = AuthenticateToken;

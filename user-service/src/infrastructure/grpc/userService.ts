@@ -1,7 +1,7 @@
-import { UserRequest, TeamResponse } from "morrow-common";
+import { UserRequest, TeamResponse } from "morrow-common/dist/grpc/cmn";
 import { handleUnaryCall, sendUnaryData, ServerUnaryCall } from "@grpc/grpc-js";
 import { IRepository } from "../../interfaces/repository.interface";
-import { UserServiceServer } from "morrow-common";
+import { UserServiceServer } from "morrow-common/dist/grpc/cmn";
 
 // Implementation of the UserServiceServer interface
 export class UserService implements UserServiceServer {

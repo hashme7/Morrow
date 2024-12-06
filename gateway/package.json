@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "git add . && git commit -m \"Updates\" && concurrently \"npm run tsc-watch\" \"npm run serve\"",
+    "dev": "concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
     "serve": "nodemon ./dist/index.js"
   },
@@ -17,7 +17,7 @@
     "express": "^4.21.0",
     "express-http-proxy": "^2.1.1",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.52"
+    "morrow-common": "^1.5.53"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",

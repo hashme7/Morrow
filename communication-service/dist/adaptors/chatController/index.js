@@ -11,10 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 class ChatController {
-    constructor(webSocketServer, sendMessage) {
-        this.webSocketServer = webSocketServer;
+    constructor(sendMessage) {
         this.sendMessage = sendMessage;
-        this.webSocketServer.start();
     }
     sendChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -25,10 +23,11 @@ class ChatController {
                     return;
                 }
                 const { status, message, data } = yield this.sendMessage.execute({
-                    senderId, receiverId, content,
-                    status: "pending"
+                    senderId,
+                    receiverId,
+                    content,
+                    status: "pending",
                 });
-                this.webSocketServer.io.to(receiverId).emit('receiveMessage', message);
                 return { status, message, data };
             }
             catch (error) {

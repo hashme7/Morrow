@@ -1,7 +1,7 @@
 import {
   ProjectServiceServer,
   ProjectServiceService,
-} from "morrow-common/dist";
+} from "morrow-common/dist/grpc/cmn";
 import { Server, ServerCredentials } from "@grpc/grpc-js";
 
 export class GrpcServer {
@@ -15,10 +15,15 @@ export class GrpcServer {
     this.server.bindAsync(
       "localhost:7070",
       ServerCredentials.createInsecure(),
-      () => {
-        console.log(`grpc server is running at project service on port : 7070`);
+      (err, port) => {
+        if (err) {
+          console.error("Failed to bind gRPC server:", err);
+          return;
+        }
+        console.log(`gRPC server is running at project service on port: ${port}`);
+
+        this.server.start();
       }
     );
-    this.server.start();
   }
 }

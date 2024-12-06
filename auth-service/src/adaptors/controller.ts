@@ -94,6 +94,7 @@ export class Controller {
       }
       const { status, valid, message,userId } = await this.authenticateToken.execute(token);
       if (valid) {
+        console.log('validate complete....',status)
         res.status(status).json({ status, valid, message ,userId});
         return;
       } else {
@@ -161,6 +162,7 @@ export class Controller {
         token
       )
       if(!tokens?.accessToken || !tokens?.refreshToken){
+        console.log('tokens created......')
         res.status(304).json({message:"tokens not created..."});
         return
       }
@@ -193,6 +195,7 @@ export class Controller {
       }
       const { status, message, tokens, userId } = await this.gitHubAuth.execute(code);
       if(!tokens?.accessToken || !tokens?.refreshToken){
+        console.log("tokens not created.....");
         res.status(304).json({message:"tokens not created..."});
         return
       }

@@ -42,7 +42,7 @@ export interface IRepository {
   updateImage(img: string, userId: mongoose.Types.ObjectId): Promise<IUser | null>;
   findAllUsers(offset:number,limit:number):Promise<IUser[]>
   countAllUsers():Promise<number>;
-  createRequest(teamId:mongoose.Types.ObjectId,userId:mongoose.Types.ObjectId):Promise<void>;
+  createRequest(teamId:mongoose.Types.ObjectId,userId:mongoose.Types.ObjectId,note:string):Promise<void>;
   getRequests(userId:mongoose.Types.ObjectId):Promise<IRequest[]>
   updateProfile(userId:mongoose.Types.ObjectId,field:string,value:string):Promise<void>;
 }

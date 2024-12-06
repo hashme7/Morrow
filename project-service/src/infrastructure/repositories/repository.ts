@@ -4,7 +4,7 @@ import { IPorjectReq } from "../../interfaces/Types/request.interface";
 import { IRepository } from "../../interfaces/repository.interface";
 import { IProject } from "../../interfaces/Types";
 
-export class Repository {
+export class Repository implements IRepository{
   constructor() {
     console.log("project repository is initialized.....");
   }
@@ -52,13 +52,15 @@ export class Repository {
   }
   async getProjectsByTeamIds (teamIds:string[]){
     try {
+      console.log(teamIds,"teamIds:[]")
       const projects = await prisma.project.findMany({
         where:{
           teamId:{
-            in:teamIds,
+            in:teamIds.map((id) => id.trim()),
           }
         }
       })
+      console.log(`Projects fetched successfully: ${JSON.stringify(projects, null, 2)}`);
       return projects;
     } catch (error) {
       console.log(`error on finding project with teamids : ${error}`)

@@ -16,7 +16,6 @@ class ProjectService {
             try {
                 const { teamIds } = call.request;
                 const projects = (yield repository.getProjectsByTeamIds(teamIds)).map((project) => (Object.assign(Object.assign({}, project), { teamId: project.teamId || "", projectStartDate: project.plannedStartDate || "", projectEndDate: project.projectEndDate || undefined })));
-                ;
                 callback(null, { projects });
             }
             catch (error) {

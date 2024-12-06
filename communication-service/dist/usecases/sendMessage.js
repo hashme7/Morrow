@@ -11,19 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SendMessage = void 0;
 class SendMessage {
-    constructor(chatRepository) {
+    constructor(chatRepository, rabbitMQServie, redisService) {
         this.chatRepository = chatRepository;
+        this.rabbitMQServie = rabbitMQServie;
+        this.redisService = redisService;
     }
-    execute(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ senderId, receiverId, content }) {
+    execute(message) {
+        return __awaiter(this, void 0, void 0, function* () {
             try {
-                const message = yield this.chatRepository.saveMessage({
-                    senderId,
-                    receiverId,
-                    content,
-                    status: "pending",
-                });
-                return { status: 201, message: "success", data: message };
+                this.rabbitMQServie.publishMessage("chat_queue", message);
+                this.redisService.publish(`room:${message.receiverId}:new_message`, message);
+                return { status: 201, message: "success", };
             }
             catch (error) {
                 console.error("Error creating message:", error.message);

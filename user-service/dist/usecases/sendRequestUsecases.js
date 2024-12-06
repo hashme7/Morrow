@@ -15,14 +15,14 @@ class SendRequest {
         this.repository = repository;
         this.repository = repository;
     }
-    execute(projectId, userId) {
+    execute(projectId, userId, note) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const teamId = yield this.repository.getTeamIdByProject(projectId);
                 if (!teamId) {
                     return { status: 404, message: 'no team id found with given project id' };
                 }
-                yield this.repository.createRequest(teamId, userId);
+                yield this.repository.createRequest(teamId, userId, note);
                 return { status: 201, message: 'request send successfully' };
             }
             catch (error) {
