@@ -13,10 +13,11 @@ exports.WebSocketServer = void 0;
 const socket_io_1 = require("socket.io");
 const socket_io_redis_1 = require("socket.io-redis");
 class WebSocketServer {
-    constructor(port, redisService, chatRepository) {
+    constructor(port, redisService, chatRepository, joinSocket) {
         this.port = port;
         this.redisService = redisService;
         this.chatRepository = chatRepository;
+        this.joinSocket = joinSocket;
         this.MAX_RETRIES = 3;
         this.RETRY_INTERVAL = 5000;
         this.io = new socket_io_1.Server({
@@ -25,7 +26,6 @@ class WebSocketServer {
                 methods: ["GET", "POST"],
             },
         });
-        this.start();
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,27 +50,38 @@ class WebSocketServer {
         });
     }
     listenForPubSubEvents() {
-        this.redisService.subscribe("chat:room:*", (channel, message) => {
-            const roomId = channel.split(":")[1];
+        this.redisService.subscribe("channel:room:*", (channel, message) => {
+            const roomId = channel.split(":")[2];
+            console.log("emititn the room ,----");
             this.io.to(roomId).emit("new_message", JSON.parse(message));
         });
     }
     configureSocketEvents() {
         this.io.on("connection", (socket) => {
             console.log(`User connected: ${socket.id}`);
-            socket.on("joinRoom", (roomId) => {
+            socket.on("joinRoom", (roomId) => __awaiter(this, void 0, void 0, function* () {
                 socket.join(roomId);
+                yield this.joinSocket.execute();
                 console.log(`User ${socket.id} joined room ${roomId}`);
-            });
-            socket.on('sendMessage', (message) => __awaiter(this, void 0, void 0, function* () {
-                try {
-                    const event = { receiverId: message.receiverId, content: message.content, timeStamp: new Date().toISOString() };
-                    yield this.redisService.publish(`chat:room:${message.receiverId}`, event);
-                }
-                catch (error) {
-                    console.error("Error processing sendMessage event:", error);
-                }
             }));
+            // socket.on(
+            //   "sendMessage",
+            //   async (message: { receiverId: string; content: string }) => {
+            //     try {
+            //       const event = {
+            //         receiverId: message.receiverId,
+            //         content: message.content,
+            //         timeStamp: new Date().toISOString(),
+            //       };
+            //       await this.redisService.publish(
+            //         `chat:room:${message.receiverId}`,
+            //         event
+            //       );
+            //     } catch (error) {
+            //       console.error("Error processing sendMessage event:", error);
+            //     }
+            //   }
+            // );
             socket.on("disconnect", () => {
                 console.log(`User disconnected: ${socket.id}`);
             });

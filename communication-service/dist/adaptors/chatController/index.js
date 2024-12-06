@@ -11,13 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 class ChatController {
-    constructor(sendMessage) {
+    constructor(sendMessage, fetchMessage) {
         this.sendMessage = sendMessage;
+        this.fetchMessage = fetchMessage;
     }
     sendChat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { senderId, receiverId, content } = req.body;
+                const senderId = req.query.senderId;
+                const receiverId = req.query.receiverId;
+                const content = req.query.content;
                 if (!senderId || !receiverId || !content) {
                     res.status(400).json({ error: "Missing required fields" });
                     return;
@@ -26,7 +29,9 @@ class ChatController {
                     senderId,
                     receiverId,
                     content,
-                    status: "pending"
+                    status: "pending",
+                    timestamp: new Date(),
+                    readBy: [],
                 });
                 res.status(status).json({ message });
             }
@@ -36,6 +41,19 @@ class ChatController {
             }
         });
     }
-    getMessage() { }
+    getMessage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const roomId = req.query.receiverId;
+                const page = req.query.page;
+                const messages = yield this.fetchMessage.execute(roomId, Number(page));
+                res.status(200).json(messages);
+            }
+            catch (error) {
+                console.error("Error getting message:", error.message);
+                throw error;
+            }
+        });
+    }
 }
 exports.ChatController = ChatController;

@@ -1,25 +1,26 @@
-console.log("Controller initialized!");
-
 import { ChatController } from "../adaptors/chatController";
 import { WebSocketServer } from "../infrastructure/framework/socketio";
 import { RabbitMQService } from "../infrastructure/rabbitMq";
 import { MessageWorker } from "../infrastructure/rabbitMq/messageWorker";
 import { ChatRepository } from "../infrastructure/repository/chatRepository";
 import { RedisService } from "../infrastructure/service/redis";
+import { FetchMessages } from "../usecases/fetchMessages";
+import { JoinSocket } from "../usecases/joinSocket";
 import { SendMessage } from "../usecases/sendMessage";
-
 const redisService = new RedisService("localhost", 6379);
-
 const chatRepository = new ChatRepository();
-
-const webSocketService = new WebSocketServer(9000, redisService, chatRepository);
+const rabbitMQService = new RabbitMQService();
+const messageWorker = new MessageWorker(rabbitMQService, chatRepository);
+messageWorker.start();
+const joinSocket = new JoinSocket(messageWorker);
+const webSocketService = new WebSocketServer(
+  9000,
+  redisService,
+  chatRepository,
+  joinSocket
+);
 webSocketService.start();
-
-const rabbitMQService =new RabbitMQService();
-new MessageWorker(rabbitMQService,chatRepository);
-
-const sendMessage = new SendMessage(rabbitMQService,redisService);
-
-const chatController = new ChatController(sendMessage);
-
+const sendMessage = new SendMessage(rabbitMQService, redisService);
+const fetchMessages =new FetchMessages(chatRepository);
+const chatController = new ChatController(sendMessage,fetchMessages);
 export default chatController;

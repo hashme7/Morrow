@@ -4,13 +4,12 @@ import { IMessage } from "../../interfaces/types/Data";
 
 export class MessageWorker {
   private batch: IMessage[] = [];
-  private readonly BATCH_SIZE = 100;
+  private readonly BATCH_SIZE = 300;
   private readonly FLUSH_INTERVAL = 5000;
   constructor(
     private rabbitMQService: RabbitMQService,
     private chatRepository: IChatRepository
   ) {
-    this.start();
   }
   start():void{
     this.rabbitMQService.consumeMessages("chat_queue", (message: IMessage) => {
@@ -29,6 +28,9 @@ export class MessageWorker {
     const batchToSave = [...this.batch];
     this.batch = [];
     try {
+      batchToSave.forEach((message:IMessage)=>{
+        message.status = 'delivered';
+      })
       await this.chatRepository.saveMessages(batchToSave);
       console.log("Batch saved successfully");
     } catch (error) {

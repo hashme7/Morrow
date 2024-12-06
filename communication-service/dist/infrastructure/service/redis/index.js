@@ -23,7 +23,7 @@ class RedisService {
             retryStrategy: (times) => {
                 const delay = Math.min(times * 50, 2000);
                 return delay;
-            },
+            }, stringNumbers: false
         });
         this.subscriber = new ioredis_1.Redis({
             host: this.host,
@@ -33,6 +33,7 @@ class RedisService {
                 const delay = Math.min(times * 50, 2000);
                 return delay;
             },
+            stringNumbers: false
         });
         this.addErrorListeners();
     }
@@ -66,6 +67,7 @@ class RedisService {
         });
     }
     subscribe(channelPattern, callback) {
+        console.log("changle", channelPattern);
         this.subscriber.psubscribe(channelPattern, (err, count) => {
             if (err) {
                 console.error(`Error subscribing to pattern ${channelPattern}:`, err);

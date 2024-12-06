@@ -19,20 +19,21 @@ export class RabbitMQService {
 
   async publishMessage(queue: string, message: any): Promise<void> {
     if (!this.channel) {
-      console.error("RabbitMQ channel is not initialized.");
-      return;
+      console.log('changell concting twic..')
+      await this.connect(); 
     }
+    console.log(`publishMessage:${queue}:${message}`)
     await this.channel.assertQueue(queue, { durable: true });
     this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
   }
 
   async consumeMessages(queue: string, onMessage: (msg: any) => void): Promise<void> {
     if (!this.channel) {
-      console.error("RabbitMQ channel is not initialized.");
-      return;
+      await this.connect(); 
     }
     await this.channel.assertQueue(queue, { durable: true });
     this.channel.consume(queue, (msg) => {
+      console.log(queue,msg,'QRKWJEKRQKWEJRKQWEJRKQJEWKRJQKWJER')
       if (msg) {
         const message = JSON.parse(msg.content.toString());
         onMessage(message);

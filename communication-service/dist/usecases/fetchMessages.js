@@ -9,24 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SendMessage = void 0;
-class SendMessage {
-    constructor(rabbitMQServie, redisService) {
-        this.rabbitMQServie = rabbitMQServie;
-        this.redisService = redisService;
+exports.FetchMessages = void 0;
+class FetchMessages {
+    constructor(chatRepository) {
+        this.chatRepository = chatRepository;
     }
-    execute(message) {
+    ;
+    execute(roomId, page) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.rabbitMQServie.publishMessage("chat_queue", JSON.stringify(Object.assign(Object.assign({}, message), { timestamp: message.timestamp.toISOString() })));
-                yield this.redisService.publish(`channel:room:${message.receiverId}`, JSON.stringify(message));
-                return { status: 201, message: "success" };
+                return (yield this.chatRepository.getMessages(roomId, page, 20));
             }
             catch (error) {
-                console.error("Error creating message:", error.message);
-                throw new Error("Failed to create message");
+                throw error;
             }
         });
     }
+    ;
 }
-exports.SendMessage = SendMessage;
+exports.FetchMessages = FetchMessages;

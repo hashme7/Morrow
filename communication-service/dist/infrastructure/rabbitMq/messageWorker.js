@@ -15,9 +15,8 @@ class MessageWorker {
         this.rabbitMQService = rabbitMQService;
         this.chatRepository = chatRepository;
         this.batch = [];
-        this.BATCH_SIZE = 100;
+        this.BATCH_SIZE = 300;
         this.FLUSH_INTERVAL = 5000;
-        this.start();
     }
     start() {
         this.rabbitMQService.consumeMessages("chat_queue", (message) => {
@@ -37,6 +36,9 @@ class MessageWorker {
             const batchToSave = [...this.batch];
             this.batch = [];
             try {
+                batchToSave.forEach((message) => {
+                    message.status = 'delivered';
+                });
                 yield this.chatRepository.saveMessages(batchToSave);
                 console.log("Batch saved successfully");
             }

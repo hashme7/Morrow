@@ -1,8 +1,9 @@
-import { Router } from "express";
+import express from "express";
 import chatController from "../../providers/controller";
 
-const router = Router();
+const router = express.Router();
 
-router.route("/").post(chatController.sendChat.bind(chatController));
+router.route("/sendMessage").post(chatController.sendChat.bind(chatController));
+router.route('/getMessage').get(chatController.getMessage.bind(chatController));
 
 export default router;

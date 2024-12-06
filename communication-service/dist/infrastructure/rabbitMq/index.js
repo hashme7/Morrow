@@ -31,9 +31,10 @@ class RabbitMQService {
     publishMessage(queue, message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.channel) {
-                console.error("RabbitMQ channel is not initialized.");
-                return;
+                console.log('changell concting twic..');
+                yield this.connect();
             }
+            console.log(`publishMessage:${queue}:${message}`);
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
         });
@@ -41,11 +42,11 @@ class RabbitMQService {
     consumeMessages(queue, onMessage) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.channel) {
-                console.error("RabbitMQ channel is not initialized.");
-                return;
+                yield this.connect();
             }
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.consume(queue, (msg) => {
+                console.log(queue, msg, 'QRKWJEKRQKWEJRKQWEJRKQJEWKRJQKWJER');
                 if (msg) {
                     const message = JSON.parse(msg.content.toString());
                     onMessage(message);

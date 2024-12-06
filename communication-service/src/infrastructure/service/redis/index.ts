@@ -14,7 +14,7 @@ export class RedisService implements IRedisService {
       retryStrategy: (times: number) => {
         const delay = Math.min(times * 50, 2000); 
         return delay;
-      },
+      },stringNumbers:false
     });
 
     this.subscriber = new Redis({
@@ -25,6 +25,7 @@ export class RedisService implements IRedisService {
         const delay = Math.min(times * 50, 2000);
         return delay;
       },
+      stringNumbers:false
     });
 
     this.addErrorListeners();
@@ -54,6 +55,7 @@ export class RedisService implements IRedisService {
     }
   }
   subscribe(channelPattern: string, callback: (channel: string, message: string) => void): void {
+    console.log("changle",channelPattern)
     this.subscriber.psubscribe(channelPattern, (err, count) => {
       if (err) {
         console.error(`Error subscribing to pattern ${channelPattern}:`, err);

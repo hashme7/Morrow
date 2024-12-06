@@ -25,33 +25,15 @@ class ChatRepository {
             }
         });
     }
-    getMessages(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ senderId, receiverId, page = 1, limit = 20, }) {
+    getMessages(roomId_1) {
+        return __awaiter(this, arguments, void 0, function* (roomId, page = 1, limit = 20) {
             try {
-                const query = {};
-                if (senderId)
-                    query.senderId = senderId;
-                if (receiverId)
-                    query.receiverId = receiverId;
                 const skip = (page - 1) * limit;
-                const messages = yield chat_1.default.find(query)
-                    .sort({ timestamp: -1 })
-                    .skip(skip)
-                    .limit(limit);
-                const totalMessages = yield chat_1.default.countDocuments(query);
-                return {
-                    messages,
-                    metadata: {
-                        totalMessages,
-                        totalPages: Math.ceil(totalMessages / limit),
-                        currentPage: page,
-                        pageSize: messages.length,
-                    },
-                };
+                const messages = yield chat_1.default.find({ receiverId: roomId }).sort({ timestamp: -1 }).skip(skip).limit(limit);
+                return messages.reverse();
             }
             catch (error) {
-                console.error("Error fetching messages:", error.message);
-                throw new Error("Failed to fetch messages");
+                throw error;
             }
         });
     }

@@ -2,8 +2,9 @@ import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
+import { IJoinSocket } from "../../../interfaces/usecases.interface";
 
-export class WebSocketServer  {
+export class WebSocketServer {
   public io: Server;
   public readonly MAX_RETRIES: number = 3;
   public readonly RETRY_INTERVAL: number = 5000;
@@ -11,7 +12,8 @@ export class WebSocketServer  {
   constructor(
     public port: number,
     public redisService: RedisService,
-    public chatRepository: IChatRepository
+    public chatRepository: IChatRepository,
+    public joinSocket: IJoinSocket
   ) {
     this.io = new Server({
       cors: {
@@ -19,12 +21,10 @@ export class WebSocketServer  {
         methods: ["GET", "POST"],
       },
     });
-    this.start();
   }
 
   async start(): Promise<void> {
     try {
-      
       const pubClient = this.redisService.getPublisher();
       const subClient = this.redisService.getSubscriber();
 
@@ -40,37 +40,51 @@ export class WebSocketServer  {
       if (error instanceof Error) {
         console.error(`Error starting WebSocket server: ${error.message}`);
       } else {
-        console.error("Unknown error occurred while starting WebSocket server", error);
+        console.error(
+          "Unknown error occurred while starting WebSocket server",
+          error
+        );
       }
       throw error;
     }
   }
 
   public listenForPubSubEvents(): void {
-    this.redisService.subscribe("chat:room:*", (channel, message) => {
-      const roomId = channel.split(":")[1]; 
+    this.redisService.subscribe("channel:room:*", (channel, message) => {
+      const roomId = channel.split(":")[2];
+      console.log("emititn the room ,----")
       this.io.to(roomId).emit("new_message", JSON.parse(message));
     });
   }
 
-  public configureSocketEvents(){
+  public configureSocketEvents() {
     this.io.on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
 
-      socket.on("joinRoom", (roomId: string) => {
+      socket.on("joinRoom", async (roomId: string) => {
         socket.join(roomId);
+        await this.joinSocket.execute();
         console.log(`User ${socket.id} joined room ${roomId}`);
       });
 
-      socket.on('sendMessage',async(message:{receiverId:string,content:string})=>{
-        try {
-          const event = {receiverId:message.receiverId,content:message.content,timeStamp:new Date().toISOString()};
-          await this.redisService.publish(`chat:room:${message.receiverId}`, event);
-        } catch (error) {
-          console.error("Error processing sendMessage event:", error);
-        }
-      })
-
+      // socket.on(
+      //   "sendMessage",
+      //   async (message: { receiverId: string; content: string }) => {
+      //     try {
+      //       const event = {
+      //         receiverId: message.receiverId,
+      //         content: message.content,
+      //         timeStamp: new Date().toISOString(),
+      //       };
+      //       await this.redisService.publish(
+      //         `chat:room:${message.receiverId}`,
+      //         event
+      //       );
+      //     } catch (error) {
+      //       console.error("Error processing sendMessage event:", error);
+      //     }
+      //   }
+      // );
       socket.on("disconnect", () => {
         console.log(`User disconnected: ${socket.id}`);
       });
