@@ -2,10 +2,10 @@ import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
-import { IWebSocketServer } from "../../../interfaces/providers.interface";
+import { IWebSocketService } from "../../../interfaces/providers.interface";
 import { timeStamp } from "console";
 
-export class WebSocketServer implements IWebSocketServer {
+export class WebSocketServer implements IWebSocketService {
   public io: Server;
   public readonly MAX_RETRIES: number = 3;
   public readonly RETRY_INTERVAL: number = 5000;
@@ -27,7 +27,7 @@ export class WebSocketServer implements IWebSocketServer {
     try {
       console.log('fkadfkjsdjf');
       const pubClient = this.redisService.getPublisher();
-      const subClient = this.redisService.getSubcriber();
+      const subClient = this.redisService.getSubscriber();
 
       this.io.adapter(createAdapter({ pubClient, subClient }));
 

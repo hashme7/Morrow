@@ -22,13 +22,13 @@ class ChatController {
                     res.status(400).json({ error: "Missing required fields" });
                     return;
                 }
-                const { status, message, data } = yield this.sendMessage.execute({
+                const { status, message } = yield this.sendMessage.execute({
                     senderId,
                     receiverId,
                     content,
-                    status: "pending",
+                    status: "pending"
                 });
-                return { status, message, data };
+                return { status, message };
             }
             catch (error) {
                 console.error("Error creating message:", error.message);

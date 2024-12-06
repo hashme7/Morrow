@@ -11,8 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SendMessage = void 0;
 class SendMessage {
-    constructor(chatRepository, rabbitMQServie, redisService) {
-        this.chatRepository = chatRepository;
+    constructor(rabbitMQServie, redisService) {
         this.rabbitMQServie = rabbitMQServie;
         this.redisService = redisService;
     }
@@ -21,7 +20,7 @@ class SendMessage {
             try {
                 this.rabbitMQServie.publishMessage("chat_queue", message);
                 this.redisService.publish(`room:${message.receiverId}:new_message`, message);
-                return { status: 201, message: "success", };
+                return { status: 201, message: "success" };
             }
             catch (error) {
                 console.error("Error creating message:", error.message);

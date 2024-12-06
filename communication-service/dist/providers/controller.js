@@ -2,13 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const chatController_1 = require("../adaptors/chatController");
 const socketio_1 = require("../infrastructure/framework/socketio");
+const rabbitMq_1 = require("../infrastructure/rabbitMq");
 const chatRepository_1 = require("../infrastructure/repository/chatRepository");
 const redis_1 = require("../infrastructure/service/redis");
 const sendMessage_1 = require("../usecases/sendMessage");
 const redisService = new redis_1.RedisService("localhost", 6379);
 const chatRepository = new chatRepository_1.ChatRepository();
 const webSocketService = new socketio_1.WebSocketServer(443, redisService, chatRepository);
+const rabbitMQServie = new rabbitMq_1.RabbitMQService();
 webSocketService.start();
-const sendMessage = new sendMessage_1.SendMessage(chatRepository);
-const chatController = new chatController_1.ChatController(webSocketService, sendMessage);
+const sendMessage = new sendMessage_1.SendMessage(rabbitMQServie, redisService);
+const chatController = new chatController_1.ChatController(sendMessage);
 exports.default = chatController;
