@@ -1,25 +1,13 @@
-import { RedisClientType } from "redis";
-import { Server } from "socket.io";
-import { RedisService } from "../../infrastructure/service/redis";
-import { IChatRepository } from "../chatRepository.interface";
+import { Redis } from 'ioredis';
 
 export interface IRedisService {
   connect(): Promise<void>;
-  getPubClient(): RedisClientType;
-  getSubClient(): RedisClientType;
+  publish(channel: string, message: any): Promise<void>;
+  subscribe(channelPattern: string, callback: (channel: string, message: string) => void): void;
+  getPublisher(): Redis;
+  getSubscriber(): Redis;
+  close(): Promise<void>;
 }
-export interface IWebSocketServer {
-  // Make io private in the interface
-  readonly io: Server; // Or use 'private io: Server' if necessary
-  readonly MAX_RETRIES: number;
-  readonly RETRY_INTERVAL: number;
-
-  redisService: RedisService;
-  chatRepository: IChatRepository;
-  port: number;
-
-  start(): Promise<void>;
-  configureSocketEvents(): void;
-  listenForPubSubEvents():void;
+export interface IWebSocketService{
+  
 }
-

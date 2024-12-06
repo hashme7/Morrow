@@ -1,6 +1,8 @@
 import { Redis } from 'ioredis';
+import { IRedisService } from '../../../interfaces/providers.interface';
+import { RedisClientType } from 'redis';
 
-export class RedisService {
+export class RedisService implements IRedisService {
   private client: Redis;
   private subscriber: Redis;
 
@@ -27,11 +29,21 @@ export class RedisService {
 
     this.addErrorListeners();
   }
-  async getPublisher(){
-    return this.client;
+  async connect(): Promise<void> {
+    try {
+      await this.client.ping();
+      console.log('Redis client connected');
+    } catch (error) {
+      console.error('Error connecting to Redis:', error);
+      throw error;
+    }
   }
-  async getSubcriber(){
+
+  getSubscriber(): Redis {
     return this.subscriber;
+  }
+  getPublisher(){
+    return this.client;
   }
   async publish(channel: string, message: any): Promise<void> {
     try {

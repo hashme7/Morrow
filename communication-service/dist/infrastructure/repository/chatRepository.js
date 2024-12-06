@@ -15,19 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatRepository = void 0;
 const chat_1 = __importDefault(require("../../entities_modal/chat"));
 class ChatRepository {
-    saveMessage(message) {
+    saveMessages(batchToSave) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const newMsg = new chat_1.default({
-                    roomId: message.roomId,
-                    senderId: message.senderId,
-                    content: message.content,
-                });
-                return yield newMsg.save();
+                yield chat_1.default.insertMany(batchToSave);
             }
             catch (error) {
-                console.log(`error on saving msg ${error}`);
-                throw error;
+                console.log(`error on save message in db : ${error}`);
             }
         });
     }

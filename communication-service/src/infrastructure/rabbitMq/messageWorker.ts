@@ -35,5 +35,4 @@ export class MessageWorker {
       console.error("Error saving batch:", error);
     }
   }
-
 }
