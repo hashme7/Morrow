@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const controller_1 = __importDefault(require("../../providers/controller"));
 const router = (0, express_1.Router)();
-router.route('/').get(controller_1.default.getChats.bind(controller_1.default));
+router.route("/").post(controller_1.default.sendChat.bind(controller_1.default));
 exports.default = router;

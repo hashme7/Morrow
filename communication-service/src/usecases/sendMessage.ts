@@ -1,8 +1,6 @@
 import { IRedisService } from "../interfaces/providers.interface";
 import { IRabbitMQService } from "../interfaces/rabbitMQ.interface";
 import { IMessage } from "../interfaces/types/Data";
-import { SendMessageParams } from "../interfaces/types/requestTypes";
-import { SendMessageReturn } from "../interfaces/types/responseType";
 import { ISendMessage } from "../interfaces/usecases.interface";
 
 export class SendMessage implements ISendMessage {

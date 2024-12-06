@@ -28,7 +28,7 @@ class ChatController {
                     content,
                     status: "pending"
                 });
-                return { status, message };
+                res.status(status).json({ message });
             }
             catch (error) {
                 console.error("Error creating message:", error.message);

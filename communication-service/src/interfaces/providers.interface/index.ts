@@ -8,6 +8,15 @@ export interface IRedisService {
   getSubscriber(): Redis;
   close(): Promise<void>;
 }
-export interface IWebSocketService{
-  
+export interface IMessageWorker {
+  /**
+   * Starts the message worker to consume messages and periodically flush batches.
+   */
+  start(): void;
+
+  /**
+   * Flushes the current batch of messages to the repository.
+   * @returns A promise that resolves when the batch is saved.
+   */
+  flushBatch(): Promise<void>;
 }

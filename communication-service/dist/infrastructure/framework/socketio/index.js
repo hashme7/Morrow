@@ -29,7 +29,6 @@ class WebSocketServer {
     start() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log('fkadfkjsdjf');
                 const pubClient = this.redisService.getPublisher();
                 const subClient = this.redisService.getSubscriber();
                 this.io.adapter((0, socket_io_redis_1.createAdapter)({ pubClient, subClient }));

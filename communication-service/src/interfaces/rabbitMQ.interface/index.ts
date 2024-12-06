@@ -5,3 +5,7 @@ export interface IRabbitMQService {
     consumeMessages(queue: string, onMessage: (msg: any) => void): Promise<void>;
   }
   
+
+  export interface IWorkService{
+    
+  }
