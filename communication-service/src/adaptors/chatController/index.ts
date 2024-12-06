@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { IChatRepository } from "../../interfaces/chatRepository.interface";
-import { SendMessageParams } from "../../interfaces/types/requestTypes";
 import { ISendMessage } from "../../interfaces/usecases.interface";
 
 export class ChatController {
@@ -12,14 +10,14 @@ export class ChatController {
         res.status(400).json({ error: "Missing required fields" });
         return;
       }
-      const { status, message, data } = await this.sendMessage.execute({
+      const { status, message } = await this.sendMessage.execute({
         senderId,
         receiverId,
         content,
-        status: "pending",
+        status: "pending"
       });
 
-      return { status, message, data };
+      return { status, message };
     } catch (error) {
       console.error("Error creating message:", (error as Error).message);
       throw error;

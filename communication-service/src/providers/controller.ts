@@ -1,5 +1,6 @@
 import { ChatController } from "../adaptors/chatController";
 import { WebSocketServer } from "../infrastructure/framework/socketio";
+import { RabbitMQService } from "../infrastructure/rabbitMq";
 import { ChatRepository } from "../infrastructure/repository/chatRepository";
 import { RedisService } from "../infrastructure/service/redis";
 import { SendMessage } from "../usecases/sendMessage";
@@ -10,9 +11,11 @@ const chatRepository = new ChatRepository();
 
 const webSocketService = new WebSocketServer(443, redisService, chatRepository);
 
-webSocketService.start();
-const sendMessage = new SendMessage(chatRepository);
+const rabbitMQServie =new RabbitMQService();
 
-const chatController = new ChatController(webSocketService,sendMessage);
+webSocketService.start();
+const sendMessage = new SendMessage(rabbitMQServie,redisService);
+
+const chatController = new ChatController(sendMessage);
 
 export default chatController;

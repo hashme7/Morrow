@@ -14,5 +14,4 @@ export interface GetMessagesResponse {
 export interface SendMessageReturn{
   status:number,
   message:string,
-  data:IMessage,
 }

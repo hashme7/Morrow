@@ -1,5 +1,5 @@
 import { SendMessageReturn } from '../types/responseType';
-import { SendMessageParams } from './../types/requestTypes/index';
+import { SendMessageParams } from '../types/requestTypes';
 export interface ISendMessage{
-    execute(__0:SendMessageParams):Promise<SendMessageReturn>
+    execute(message:SendMessageParams):Promise<SendMessageReturn>
 }
