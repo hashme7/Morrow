@@ -12,6 +12,7 @@ const chatRepository = new chatRepository_1.ChatRepository();
 new socketio_1.WebSocketServer(9000, redisService, chatRepository);
 const rabbitMQService = new rabbitMq_1.RabbitMQService();
 new messageWorker_1.MessageWorker(rabbitMQService, chatRepository);
+console.log('kajfkjdfkajdksjfask;lf');
 // webSocketService.start();
 const sendMessage = new sendMessage_1.SendMessage(rabbitMQService, redisService);
 const chatController = new chatController_1.ChatController(sendMessage);

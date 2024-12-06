@@ -14,6 +14,7 @@ new WebSocketServer(9000, redisService, chatRepository);
 
 const rabbitMQService =new RabbitMQService();
 new MessageWorker(rabbitMQService,chatRepository);
+console.log('kajfkjdfkajdksjfask;lf')
 
 // webSocketService.start();
 const sendMessage = new SendMessage(rabbitMQService,redisService);
