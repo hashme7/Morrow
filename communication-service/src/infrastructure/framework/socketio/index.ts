@@ -25,7 +25,7 @@ export class WebSocketServer implements IWebSocketService {
 
   async start(): Promise<void> {
     try {
-      console.log('fkadfkjsdjf');
+      
       const pubClient = this.redisService.getPublisher();
       const subClient = this.redisService.getSubscriber();
 

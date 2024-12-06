@@ -31,7 +31,7 @@ class WebSocketServer {
             try {
                 console.log('fkadfkjsdjf');
                 const pubClient = this.redisService.getPublisher();
-                const subClient = this.redisService.getSubcriber();
+                const subClient = this.redisService.getSubscriber();
                 this.io.adapter((0, socket_io_redis_1.createAdapter)({ pubClient, subClient }));
                 this.listenForPubSubEvents();
                 this.configureSocketEvents();
