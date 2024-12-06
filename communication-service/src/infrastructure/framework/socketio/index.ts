@@ -2,10 +2,9 @@ import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
-import { IWebSocketService } from "../../../interfaces/providers.interface";
 import { timeStamp } from "console";
 
-export class WebSocketServer implements IWebSocketService {
+export class WebSocketServer  {
   public io: Server;
   public readonly MAX_RETRIES: number = 3;
   public readonly RETRY_INTERVAL: number = 5000;

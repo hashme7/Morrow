@@ -1,4 +1,6 @@
 import { Redis } from 'ioredis';
+import { Server } from 'socket.io';
+import { IChatRepository } from '../chatRepository.interface';
 
 export interface IRedisService {
   connect(): Promise<void>;
@@ -19,4 +21,17 @@ export interface IMessageWorker {
    * @returns A promise that resolves when the batch is saved.
    */
   flushBatch(): Promise<void>;
+}
+
+export interface IWebSocketServer {
+  io: Server;
+  readonly MAX_RETRIES: number;
+  readonly RETRY_INTERVAL: number;
+  port: number;
+  redisService: IRedisService;
+  chatRepository: IChatRepository;
+
+  start(): Promise<void>;
+  listenForPubSubEvents(): void;
+  configureSocketEvents(): void;
 }
