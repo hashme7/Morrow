@@ -19,6 +19,7 @@ export class WebSocketServer  {
         methods: ["GET", "POST"],
       },
     });
+    this.start();
   }
 
   async start(): Promise<void> {

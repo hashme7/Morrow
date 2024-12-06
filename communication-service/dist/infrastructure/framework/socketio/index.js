@@ -25,6 +25,7 @@ class WebSocketServer {
                 methods: ["GET", "POST"],
             },
         });
+        this.start();
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {

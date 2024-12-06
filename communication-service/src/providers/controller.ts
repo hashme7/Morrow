@@ -10,12 +10,12 @@ const redisService = new RedisService("localhost", 6379);
 
 const chatRepository = new ChatRepository();
 
-const webSocketService = new WebSocketServer(443, redisService, chatRepository);
+new WebSocketServer(9000, redisService, chatRepository);
 
 const rabbitMQService =new RabbitMQService();
 new MessageWorker(rabbitMQService,chatRepository);
 
-webSocketService.start();
+// webSocketService.start();
 const sendMessage = new SendMessage(rabbitMQService,redisService);
 
 const chatController = new ChatController(sendMessage);
