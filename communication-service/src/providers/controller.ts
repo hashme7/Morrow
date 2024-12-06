@@ -1,3 +1,5 @@
+console.log("Controller initialized!");
+
 import { ChatController } from "../adaptors/chatController";
 import { WebSocketServer } from "../infrastructure/framework/socketio";
 import { RabbitMQService } from "../infrastructure/rabbitMq";
