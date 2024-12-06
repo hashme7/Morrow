@@ -3,9 +3,9 @@ import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
 import { IWebSocketServer } from "../../../interfaces/providers.interface";
+import { timeStamp } from "console";
 
 export class WebSocketServer implements IWebSocketServer {
-  // Make io public or readonly
   public io: Server;
   public readonly MAX_RETRIES: number = 3;
   public readonly RETRY_INTERVAL: number = 5000;
@@ -29,13 +29,12 @@ export class WebSocketServer implements IWebSocketServer {
       const pubClient = this.redisService.getPublisher();
       const subClient = this.redisService.getSubcriber();
 
-      // Configure Redis adapter for Socket.IO
       this.io.adapter(createAdapter({ pubClient, subClient }));
 
-      // Configure WebSocket events
+      this.listenForPubSubEvents();
+
       this.configureSocketEvents();
 
-      // Start listening on the port
       this.io.listen(this.port);
       console.log(`WebSocket server started on port ${this.port}`);
     } catch (error) {
@@ -48,63 +47,34 @@ export class WebSocketServer implements IWebSocketServer {
     }
   }
 
-  public configureSocketEvents(): void {
+  public listenForPubSubEvents(): void {
+    this.redisService.subscribe("chat:room:*", (channel, message) => {
+      const roomId = channel.split(":")[1]; 
+      this.io.to(roomId).emit("new_message", JSON.parse(message));
+    });
+  }
+
+  public configureSocketEvents(){
     this.io.on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
 
-      // User joins a room
-      socket.on("joinRoom", (room: string) => {
-        socket.join(room);
-        console.log(`User ${socket.id} joined room ${room}`);
+      socket.on("joinRoom", (roomId: string) => {
+        socket.join(roomId);
+        console.log(`User ${socket.id} joined room ${roomId}`);
       });
 
-      // User sends a message
-      socket.on(
-        "sendMessage",
-        async (message: { room: string; content: string }) => {
-          try {
-            await this.retryWithAcknowledgment(socket, message);
-          } catch (error) {
-            if(error instanceof Error){
-              console.error(
-                `Failed to deliver message to room ${message.room}: ${error.message}`
-              );
-            }
-          }
+      socket.on('sendMessage',async(message:{receiverId:string,content:string})=>{
+        try {
+          const event = {receiverId:message.receiverId,content:message.content,timeStamp:new Date().toISOString()};
+          await this.redisService.publish(`chat:room:${message.receiverId}`, event);
+        } catch (error) {
+          console.error("Error processing sendMessage event:", error);
         }
-      );
+      })
 
       socket.on("disconnect", () => {
         console.log(`User disconnected: ${socket.id}`);
       });
-    });
-  }
-
-  public async retryWithAcknowledgment(
-    socket: any,
-    message: { room: string; content: string }
-  ): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      let attempts = 0;
-
-      const sendEvent = () => {
-        attempts++;
-        console.log(`Sending message to room ${message.room}, attempt ${attempts}`);
-
-        this.io.to(message.room).emit("receiveMessage", message.content, (ack: boolean) => {
-          if (ack) {
-            console.log(`Acknowledgment received for message: ${message.content}`);
-            resolve();
-          } else if (attempts < this.MAX_RETRIES) {
-            console.log(`Retrying message delivery, attempt ${attempts}`);
-            setTimeout(sendEvent, this.RETRY_INTERVAL);
-          } else {
-            console.error(`Failed to deliver message after ${this.MAX_RETRIES} attempts`);
-            reject(new Error(`Message delivery failed for room: ${message.room}`));
-          }
-        });
-      };
-      sendEvent();
     });
   }
 }

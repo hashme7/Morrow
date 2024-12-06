@@ -20,9 +20,6 @@ export interface IWebSocketServer {
 
   start(): Promise<void>;
   configureSocketEvents(): void;
-  retryWithAcknowledgment(
-    socket: any,
-    message: { room: string; content: string }
-  ): Promise<void>;
+  listenForPubSubEvents():void;
 }
 

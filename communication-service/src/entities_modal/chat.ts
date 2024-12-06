@@ -1,17 +1,28 @@
+import { ObjectId } from 'mongodb';
 import mongoose from 'mongoose'
+import { IMessage } from '../interfaces/types/Data';
 
-const chatMessageSchema = new mongoose.Schema({
-  teamId: {
-    type: String,
-    required: true,
-  },
+const MessageSchema = new mongoose.Schema<IMessage>({
   senderId: {
     type: String,
     required: true,
   },
+  receiverId:{
+    type:String,
+    required:true,
+  },
   content: {
     type: String,
     required: true,
+  },
+  status:{
+    type:String,
+    enum:["pending","delivered","seen"],
+    required:true,
+  },
+  readBy: {
+    type: [ObjectId], 
+    default: [],
   },
   timestamp: {
     type: Date,
@@ -19,6 +30,6 @@ const chatMessageSchema = new mongoose.Schema({
   },
 });
 
-const ChatMessage = mongoose.model('ChatMessage', chatMessageSchema);
+const Messages = mongoose.model('Message', MessageSchema);
 
-export default ChatMessage;
+export default Messages;
