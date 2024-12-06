@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import morgan from 'morgan'
 import chatRouter from '../routes/chatRoutes';
-import { startSocketService } from "../../providers/controller";
 
 export const createServer = () => {
   try {
@@ -20,7 +19,6 @@ export const createServer = () => {
 
     app.use(cors(corsOptions));
     app.options("*", cors(corsOptions));
-    startSocketService();
     app.use("/", chatRouter);
     return app;
   } catch (error) {

@@ -1,7 +1,7 @@
-import { createServer } from "http";
 import { DBConfig } from "./infrastructure/config/DBConfig";
 import dotenv from "dotenv";
 import path from "path";
+import { createServer } from "./infrastructure/config/app";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 

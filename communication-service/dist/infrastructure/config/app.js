@@ -8,7 +8,6 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const chatRoutes_1 = __importDefault(require("../routes/chatRoutes"));
-const controller_1 = require("../../providers/controller");
 const createServer = () => {
     try {
         const app = (0, express_1.default)();
@@ -23,7 +22,6 @@ const createServer = () => {
         };
         app.use((0, cors_1.default)(corsOptions));
         app.options("*", (0, cors_1.default)(corsOptions));
-        (0, controller_1.startSocketService)();
         app.use("/", chatRoutes_1.default);
         return app;
     }

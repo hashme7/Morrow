@@ -12,20 +12,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RabbitMQService = void 0;
 const amqplib_1 = require("amqplib");
 class RabbitMQService {
+    constructor() {
+        this.connect();
+    }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.connection = yield (0, amqplib_1.connect)("amqp://localhost");
-            this.channel = yield this.connection.createChannel();
+            try {
+                this.connection = yield (0, amqplib_1.connect)("amqp://localhost");
+                this.channel = yield this.connection.createChannel();
+                console.log("Connected to RabbitMQ and channel created.");
+            }
+            catch (error) {
+                console.error("Error connecting to RabbitMQ:", error);
+                throw error;
+            }
         });
     }
     publishMessage(queue, message) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!this.channel) {
+                console.error("RabbitMQ channel is not initialized.");
+                return;
+            }
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
         });
     }
     consumeMessages(queue, onMessage) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!this.channel) {
+                console.error("RabbitMQ channel is not initialized.");
+                return;
+            }
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.consume(queue, (msg) => {
                 if (msg) {
