@@ -32,11 +32,9 @@ class WebSocketServer {
                 console.log('fkadfkjsdjf');
                 const pubClient = this.redisService.getPublisher();
                 const subClient = this.redisService.getSubcriber();
-                // Configure Redis adapter for Socket.IO
                 this.io.adapter((0, socket_io_redis_1.createAdapter)({ pubClient, subClient }));
-                // Configure WebSocket events
+                this.listenForPubSubEvents();
                 this.configureSocketEvents();
-                // Start listening on the port
                 this.io.listen(this.port);
                 console.log(`WebSocket server started on port ${this.port}`);
             }
@@ -51,53 +49,30 @@ class WebSocketServer {
             }
         });
     }
+    listenForPubSubEvents() {
+        this.redisService.subscribe("chat:room:*", (channel, message) => {
+            const roomId = channel.split(":")[1];
+            this.io.to(roomId).emit("new_message", JSON.parse(message));
+        });
+    }
     configureSocketEvents() {
         this.io.on("connection", (socket) => {
             console.log(`User connected: ${socket.id}`);
-            // User joins a room
-            socket.on("joinRoom", (room) => {
-                socket.join(room);
-                console.log(`User ${socket.id} joined room ${room}`);
+            socket.on("joinRoom", (roomId) => {
+                socket.join(roomId);
+                console.log(`User ${socket.id} joined room ${roomId}`);
             });
-            // User sends a message
-            socket.on("sendMessage", (message) => __awaiter(this, void 0, void 0, function* () {
+            socket.on('sendMessage', (message) => __awaiter(this, void 0, void 0, function* () {
                 try {
-                    yield this.retryWithAcknowledgment(socket, message);
+                    const event = { receiverId: message.receiverId, content: message.content, timeStamp: new Date().toISOString() };
+                    yield this.redisService.publish(`chat:room:${message.receiverId}`, event);
                 }
                 catch (error) {
-                    if (error instanceof Error) {
-                        console.error(`Failed to deliver message to room ${message.room}: ${error.message}`);
-                    }
+                    console.error("Error processing sendMessage event:", error);
                 }
             }));
             socket.on("disconnect", () => {
                 console.log(`User disconnected: ${socket.id}`);
-            });
-        });
-    }
-    retryWithAcknowledgment(socket, message) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => {
-                let attempts = 0;
-                const sendEvent = () => {
-                    attempts++;
-                    console.log(`Sending message to room ${message.room}, attempt ${attempts}`);
-                    this.io.to(message.room).emit("receiveMessage", message.content, (ack) => {
-                        if (ack) {
-                            console.log(`Acknowledgment received for message: ${message.content}`);
-                            resolve();
-                        }
-                        else if (attempts < this.MAX_RETRIES) {
-                            console.log(`Retrying message delivery, attempt ${attempts}`);
-                            setTimeout(sendEvent, this.RETRY_INTERVAL);
-                        }
-                        else {
-                            console.error(`Failed to deliver message after ${this.MAX_RETRIES} attempts`);
-                            reject(new Error(`Message delivery failed for room: ${message.room}`));
-                        }
-                    });
-                };
-                sendEvent();
             });
         });
     }

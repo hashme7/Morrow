@@ -5,17 +5,11 @@ import { SendMessageParams } from "../../interfaces/types/requestTypes";
 import { GetMessageParams } from "../../interfaces/types/requestTypes";
 import { GetMessagesResponse } from "../../interfaces/types/responseType";
 export class ChatRepository implements IChatRepository {
-  async saveMessage(message: SendMessageParams): Promise<IMessage> {
+  async saveMessages(batchToSave: IMessage[]): Promise<void> {
     try {
-      const newMsg = new ChatMessage({
-        roomId: message.roomId,
-        senderId: message.senderId,
-        content: message.content,
-      });
-      return await newMsg.save() ;
+      await ChatMessage.insertMany(batchToSave);
     } catch (error) {
-      console.log(`error on saving msg ${error}`);
-      throw error;
+      console.log(`error on save message in db : ${error}`);
     }
   }
   async getMessages({
