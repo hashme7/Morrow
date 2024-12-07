@@ -46,10 +46,8 @@ class RabbitMQService {
             }
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.consume(queue, (msg) => {
-                console.log(queue, msg, 'queue consumed that message..');
                 if (msg) {
                     const message = JSON.parse(msg.content.toString());
-                    console.log(message);
                     onMessage(message);
                     this.channel.ack(msg);
                 }

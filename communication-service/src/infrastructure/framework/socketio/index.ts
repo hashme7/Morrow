@@ -51,9 +51,10 @@ export class WebSocketServer {
 
   public listenForPubSubEvents(): void {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
-      console.log("Raw message received:", message);
+      const jsonString = message.split("ٴ")[1];
+      const parsedMessage = JSON.parse(jsonString);
       const roomId = channel.split(":")[2];
-      this.io.to(roomId).emit("new_message", JSON.parse(message));
+      this.io.to(roomId).emit("new_message", JSON.parse(parsedMessage));
     });
   }
 

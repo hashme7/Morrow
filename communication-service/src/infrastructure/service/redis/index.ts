@@ -48,7 +48,7 @@ export class RedisService implements IRedisService {
   }
   async publish(channel: string, message: any): Promise<void> {
     try {
-      await this.client.publish(channel, JSON.stringify(message));
+      await this.client.publish(channel,  Buffer.from(JSON.stringify(message), "utf-8"));
       console.log(`Message published to channel: ${channel}`);
     } catch (err) {
       console.error(`Error publishing message to channel ${channel}:`, err);
