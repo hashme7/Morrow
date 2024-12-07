@@ -51,6 +51,7 @@ class WebSocketServer {
     }
     listenForPubSubEvents() {
         this.redisService.subscribe("channel:room:*", (channel, message) => {
+            console.log("cahnelllf akldfjakdsf ", message);
             const jsonString = message.split("ٴ")[1];
             const parsedMessage = JSON.parse(jsonString);
             const roomId = channel.split(":")[2];
