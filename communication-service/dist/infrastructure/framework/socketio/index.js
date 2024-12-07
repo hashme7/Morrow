@@ -53,7 +53,7 @@ class WebSocketServer {
         this.redisService.subscribe("channel:room:*", (channel, message) => {
             console.log("Raw message received:", message);
             const roomId = channel.split(":")[2];
-            console.log("emititn the room ,----");
+            console.log("emititn the room ,----", JSON.parse(message));
             this.io.to(roomId).emit("new_message", JSON.parse(message));
         });
     }

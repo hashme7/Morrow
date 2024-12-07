@@ -19,10 +19,10 @@ export class RabbitMQService {
 
   async publishMessage(queue: string, message: any): Promise<void> {
     if (!this.channel) {
-      console.log('changell concting twic..')
       await this.connect(); 
     }
     console.log(`publishMessage:${queue}:${message}`)
+    console.log("Message before sending:", JSON.stringify(message));
     await this.channel.assertQueue(queue, { durable: true });
     this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
   }
@@ -33,7 +33,7 @@ export class RabbitMQService {
     }
     await this.channel.assertQueue(queue, { durable: true });
     this.channel.consume(queue, (msg) => {
-      console.log(queue,msg,'QRKWJEKRQKWEJRKQWEJRKQJEWKRJQKWJER')
+      console.log(queue,msg,'queue consumed that message..')
       if (msg) {
         const message = JSON.parse(msg.content.toString());
         onMessage(message);

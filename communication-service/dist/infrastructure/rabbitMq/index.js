@@ -31,10 +31,10 @@ class RabbitMQService {
     publishMessage(queue, message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.channel) {
-                console.log('changell concting twic..');
                 yield this.connect();
             }
             console.log(`publishMessage:${queue}:${message}`);
+            console.log("Message before sending:", JSON.stringify(message));
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
         });
@@ -46,7 +46,7 @@ class RabbitMQService {
             }
             yield this.channel.assertQueue(queue, { durable: true });
             this.channel.consume(queue, (msg) => {
-                console.log(queue, msg, 'QRKWJEKRQKWEJRKQWEJRKQJEWKRJQKWJER');
+                console.log(queue, msg, 'queue consumed that message..');
                 if (msg) {
                     const message = JSON.parse(msg.content.toString());
                     onMessage(message);
