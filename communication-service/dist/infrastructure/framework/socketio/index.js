@@ -53,8 +53,7 @@ class WebSocketServer {
         this.redisService.subscribe("channel:room:*", (channel, message) => {
             console.log("Raw message received:", message);
             const roomId = channel.split(":")[2];
-            console.log("emititn the room ,----", JSON.parse(message));
-            this.io.to(roomId).emit("new_message", JSON.parse(message));
+            this.io.to(roomId).emit("new_message", message);
         });
     }
     configureSocketEvents() {
@@ -65,24 +64,6 @@ class WebSocketServer {
                 yield this.joinSocket.execute();
                 console.log(`User ${socket.id} joined room ${roomId}`);
             }));
-            // socket.on(
-            //   "sendMessage",
-            //   async (message: { receiverId: string; content: string }) => {
-            //     try {
-            //       const event = {
-            //         receiverId: message.receiverId,
-            //         content: message.content,
-            //         timeStamp: new Date().toISOString(),
-            //       };
-            //       await this.redisService.publish(
-            //         `chat:room:${message.receiverId}`,
-            //         event
-            //       );
-            //     } catch (error) {
-            //       console.error("Error processing sendMessage event:", error);
-            //     }
-            //   }
-            // );
             socket.on("disconnect", () => {
                 console.log(`User disconnected: ${socket.id}`);
             });
