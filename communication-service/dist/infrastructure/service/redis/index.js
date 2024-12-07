@@ -58,7 +58,7 @@ class RedisService {
     publish(channel, message) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.client.publish(channel, Buffer.from(JSON.stringify(message), "utf-8"));
+                yield this.client.publish(channel, JSON.stringify(message));
                 console.log(`Message published to channel: ${channel}`);
             }
             catch (err) {

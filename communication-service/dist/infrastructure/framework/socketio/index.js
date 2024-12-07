@@ -51,11 +51,24 @@ class WebSocketServer {
     }
     listenForPubSubEvents() {
         this.redisService.subscribe("channel:room:*", (channel, message) => {
-            console.log("cahnelllf akldfjakdsf ", message);
-            const jsonString = message.split("ٴ")[1];
-            const parsedMessage = JSON.parse(jsonString);
             const roomId = channel.split(":")[2];
-            this.io.to(roomId).emit("new_message", JSON.parse(parsedMessage));
+            try {
+                console.log(`
+          
+          
+          
+          
+          `, message, `Lfkladkflsdkf
+          
+          
+          
+          
+          `);
+                this.io.to(roomId).emit("new_message", JSON.parse(message));
+            }
+            catch (error) {
+                console.error("Error parsing message:", error);
+            }
         });
     }
     configureSocketEvents() {
