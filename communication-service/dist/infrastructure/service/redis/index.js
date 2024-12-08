@@ -90,7 +90,8 @@ class RedisService {
         
         
         `);
-            callback(channel, JSON.stringify(message));
+            const parsedMessage = JSON.parse(message);
+            callback(channel, parsedMessage);
         });
     }
     addErrorListeners() {

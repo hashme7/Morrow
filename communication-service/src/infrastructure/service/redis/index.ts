@@ -79,7 +79,8 @@ export class RedisService implements IRedisService {
         
         
         `);
-      callback(channel,JSON.parse(message))
+        const parsedMessage = JSON.parse(message);
+      callback(channel,parsedMessage)
     });
   }
   private addErrorListeners(): void {
