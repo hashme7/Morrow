@@ -8,10 +8,10 @@ export class SendMessage implements ISendMessage {
   async execute(message:IMessage) {
     try {
       await this.rabbitMQServie.publishMessage("chat_queue",message);
-      await this.redisService.publish(`channel:room:${message.receiverId}`, JSON.stringify({
+      await this.redisService.publish(`channel:room:${message.receiverId}`,{
         ...message,
         timestamp: message.timestamp.toDateString(), 
-      }))
+      })
       return {status:201,message:"success"}
     } catch (error) {
       console.error("Error creating message:", (error as Error).message);

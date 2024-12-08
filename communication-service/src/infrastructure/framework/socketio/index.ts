@@ -54,17 +54,14 @@ export class WebSocketServer {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
       try {
-        // const newMessage  ={
-        //   senderId: "6753e62afdd751dbdbb61c5b",
-        //   receiverId: "6753e6a7c1861164644c569c",
-        //   content: "kkdfasdffasdffadll",
-        //   status: "pending",
-        //   timestamp: "Sat Dec 07 2024",
-        //   readBy: []
-        // }
-        this.io.to(roomId).emit("new_message",JSON.parse(message));
+        const parsedMessage = JSON.parse(message);
+        console.log(parsedMessage,"this is the format of the message after json parsing the message");
+
+        this.io.to(roomId).emit("new_message",parsedMessage);
+        console.log('json parse deleted',);
       } catch (error) {
-        console.error("Error parsing message:", error);  
+        // console.error("Error parsing message:", error);  
+        throw error;
       }
     });
   }     

@@ -58,7 +58,7 @@ class RedisService {
     publish(channel, message) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.client.publish(channel, JSON.stringify(message));
+                yield this.client.publish(channel, message);
                 console.log(`Message published to channel: ${channel}`);
             }
             catch (err) {
@@ -67,7 +67,9 @@ class RedisService {
         });
     }
     subscribe(channelPattern, callback) {
-        console.log("changle", channelPattern);
+        console.log(`
+      ON SUBCRIBE OF PSUBCRIBE MESSAGEING........
+      `, channelPattern);
         this.subscriber.psubscribe(channelPattern, (err, count) => {
             if (err) {
                 console.error(`Error subscribing to pattern ${channelPattern}:`, err);
@@ -77,8 +79,18 @@ class RedisService {
             }
         });
         this.subscriber.on('pmessage', (pattern, channel, message) => {
-            console.log(`Message received from channel ${channel}: ${JSON.parse(message)}`);
-            callback(channel, message);
+            console.log(`
+
+
+              ON SUBSCRIBE PMESSSAGE
+        
+        
+        Message received from channel  ${channel}: TYPEOF ${typeof message} ${message}
+        
+        
+        
+        `);
+            callback(channel, JSON.stringify(message));
         });
     }
     addErrorListeners() {

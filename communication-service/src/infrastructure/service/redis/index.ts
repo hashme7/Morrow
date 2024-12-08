@@ -47,16 +47,18 @@ export class RedisService implements IRedisService {
   getPublisher(){
     return this.client;
   }
-  async publish(channel: string, message: IMessage): Promise<void> {
+  async publish(channel: string, message:any): Promise<void> {
     try {
-      await this.client.publish(channel, JSON.stringify(message));
+      await this.client.publish(channel,message);
       console.log(`Message published to channel: ${channel}`);
     } catch (err) {
       console.error(`Error publishing message to channel ${channel}:`, err);
     }
   }
   subscribe(channelPattern: string, callback: (channel: string, message: string) => void): void {
-    console.log("changle",channelPattern)
+    console.log(`
+      ON SUBCRIBE OF PSUBCRIBE MESSAGEING........
+      `,channelPattern)
     this.subscriber.psubscribe(channelPattern, (err, count) => {
       if (err) {
         console.error(`Error subscribing to pattern ${channelPattern}:`, err);
@@ -66,12 +68,22 @@ export class RedisService implements IRedisService {
     });
 
     this.subscriber.on('pmessage', (pattern, channel, message) => {
-      console.log(`Message received from channel ${channel}: ${JSON.parse(message)}`);
-      callback(channel,message);
+      console.log(`
+
+
+              ON SUBSCRIBE PMESSSAGE
+        
+        
+        Message received from channel  ${channel}: TYPEOF ${typeof message} ${message}
+        
+        
+        
+        `);
+      callback(channel,JSON.stringify(message))
     });
   }
   private addErrorListeners(): void {
-    this.client.on('error', (err) => {
+    this.client.on('error', (err) => {  
       console.error('Redis client error:', err);
     });
 
