@@ -53,17 +53,14 @@ class WebSocketServer {
         this.redisService.subscribe("channel:room:*", (channel, message) => {
             const roomId = channel.split(":")[2];
             try {
-                console.log(`
-          
-          
-          
-          
-          `, message, `Lfkladkflsdkf
-          
-          
-          
-          
-          `);
+                // const newMessage  ={
+                //   senderId: "6753e62afdd751dbdbb61c5b",
+                //   receiverId: "6753e6a7c1861164644c569c",
+                //   content: "kkdfasdffasdffadll",
+                //   status: "pending",
+                //   timestamp: "Sat Dec 07 2024",
+                //   readBy: []
+                // }
                 this.io.to(roomId).emit("new_message", JSON.parse(message));
             }
             catch (error) {

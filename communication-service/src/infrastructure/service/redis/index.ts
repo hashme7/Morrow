@@ -1,6 +1,7 @@
 import { Redis } from 'ioredis';
 import { IRedisService } from '../../../interfaces/providers.interface';
 import { RedisClientType } from 'redis';
+import { IMessage } from '../../../interfaces/types/Data';
 
 export class RedisService implements IRedisService {
   private client: Redis;
@@ -46,7 +47,7 @@ export class RedisService implements IRedisService {
   getPublisher(){
     return this.client;
   }
-  async publish(channel: string, message: any): Promise<void> {
+  async publish(channel: string, message: IMessage): Promise<void> {
     try {
       await this.client.publish(channel, JSON.stringify(message));
       console.log(`Message published to channel: ${channel}`);
@@ -65,8 +66,8 @@ export class RedisService implements IRedisService {
     });
 
     this.subscriber.on('pmessage', (pattern, channel, message) => {
-      console.log(`Message received from channel ${channel}: ${message}`);
-      callback(channel, message);
+      console.log(`Message received from channel ${channel}: ${JSON.parse(message)}`);
+      callback(channel,message);
     });
   }
   private addErrorListeners(): void {

@@ -3,6 +3,7 @@ import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
 import { IJoinSocket } from "../../../interfaces/usecases.interface";
+import { Console } from "console";
 
 export class WebSocketServer {
   public io: Server;
@@ -53,30 +54,27 @@ export class WebSocketServer {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
       try {
-        console.log(`
-          
-          
-          
-          
-          `,message,`Lfkladkflsdkf
-          
-          
-          
-          
-          `)
-        this.io.to(roomId).emit("new_message", JSON.parse(message));
+        // const newMessage  ={
+        //   senderId: "6753e62afdd751dbdbb61c5b",
+        //   receiverId: "6753e6a7c1861164644c569c",
+        //   content: "kkdfasdffasdffadll",
+        //   status: "pending",
+        //   timestamp: "Sat Dec 07 2024",
+        //   readBy: []
+        // }
+        this.io.to(roomId).emit("new_message",JSON.parse(message));
       } catch (error) {
         console.error("Error parsing message:", error);  
       }
     });
-  }   
+  }     
     
   public configureSocketEvents() {
     this.io.on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);  
 
       socket.on("joinRoom", async (roomId: string) => {
-        socket.join(roomId);
+        socket.join(roomId); 
         await this.joinSocket.execute();
         console.log(`User ${socket.id} joined room ${roomId}`);
       });

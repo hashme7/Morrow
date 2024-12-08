@@ -77,7 +77,7 @@ class RedisService {
             }
         });
         this.subscriber.on('pmessage', (pattern, channel, message) => {
-            console.log(`Message received from channel ${channel}: ${message}`);
+            console.log(`Message received from channel ${channel}: ${JSON.parse(message)}`);
             callback(channel, message);
         });
     }
