@@ -79,7 +79,7 @@ export class RedisService implements IRedisService {
         
         
         `);
-      callback(channel,JSON.stringify(message))
+      callback(channel,JSON.parse(message))
     });
   }
   private addErrorListeners(): void {
