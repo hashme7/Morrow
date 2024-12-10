@@ -23,7 +23,8 @@ class RedisService {
             retryStrategy: (times) => {
                 const delay = Math.min(times * 50, 2000);
                 return delay;
-            }, stringNumbers: false
+            },
+            stringNumbers: false,
         });
         this.subscriber = new ioredis_1.Redis({
             host: this.host,
@@ -33,7 +34,7 @@ class RedisService {
                 const delay = Math.min(times * 50, 2000);
                 return delay;
             },
-            stringNumbers: false
+            stringNumbers: false,
         });
         this.addErrorListeners();
     }
@@ -41,10 +42,10 @@ class RedisService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.client.ping();
-                console.log('Redis client connected');
+                console.log("Redis client connected");
             }
             catch (error) {
-                console.error('Error connecting to Redis:', error);
+                console.error("Error connecting to Redis:", error);
                 throw error;
             }
         });
@@ -67,9 +68,6 @@ class RedisService {
         });
     }
     subscribe(channelPattern, callback) {
-        console.log(`
-      ON SUBCRIBE OF PSUBCRIBE MESSAGEING........
-      `, channelPattern);
         this.subscriber.psubscribe(channelPattern, (err, count) => {
             if (err) {
                 console.error(`Error subscribing to pattern ${channelPattern}:`, err);
@@ -78,34 +76,33 @@ class RedisService {
                 console.log(`Subscribed to ${count} channels matching pattern: ${channelPattern}`);
             }
         });
-        this.subscriber.on('pmessage', (pattern, channel, message) => {
-            console.log(`
-
-
-              ON SUBSCRIBE PMESSSAGE
-        
-        
-        Message received from channel  ${channel}: TYPEOF ${typeof message} ${message}
-        
-        
-        
-        `);
-            const parsedMessage = JSON.parse(message);
-            callback(channel, parsedMessage);
+        this.subscriber.on("pmessage", (pattern, channel, message) => {
+            const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
+            console.log("Decoded message:", decodedMessage);
+            callback(channel, decodedMessage);
         });
     }
+    isValidJSON(message) {
+        try {
+            JSON.parse(message);
+            return true;
+        }
+        catch (_a) {
+            return false;
+        }
+    }
     addErrorListeners() {
-        this.client.on('error', (err) => {
-            console.error('Redis client error:', err);
+        this.client.on("error", (err) => {
+            console.error("Redis client error:", err);
         });
-        this.subscriber.on('error', (err) => {
-            console.error('Redis subscriber error:', err);
+        this.subscriber.on("error", (err) => {
+            console.error("Redis subscriber error:", err);
         });
-        this.client.on('connect', () => {
-            console.log('Redis client connected');
+        this.client.on("connect", () => {
+            console.log("Redis client connected");
         });
-        this.subscriber.on('connect', () => {
-            console.log('Redis subscriber connected');
+        this.subscriber.on("connect", () => {
+            console.log("Redis subscriber connected");
         });
     }
     close() {
@@ -113,10 +110,10 @@ class RedisService {
             try {
                 yield this.client.quit();
                 yield this.subscriber.quit();
-                console.log('Redis connections closed successfully.');
+                console.log("Redis connections closed successfully.");
             }
             catch (err) {
-                console.error('Error closing Redis connections:', err);
+                console.error("Error closing Redis connections:", err);
             }
         });
     }

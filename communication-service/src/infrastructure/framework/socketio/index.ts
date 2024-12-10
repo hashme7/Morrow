@@ -54,24 +54,31 @@ export class WebSocketServer {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
       try {
-        const parsedMessage = JSON.parse(message);
-        console.log(parsedMessage,"this is the format of the message after json parsing the message");
-
-        this.io.to(roomId).emit("new_message",parsedMessage);
-        console.log('json parse deleted',);
+        this.io.to(roomId).emit("new_message", JSON.parse(message));
       } catch (error) {
-        // console.error("Error parsing message:", error);  
-        throw error;
+        console.error(
+          "Error parsing message or invalid message received:",   
+          error
+        );
+        console.error("Received message:", message);
       }
     });
-  }     
-      
+  }
+  private isValidJSON(message: string): boolean {
+    try { 
+      JSON.parse(message);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   public configureSocketEvents() {
     this.io.on("connection", (socket) => {
-      console.log(`User connected: ${socket.id}`);  
+      console.log(`User connected: ${socket.id}`);
 
       socket.on("joinRoom", async (roomId: string) => {
-        socket.join(roomId); 
+        socket.join(roomId);
         await this.joinSocket.execute();
         console.log(`User ${socket.id} joined room ${roomId}`);
       });

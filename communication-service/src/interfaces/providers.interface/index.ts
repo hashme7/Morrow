@@ -6,6 +6,7 @@ export interface IRedisService {
   connect(): Promise<void>;
   publish(channel: string, message: any): Promise<void>;
   subscribe(channelPattern: string, callback: (channel: string, message: string) => void): void;
+  isValidJSON(message:string):boolean;
   getPublisher(): Redis;
   getSubscriber(): Redis;
   close(): Promise<void>;
@@ -30,7 +31,7 @@ export interface IWebSocketServer {
   port: number;
   redisService: IRedisService;
   chatRepository: IChatRepository;
-
+  isValidJSON():Promise<void>;
   start(): Promise<void>;
   listenForPubSubEvents(): void;
   configureSocketEvents(): void;

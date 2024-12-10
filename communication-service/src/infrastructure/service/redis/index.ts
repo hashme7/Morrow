@@ -1,21 +1,26 @@
-import { Redis } from 'ioredis';
-import { IRedisService } from '../../../interfaces/providers.interface';
-import { RedisClientType } from 'redis';
-import { IMessage } from '../../../interfaces/types/Data';
+import { Redis } from "ioredis";
+import { IRedisService } from "../../../interfaces/providers.interface";
+import { RedisClientType } from "redis";
+import { IMessage } from "../../../interfaces/types/Data";
 
 export class RedisService implements IRedisService {
   private client: Redis;
   private subscriber: Redis;
 
-  constructor(private host: string, private port: number, private password?: string) {
+  constructor(
+    private host: string,
+    private port: number,
+    private password?: string
+  ) {
     this.client = new Redis({
       host: this.host,
       port: this.port,
       password: this.password,
       retryStrategy: (times: number) => {
-        const delay = Math.min(times * 50, 2000); 
+        const delay = Math.min(times * 50, 2000);
         return delay;
-      },stringNumbers:false
+      },
+      stringNumbers: false,
     });
 
     this.subscriber = new Redis({
@@ -26,7 +31,7 @@ export class RedisService implements IRedisService {
         const delay = Math.min(times * 50, 2000);
         return delay;
       },
-      stringNumbers:false
+      stringNumbers: false,
     });
 
     this.addErrorListeners();
@@ -34,9 +39,9 @@ export class RedisService implements IRedisService {
   async connect(): Promise<void> {
     try {
       await this.client.ping();
-      console.log('Redis client connected');
+      console.log("Redis client connected");
     } catch (error) {
-      console.error('Error connecting to Redis:', error);
+      console.error("Error connecting to Redis:", error);
       throw error;
     }
   }
@@ -44,60 +49,60 @@ export class RedisService implements IRedisService {
   getSubscriber(): Redis {
     return this.subscriber;
   }
-  getPublisher(){
+  getPublisher() {
     return this.client;
   }
-  async publish(channel: string, message:any): Promise<void> {
+  async publish(channel: string, message: any): Promise<void> {
     try {
-      await this.client.publish(channel,message);
+      await this.client.publish(channel, message);
       console.log(`Message published to channel: ${channel}`);
     } catch (err) {
       console.error(`Error publishing message to channel ${channel}:`, err);
     }
   }
-  subscribe(channelPattern: string, callback: (channel: string, message: string) => void): void {
-    console.log(`
-      ON SUBCRIBE OF PSUBCRIBE MESSAGEING........
-      `,channelPattern)
+  subscribe(
+    channelPattern: string,
+    callback: (channel: string, message: string) => void
+  ): void {
     this.subscriber.psubscribe(channelPattern, (err, count) => {
       if (err) {
         console.error(`Error subscribing to pattern ${channelPattern}:`, err);
       } else {
-        console.log(`Subscribed to ${count} channels matching pattern: ${channelPattern}`);
+        console.log(
+          `Subscribed to ${count} channels matching pattern: ${channelPattern}`
+        );
       }
     });
 
-    this.subscriber.on('pmessage', (pattern, channel, message) => {
-      console.log(`
-
-
-              ON SUBSCRIBE PMESSSAGE
-        
-        
-        Message received from channel  ${channel}: TYPEOF ${typeof message} ${message}
-        
-        
-        
-        `);
-        const parsedMessage = JSON.parse(message);
-      callback(channel,parsedMessage)
+    this.subscriber.on("pmessage", (pattern, channel, message) => {
+      const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
+      console.log("Decoded message:", decodedMessage);
+        callback(channel, decodedMessage);
     });
   }
+  isValidJSON(message: string): boolean {
+    try {
+      JSON.parse(message);
+      return true;
+    } catch {
+      return false;
+    }
+  }
   private addErrorListeners(): void {
-    this.client.on('error', (err) => {  
-      console.error('Redis client error:', err);
+    this.client.on("error", (err) => {
+      console.error("Redis client error:", err);
     });
 
-    this.subscriber.on('error', (err) => {
-      console.error('Redis subscriber error:', err);
+    this.subscriber.on("error", (err) => {
+      console.error("Redis subscriber error:", err);
     });
 
-    this.client.on('connect', () => {
-      console.log('Redis client connected');
+    this.client.on("connect", () => {
+      console.log("Redis client connected");
     });
 
-    this.subscriber.on('connect', () => {
-      console.log('Redis subscriber connected');
+    this.subscriber.on("connect", () => {
+      console.log("Redis subscriber connected");
     });
   }
 
@@ -105,9 +110,9 @@ export class RedisService implements IRedisService {
     try {
       await this.client.quit();
       await this.subscriber.quit();
-      console.log('Redis connections closed successfully.');
+      console.log("Redis connections closed successfully.");
     } catch (err) {
-      console.error('Error closing Redis connections:', err);
+      console.error("Error closing Redis connections:", err);
     }
   }
 }
