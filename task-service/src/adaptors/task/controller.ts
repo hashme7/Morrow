@@ -1,4 +1,4 @@
-import { ICreateTask, IDeleteTask } from "./../interfaces/usecase.interface";
+import { ICreateTask, IDeleteTask } from "../../interfaces/usecase.interface";
 import { Request, Response } from "express";
 import {ObjectId} from 'mongodb'
 

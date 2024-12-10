@@ -28,7 +28,8 @@ export interface ITeamIds{
     team_id:mongoose.Types.ObjectId;
 }
 export interface IRequest{
-    teamId:mongoose.Types.ObjectId;
-    userId:mongoose.Types.ObjectId;
+    _id: any;
+    team_id:mongoose.Types.ObjectId;
+    user_id:mongoose.Types.ObjectId;
     note:string,
 }

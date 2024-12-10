@@ -19,9 +19,9 @@ app.use(cookieParser());
 
 app.use('/project',authenticate,proxy('http://localhost:4000'));   
 app.use('/user',authenticate,proxy('http://localhost:3000'));
-app.use('/',proxy('http://localhost:1000'));
-app.use('/task',authenticate,proxy('http://localhost:5000'));
 app.use('/communicate',authenticate,proxy('http://localhost:2000'));
+app.use('/task',proxy('http://localhost:5000'));
+app.use('/',proxy('http://localhost:1000'));
    
 app.listen(8000,()=>{
     console.log(`gateway service is running on port :http://localhost:8000`)

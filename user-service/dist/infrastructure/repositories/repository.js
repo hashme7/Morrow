@@ -17,14 +17,26 @@ const teamModel_1 = __importDefault(require("../../entities_models/teamModel"));
 const verificationCodeModel_1 = __importDefault(require("../../entities_models/verificationCodeModel"));
 const teamMemberModel_1 = __importDefault(require("../../entities_models/teamMemberModel"));
 const requestModal_1 = __importDefault(require("../../entities_models/requestModal"));
+const roleModal_1 = __importDefault(require("../../entities_models/roleModal"));
 class Repository {
     constructor() {
         console.log("repository initialized");
     }
+    deleteRequest(requestId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield requestModal_1.default.deleteOne({ _id: requestId });
+                console.log('deleted......');
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     getRequests(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return (yield requestModal_1.default.find({ userId: userId }));
+                return (yield requestModal_1.default.find({ user_account: userId }));
             }
             catch (error) {
                 throw error;
@@ -38,6 +50,22 @@ class Repository {
             }
             catch (error) {
                 console.error(`Error marking user as verified: ${error}`);
+                throw error;
+            }
+        });
+    }
+    addRole(userId, teamId, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const newRole = yield roleModal_1.default.create({
+                    user_account: userId,
+                    team_id: teamId,
+                    role
+                });
+                yield newRole.save();
+            }
+            catch (error) {
+                console.log(`error on adding role ${error}`);
                 throw error;
             }
         });
@@ -254,14 +282,12 @@ class Repository {
     getRequest(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(userId, 'requestsssssss..........');
                 const RequestData = yield requestModal_1.default.find({ user_account: userId });
+                console.log(RequestData, "fkjaksjdfkasjkdfjaksdfjkasdjfk;asf");
                 return RequestData;
             }
             catch (error) {
-                console.log(`errror      
-      
-      ******************************
+                console.log(`errror on get request
       ${error}
       
       `);

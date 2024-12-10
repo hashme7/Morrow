@@ -76,7 +76,11 @@ export class RedisService implements IRedisService {
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
       const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
-      console.log("Decoded message:", decodedMessage);
+      console.log(`
+
+        Decoded message in Redis subcriber(pmessage) ${decodedMessage}
+        
+        `, );
         callback(channel, decodedMessage);
     });
   }

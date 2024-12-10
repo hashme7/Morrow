@@ -8,14 +8,24 @@ import { IAddTeamMessage } from "../../interfaces/types/response";
 import mongoose, { ObjectId } from "mongoose";
 import TeamMember from "../../entities_models/teamMemberModel";
 import Requests from '../../entities_models/requestModal';
+import Roles from '../../entities_models/roleModal'
 
 class Repository implements IRepository {
   constructor() {
     console.log("repository initialized");
   }
+  async deleteRequest(requestId: mongoose.Types.ObjectId): Promise<void> {
+    try {
+      await Requests.deleteOne({_id:requestId});
+      console.log('deleted......')
+    } catch (error) {
+      throw error;
+    }
+  }
+  
   async getRequests(userId: mongoose.Types.ObjectId): Promise<IRequest[]> {
     try {
-      return (await Requests.find({userId:userId}));
+      return (await Requests.find({user_account:userId}));
     } catch (error) {
       throw error
     }
@@ -25,6 +35,20 @@ class Repository implements IRepository {
       await User.updateOne({ _id: userId }, { $set: { isVerified: true } });
     } catch (error) {
       console.error(`Error marking user as verified: ${error}`);
+      throw error;
+    }
+  }
+  
+  async addRole(userId:mongoose.Types.ObjectId,teamId:mongoose.Types.ObjectId,role:string){
+    try {
+      const newRole = await Roles.create({
+        user_account:userId,
+        team_id:teamId,
+        role
+      })
+      await newRole.save();
+    } catch (error) {
+      console.log(`error on adding role ${error}`);
       throw error;
     }
   }
@@ -226,9 +250,11 @@ class Repository implements IRepository {
     }
   }
 
+
   async getRequest(userId:mongoose.Types.ObjectId){
     try {
-      const RequestData =await Requests.find({user_account:userId});
+      const RequestData = await Requests.find({user_account:userId});
+      console.log(RequestData,"fkjaksjdfkasjkdfjaksdfjkasdjfk;asf");
       return RequestData;
     } catch (error) {
       console.log(`errror on get request

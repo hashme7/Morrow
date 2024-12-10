@@ -49,3 +49,11 @@ export interface IGetRequests{
 export interface IUpdateProfile{
     execute(userId:string, field:string, value:string):Promise<response>;
 }
+
+export interface IJoinProject{
+    execute(userId:string,requestId:string,teamId:string):Promise<response>;
+}
+
+export interface IRejectRequest{
+    execute(requestId:string):Promise<response>;
+}

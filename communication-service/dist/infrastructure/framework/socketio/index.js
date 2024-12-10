@@ -56,8 +56,9 @@ class WebSocketServer {
                 this.io.to(roomId).emit("new_message", JSON.parse(message));
             }
             catch (error) {
-                console.error("Error parsing message or invalid message received:", error);
-                console.error("Received message:", message);
+                console.log(`      
+          `);
+                throw error;
             }
         });
     }

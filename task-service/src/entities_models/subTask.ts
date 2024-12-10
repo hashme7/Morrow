@@ -7,8 +7,6 @@ const SubTaskSchema = new Schema<ISubTask>(
     description: { type: String },
     plannedStartDate: { type: Date, required: true },
     plannedEndDate: { type: Date, required: true },
-    actualStartDate: { type: Date },
-    actualEndDate: { type: Date },
     taskId: { type: Schema.Types.ObjectId, ref: "Task", required: true },
     priority: {
       type: String,
@@ -16,8 +14,7 @@ const SubTaskSchema = new Schema<ISubTask>(
       required: true,
     },
     status: {
-      type: String,
-      default: "none", 
+      type:Schema.Types.ObjectId,ref:"Status" ,
     },
   },
   { timestamps: true } 

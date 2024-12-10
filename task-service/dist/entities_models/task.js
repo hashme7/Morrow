@@ -31,9 +31,8 @@ const TaskSchema = new mongoose_1.Schema({
     description: { type: String },
     plannedStartDate: { type: Date, required: true },
     plannedEndDate: { type: Date, required: true },
-    actualStartDate: { type: Date },
-    actualEndDate: { type: Date },
-    status: { type: String },
+    status: { type: mongoose_1.Schema.Types.ObjectId, ref: "Status" },
     priority: { type: String },
+    subTaskIds: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "SubTask" }],
 }, { timestamps: true });
 exports.Task = mongoose_1.default.model("Task", TaskSchema);

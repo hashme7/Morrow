@@ -16,7 +16,12 @@ class CreateTask {
     }
     execute(taskData) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.taskRepository.createTask(taskData);
+            try {
+                return yield this.taskRepository.createTask(taskData);
+            }
+            catch (error) {
+                throw error;
+            }
         });
     }
 }

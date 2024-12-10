@@ -14,10 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBConfig = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const seed_1 = require("./seed");
 const DBConfig = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const DB_URL = process.env.MONGO_URL;
         yield mongoose_1.default.connect(DB_URL);
+        yield (0, seed_1.seedStatus)();
         console.log("task-service : database is succesfully connected");
     }
     catch (error) {

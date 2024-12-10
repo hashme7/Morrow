@@ -20,9 +20,9 @@ app.use((0, morgan_1.default)('tiny'));
 app.use((0, cookie_parser_1.default)());
 app.use('/project', dist_1.authenticate, (0, express_http_proxy_1.default)('http://localhost:4000'));
 app.use('/user', dist_1.authenticate, (0, express_http_proxy_1.default)('http://localhost:3000'));
-app.use('/', (0, express_http_proxy_1.default)('http://localhost:1000'));
-app.use('/task', dist_1.authenticate, (0, express_http_proxy_1.default)('http://localhost:5000'));
 app.use('/communicate', dist_1.authenticate, (0, express_http_proxy_1.default)('http://localhost:2000'));
+app.use('/task', (0, express_http_proxy_1.default)('http://localhost:5000'));
+app.use('/', (0, express_http_proxy_1.default)('http://localhost:1000'));
 app.listen(8000, () => {
     console.log(`gateway service is running on port :http://localhost:8000`);
 });

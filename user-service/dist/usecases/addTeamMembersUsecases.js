@@ -18,6 +18,7 @@ class AddTeamMembers {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const insertedMember = yield this.repository.addTeamMembers(userId, teamId);
+                const addRole = yield this.repository.addRole(userId, teamId, "Developer");
                 return insertedMember;
             }
             catch (error) {

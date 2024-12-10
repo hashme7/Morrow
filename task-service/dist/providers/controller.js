@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.taskController = void 0;
-const controller_1 = require("../adaptors/controller");
+const controller_1 = require("../adaptors/task/controller");
 const taskRepository_1 = require("../infrastructure/repository/taskRepository");
 const createTask_1 = require("../usecases/createTask");
 const deleteTask_1 = require("../usecases/deleteTask");

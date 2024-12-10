@@ -18,6 +18,8 @@ import { SendRequest } from "../usecases/sendRequestUsecases";
 import { UpdateProfile } from "../usecases/updateProfileCases";
 import { GrpcProjectClient } from "../infrastructure/grpc/grpcProjectClient";
 import { GetRequests } from "../usecases/getRequestsUseCases";
+import { JoinProject } from "../usecases/joinProject";
+import { RejectRequest } from "../usecases/rejectRequest";
 
 const RabbitMQServiceInstance = new RabbitMQService();
 
@@ -44,6 +46,8 @@ const updateImg = new UpdateImage(repositoryInstance, cloudinaryInstance);
 const sendRequest = new SendRequest(repositoryInstance);
 const updateProfile = new UpdateProfile(repositoryInstance);
 const getRequest = new GetRequests(repositoryInstance,projectRpcClient)
+const joinProject = new JoinProject(repositoryInstance);
+const rejectRequest = new RejectRequest(repositoryInstance);
 
 new AddTeamConsumer(createTeamInstance);
 
@@ -56,6 +60,8 @@ export const authControllerInstance = new UserAuthController(
   getAllUsers,
   sendRequest,
   updateProfile,
-  getRequest
+  getRequest,
+  joinProject,
+  rejectRequest
 );
 

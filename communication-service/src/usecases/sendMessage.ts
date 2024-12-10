@@ -20,11 +20,14 @@ export class SendMessage implements ISendMessage {
           timestamp: message.timestamp.toDateString(),
         })
       ).toString("base64");
+      console.log(`
+        
+        Base64-encoded message being published: ${base64Message}
 
-      console.log("Base64-encoded message being published:", base64Message);
+        `, );
       await this.redisService.publish(
         `channel:room:${message.receiverId}`,
-        base64Message
+        base64Message 
       );
       return { status: 201, message: "success" };
     } catch (error) {

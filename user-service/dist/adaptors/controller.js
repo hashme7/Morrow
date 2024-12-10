@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongodb_1 = require("mongodb");
 class UserAuthController {
-    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, updateProfileCases, getRequestDetails) {
+    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, updateProfileCases, getRequestDetails, joinProject, rejectRequest) {
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
@@ -25,13 +25,8 @@ class UserAuthController {
         this.createRequest = createRequest;
         this.updateProfileCases = updateProfileCases;
         this.getRequestDetails = getRequestDetails;
-        this.getUserCases = getUserCases;
-        this.changePasswordCases = changePasswordCases;
-        this.changeEmailCases = changeEmailCases;
-        this.getTeamMembers = getTeamMembers;
-        this.updateImg = updateImg;
-        this.getAllUsers = getAllUsers;
-        this.createRequest = createRequest;
+        this.joinProject = joinProject;
+        this.rejectRequest = rejectRequest;
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -159,12 +154,39 @@ class UserAuthController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { projectId, userId, note } = req.query;
+                console.log(note, "note.......");
                 const { status, message } = yield this.createRequest.execute(Number(projectId), new mongodb_1.ObjectId(userId), note);
                 res.status(status).json({ message });
             }
             catch (error) {
                 console.log(`Error on create Request : ${error}`);
                 res.status(500).json({ message: "Internel Server error" });
+            }
+        });
+    }
+    acceptReq(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { userId, requestId, teamId } = req.query;
+                const { status, message } = yield this.joinProject.execute(userId, requestId, teamId);
+                res.status(status).json(message);
+            }
+            catch (error) {
+                console.log(`Error on aceepting request:${error}`);
+                res.status(500).json({ message: "Internel Server Error" });
+            }
+        });
+    }
+    declineReq(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { userId, requestId } = req.query;
+                const { status, message } = yield this.rejectRequest.execute(requestId);
+                res.status(status).json({ message });
+            }
+            catch (error) {
+                console.log(`Error on declining request ${error}`);
+                res.status(500).json({ message: "Internel Server Error" });
             }
         });
     }

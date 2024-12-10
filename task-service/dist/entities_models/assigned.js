@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Assigned = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const AssignedSchema = new mongoose_1.Schema({
-    activity_id: { type: mongoose_1.Schema.Types.ObjectId, ref: "Activity", required: true },
+    task_id: { type: mongoose_1.Schema.Types.ObjectId, ref: "Activity", required: true },
     userAccountId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
     roleId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Role", required: true },
     assignedAt: { type: Date, default: Date.now },

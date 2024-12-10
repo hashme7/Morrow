@@ -13,6 +13,7 @@ export class GrpcProjectClient implements IGrpcProjectClient{
     console.log(`grpc client for project server is running`);
   }
   async getProjectByTeamId(teamIds:string[]):Promise<ProjectsResponse>{
+    console.log("teamidssssssssssssssss",teamIds);
     const projectRequest:ProjectRequest = {teamIds};
     return new Promise((resolve,reject)=>{
         this.client.getProjectDetails(projectRequest,(err:ServiceError | null,response:ProjectsResponse)=>{

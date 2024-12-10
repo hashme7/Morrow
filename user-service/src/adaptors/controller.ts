@@ -7,6 +7,8 @@ import {
   IGetRequests,
   IGetTeamMembers,
   IGetUserCases,
+  IJoinProject,
+  IRejectRequest,
   IUpdateImg,
   IUpdateProfile,
 } from "../interfaces/usecases.interface/index.js";
@@ -22,17 +24,11 @@ class UserAuthController {
     private readonly updateImg: IUpdateImg,
     private readonly getAllUsers: IGetAllUsers,
     private readonly createRequest: ICreateRequest,
-    private readonly updateProfileCases: IUpdateProfile, 
-    private readonly getRequestDetails:IGetRequests,
-  ) {
-    this.getUserCases = getUserCases;
-    this.changePasswordCases = changePasswordCases;
-    this.changeEmailCases = changeEmailCases;
-    this.getTeamMembers = getTeamMembers;
-    this.updateImg = updateImg;
-    this.getAllUsers = getAllUsers;
-    this.createRequest = createRequest;
-  }
+    private readonly updateProfileCases: IUpdateProfile,
+    private readonly getRequestDetails: IGetRequests,
+    private readonly joinProject: IJoinProject,
+    private readonly rejectRequest:IRejectRequest
+  ) {}
   async getUser(req: Request, res: Response) {
     const { userId } = req.params;
     try {
@@ -147,7 +143,8 @@ class UserAuthController {
   }
   async sendRequest(req: Request, res: Response) {
     try {
-      const { projectId, userId,note } = req.query;
+      const { projectId, userId, note } = req.query;
+      console.log(note, "note.......");
       const { status, message } = await this.createRequest.execute(
         Number(projectId),
         new ObjectId(userId as string),
@@ -159,14 +156,40 @@ class UserAuthController {
       res.status(500).json({ message: "Internel Server error" });
     }
   }
-  async getRequest(req:Request,res:Response){
+  async acceptReq(req: Request, res: Response) {
     try {
-      const {userId}= req.query;
-      const {status,data,message} = await this.getRequestDetails.execute(new ObjectId(userId as string));
-      res.status(status).json({data,message});
+      const { userId, requestId ,teamId} = req.query;
+      const { status, message } = await this.joinProject.execute(
+        userId as string,
+        requestId as string,
+        teamId as string
+      );
+      res.status(status).json(message);
     } catch (error) {
-      console.log( `Error on get Request : ${error}`);
-      res.status(500).json({message:`Internel server error`});
+      console.log(`Error on aceepting request:${error}`);
+      res.status(500).json({ message: "Internel Server Error" });
+    }
+  }
+  async declineReq(req:Request,res:Response){
+    try {
+      const {userId,requestId} = req.query;
+      const {status,message} = await this.rejectRequest.execute(requestId as string);
+      res.status(status).json({message});
+    } catch (error) {
+      console.log(`Error on declining request ${error}`);
+      res.status(500).json({message:"Internel Server Error"});
+    }
+  }
+  async getRequest(req: Request, res: Response) {
+    try {
+      const { userId } = req.query;
+      const { status, data, message } = await this.getRequestDetails.execute(
+        new ObjectId(userId as string)
+      );
+      res.status(status).json({ data, message });
+    } catch (error) {
+      console.log(`Error on get Request : ${error}`);
+      res.status(500).json({ message: `Internel server error` });
     }
   }
   async logout(req: Request, res: Response) {

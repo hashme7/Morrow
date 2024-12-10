@@ -22,6 +22,8 @@ const sendRequestUsecases_1 = require("../usecases/sendRequestUsecases");
 const updateProfileCases_1 = require("../usecases/updateProfileCases");
 const grpcProjectClient_1 = require("../infrastructure/grpc/grpcProjectClient");
 const getRequestsUseCases_1 = require("../usecases/getRequestsUseCases");
+const joinProject_1 = require("../usecases/joinProject");
+const rejectRequest_1 = require("../usecases/rejectRequest");
 const RabbitMQServiceInstance = new index_1.RabbitMQService();
 const repositoryInstance = new repository_1.default();
 //rpc
@@ -39,5 +41,7 @@ const updateImg = new updateImgUseCases_1.UpdateImage(repositoryInstance, cloudi
 const sendRequest = new sendRequestUsecases_1.SendRequest(repositoryInstance);
 const updateProfile = new updateProfileCases_1.UpdateProfile(repositoryInstance);
 const getRequest = new getRequestsUseCases_1.GetRequests(repositoryInstance, projectRpcClient);
+const joinProject = new joinProject_1.JoinProject(repositoryInstance);
+const rejectRequest = new rejectRequest_1.RejectRequest(repositoryInstance);
 new addTeamConsumer_1.AddTeamConsumer(createTeamInstance);
-exports.authControllerInstance = new controller_1.default(getUserInstance, changePasswordInstance, changeEmailInstance, getTeamMembers, updateImg, getAllUsers, sendRequest, updateProfile, getRequest);
+exports.authControllerInstance = new controller_1.default(getUserInstance, changePasswordInstance, changeEmailInstance, getTeamMembers, updateImg, getAllUsers, sendRequest, updateProfile, getRequest, joinProject, rejectRequest);

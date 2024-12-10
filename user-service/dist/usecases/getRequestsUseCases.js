@@ -21,23 +21,15 @@ class GetRequests {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const requests = yield this.repository.getRequests(userId);
-                console.log(`++++${userId} ++++++++++++++++++++++++++++++++++++
-        ++++++++++++++++++++++++++++
-        +++++++++++++++
-       ${requests} ,requestsslll
-        +++++++++++++
-        _++++++++++++++++++
-        +++++++++++++++++++++++++++++
-        `);
-                const teamIds = requests.map((req) => req.teamId.toString());
+                const teamIds = requests.map((req) => req.team_id.toString());
                 const { projects } = yield this.grpcProjectClient.getProjectByTeamId(teamIds);
                 let requestHash = new Map();
                 for (let req of requests) {
-                    requestHash.set(req.teamId, req.note);
+                    requestHash.set(req.team_id.toString(), { note: req.note, team_id: req.team_id, _id: req._id });
                 }
                 const combinedRequests = projects.map((project) => {
                     var _a, _b;
-                    return (Object.assign(Object.assign({}, project), { note: String(requestHash.get(project.teamId)), projectStartDate: (_a = project.projectStartDate) !== null && _a !== void 0 ? _a : null, projectEndDate: (_b = project.projectEndDate) !== null && _b !== void 0 ? _b : null }));
+                    return (Object.assign(Object.assign({}, project), { _id: String(requestHash.get(project.teamId)._id), team_id: String(requestHash.get(project.teamId).team_id), note: String(requestHash.get(project.teamId).note), projectStartDate: (_a = project.projectStartDate) !== null && _a !== void 0 ? _a : null, projectEndDate: (_b = project.projectEndDate) !== null && _b !== void 0 ? _b : null }));
                 });
                 return { status: 200, message: "requests ", data: combinedRequests };
             }

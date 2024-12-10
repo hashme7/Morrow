@@ -32,6 +32,12 @@ router
     .route("/getRequests")
     .get(controller_1.authControllerInstance.getRequest.bind(controller_1.authControllerInstance));
 router
+    .route("/acceptRequest")
+    .post(controller_1.authControllerInstance.acceptReq.bind(controller_1.authControllerInstance));
+router
+    .route("/declineRequest")
+    .post(controller_1.authControllerInstance.declineReq.bind(controller_1.authControllerInstance));
+router
     .route("/logout")
     .post(controller_1.authControllerInstance.logout.bind(controller_1.authControllerInstance));
 exports.default = router;
