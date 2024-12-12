@@ -1,7 +1,7 @@
 import { Redis } from "ioredis";
 import { IRedisService } from "../../../interfaces/providers.interface";
-import { RedisClientType } from "redis";
-import { IMessage } from "../../../interfaces/types/Data";
+// import { RedisClientType } from "redis";
+// import { IMessage } from "../../../interfaces/types/Data";
 
 export class RedisService implements IRedisService {
   private client: Redis;
@@ -54,7 +54,10 @@ export class RedisService implements IRedisService {
   }
   async publish(channel: string, message: any): Promise<void> {
     try {
-      await this.client.publish(channel, message);
+      const base64Message = Buffer.from(JSON.stringify(message)).toString(
+        "base64"
+      );
+      await this.client.publish(channel, base64Message);
       console.log(`Message published to channel: ${channel}`);
     } catch (err) {
       console.error(`Error publishing message to channel ${channel}:`, err);
@@ -76,12 +79,7 @@ export class RedisService implements IRedisService {
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
       const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
-      console.log(`
-
-        Decoded message in Redis subcriber(pmessage) ${decodedMessage}
-        
-        `, );
-        callback(channel, decodedMessage);
+      callback(channel, JSON.parse(decodedMessage));
     });
   }
   isValidJSON(message: string): boolean {

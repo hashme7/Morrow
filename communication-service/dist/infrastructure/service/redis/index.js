@@ -78,12 +78,13 @@ class RedisService {
         });
         this.subscriber.on("pmessage", (pattern, channel, message) => {
             const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
+            console.log(JSON.parse(decodedMessage));
             console.log(`
 
-        Decoded message in Redis subcriber(pmessage) ${decodedMessage}
+        Decoded message in Redis subcriber(pmessage) ${typeof decodedMessage}
         
         `);
-            callback(channel, decodedMessage);
+            callback(channel, JSON.parse(decodedMessage));
         });
     }
     isValidJSON(message) {
