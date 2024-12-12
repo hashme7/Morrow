@@ -27,11 +27,14 @@ exports.Status = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const StatusSchema = new mongoose_1.Schema({
     name: {
-        type: String
+        type: String,
     },
     id: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
+    team_id: {
+        type: mongoose_1.Schema.Types.ObjectId,
+    },
 });
 exports.Status = mongoose_1.default.model("Status", StatusSchema);

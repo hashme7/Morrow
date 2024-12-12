@@ -54,10 +54,7 @@ export class RedisService implements IRedisService {
   }
   async publish(channel: string, message: any): Promise<void> {
     try {
-      const base64Message = Buffer.from(JSON.stringify(message)).toString(
-        "base64"
-      );
-      await this.client.publish(channel, base64Message);
+      await this.client.publish(channel, JSON.stringify(message));
       console.log(`Message published to channel: ${channel}`);
     } catch (err) {
       console.error(`Error publishing message to channel ${channel}:`, err);
@@ -78,8 +75,13 @@ export class RedisService implements IRedisService {
     });
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
-      const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
-      callback(channel, JSON.parse(decodedMessage));
+      try {
+        const parsedMessage = JSON.parse(message); 
+        console.log(`parsed message from subscriber`,parsedMessage);
+        callback(channel, parsedMessage);
+      } catch (error) {
+        console.log(`error pmessage subsriber`) 
+      }
     });
   }
   isValidJSON(message: string): boolean {

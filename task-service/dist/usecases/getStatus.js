@@ -8,20 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.seedStatus = void 0;
-const status_1 = require("../../entities_models/status");
-const deafulStatus = [
-    { "id": "todo", "title": "To Do" },
-    { "id": "on-progress", "title": "On Progress" },
-    { "id": "completed", "title": "Completed" }
-];
-const seedStatus = () => __awaiter(void 0, void 0, void 0, function* () {
-    for (const status of deafulStatus) {
-        const exists = yield status_1.Status.findOne({ id: status.id });
-        if (!exists) {
-            yield status_1.Status.create(status);
-        }
+exports.GetStatus = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
+class GetStatus {
+    constructor(statusRep) {
+        this.statusRep = statusRep;
     }
-});
-exports.seedStatus = seedStatus;
+    execute(team_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (yield this.statusRep.findManyStatus(new mongoose_1.default.Types.ObjectId(team_id)));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+}
+exports.GetStatus = GetStatus;

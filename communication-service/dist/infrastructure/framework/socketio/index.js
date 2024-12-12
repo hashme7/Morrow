@@ -53,19 +53,11 @@ class WebSocketServer {
         this.redisService.subscribe("channel:room:*", (channel, message) => {
             const roomId = channel.split(":")[2];
             try {
-                console.log(`
-          
-
-
-          message :${message} message:${JSON.stringify(message)}
-          
-
-
-          `);
-                this.io.to(roomId).emit("new_message", JSON.stringify(message));
+                console.log("message", message);
+                this.io.to(roomId).emit("new_message", message);
             }
             catch (error) {
-                console.log(`      
+                console.log(`    
           `);
                 throw error;
             }

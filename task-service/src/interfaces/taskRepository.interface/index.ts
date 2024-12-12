@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-import {ITask} from '../response.interface/index'
+import {IReqTask, ITask} from '../response.interface/index'
 
 export interface ITaskRepository {
-    createTask(task:  Omit<ITask , "createdAt" | "updatedAt">): Promise<ITask>;
+    createTask(task:  IReqTask): Promise<ITask>;
     deleteProject(taskId:mongoose.Types.ObjectId):Promise<void>;
+    deleteTasksOnColumn(team_id:mongoose.Types.ObjectId,id:string):Promise<void>
   }
   

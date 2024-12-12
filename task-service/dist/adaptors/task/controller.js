@@ -19,8 +19,12 @@ class TaskController {
     createTask(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const taskData = req.body;
-                const newTask = yield this.createTaskUseCase.execute(taskData);
+                const team_id = req.query.team_id;
+                const status = req.query.status;
+                const id = req.query.id;
+                const name = req.query.name;
+                const priority = req.query.priority;
+                const newTask = yield this.createTaskUseCase.execute({ status, id, name, priority, team_id });
                 res.status(201).json(newTask);
             }
             catch (error) {

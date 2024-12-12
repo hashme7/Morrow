@@ -8,20 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DBConfig = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const DBConfig = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const DB_URL = process.env.MONGO_URL;
-        yield mongoose_1.default.connect(DB_URL);
-        console.log("task-service : database is succesfully connected");
+exports.CreateStatus = void 0;
+class CreateStatus {
+    constructor(statusRep) {
+        this.statusRep = statusRep;
     }
-    catch (error) {
-        console.log("error on connecting database on task-service", error);
+    execute(status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (yield this.statusRep.insertStatus(status));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
     }
-});
-exports.DBConfig = DBConfig;
+}
+exports.CreateStatus = CreateStatus;

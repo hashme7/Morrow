@@ -28,11 +28,12 @@ const mongoose_1 = __importStar(require("mongoose"));
 const TaskSchema = new mongoose_1.Schema({
     teamId: { type: mongoose_1.Schema.Types.ObjectId, ref: "Team", required: true },
     name: { type: String, required: true },
-    description: { type: String },
-    plannedStartDate: { type: Date, required: true },
-    plannedEndDate: { type: Date, required: true },
     status: { type: mongoose_1.Schema.Types.ObjectId, ref: "Status" },
-    priority: { type: String },
+    priority: {
+        type: String,
+        enum: ["Urgent", "Low", "Normal", "High"],
+        required: true,
+    },
     subTaskIds: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "SubTask" }],
 }, { timestamps: true });
 exports.Task = mongoose_1.default.model("Task", TaskSchema);

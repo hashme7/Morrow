@@ -11,6 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisService = void 0;
 const ioredis_1 = require("ioredis");
+// import { RedisClientType } from "redis";
+// import { IMessage } from "../../../interfaces/types/Data";
 class RedisService {
     constructor(host, port, password) {
         this.host = host;
@@ -59,7 +61,7 @@ class RedisService {
     publish(channel, message) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.client.publish(channel, message);
+                yield this.client.publish(channel, JSON.stringify(message));
                 console.log(`Message published to channel: ${channel}`);
             }
             catch (err) {
@@ -77,14 +79,14 @@ class RedisService {
             }
         });
         this.subscriber.on("pmessage", (pattern, channel, message) => {
-            const decodedMessage = Buffer.from(message, "base64").toString("utf-8");
-            console.log(JSON.parse(decodedMessage));
-            console.log(`
-
-        Decoded message in Redis subcriber(pmessage) ${typeof decodedMessage}
-        
-        `);
-            callback(channel, JSON.parse(decodedMessage));
+            try {
+                const parsedMessage = JSON.parse(message);
+                console.log(`parsed message from subscriber`, parsedMessage);
+                callback(channel, parsedMessage);
+            }
+            catch (error) {
+                console.log(`error pmessage subsriber`);
+            }
         });
     }
     isValidJSON(message) {

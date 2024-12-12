@@ -9,30 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskRepository = void 0;
-const task_1 = require("../../../entities_models/task");
-class TaskRepository {
-    deleteProject(taskId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield task_1.Task.deleteOne({ _id: taskId });
-            }
-            catch (error) {
-                console.log(`Error on deleteProject ${error}`);
-                throw error;
-            }
-        });
+exports.DeleteStatus = void 0;
+class DeleteStatus {
+    constructor(statusRep) {
+        this.statusRep = statusRep;
     }
-    createTask(task) {
+    ;
+    execute(team_id, id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield task_1.Task.create(task);
+                yield this.statusRep.findOneAndDelete(team_id, id);
+                return;
             }
             catch (error) {
-                console.log(`Error on creating task ${error}`);
                 throw error;
             }
         });
     }
 }
-exports.TaskRepository = TaskRepository;
+exports.DeleteStatus = DeleteStatus;

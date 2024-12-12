@@ -14,15 +14,13 @@ export class SendMessage implements ISendMessage {
   async execute(message: IMessage) {
     try {
       await this.rabbitMQServie.publishMessage("chat_queue", message);
-      const base64Message = Buffer.from(
-        JSON.stringify({
+      const msg = {
           ...message,
           timestamp: message.timestamp.toDateString(),
-        })
-      ).toString("base64");
+        }
       await this.redisService.publish(
         `channel:room:${message.receiverId}`,
-        base64Message 
+        msg 
       );
       return { status: 201, message: "success" };
     } catch (error) {

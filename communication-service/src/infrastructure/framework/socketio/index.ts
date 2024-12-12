@@ -54,13 +54,14 @@ export class WebSocketServer {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
       try {
-        this.io.to(roomId).emit("new_message", JSON.stringify(message));
+        console.log("message",message)
+        this.io.to(roomId).emit("new_message", message);
       } catch (error) {
-        console.log(`      
+        console.log(`    
           `)
           throw error;
       }
-    });
+    });  
   }
   private isValidJSON(message: string): boolean {
     try { 
@@ -68,7 +69,7 @@ export class WebSocketServer {
       return true;
     } catch {
       return false;
-    }
+    } 
   }
 
   public configureSocketEvents() {

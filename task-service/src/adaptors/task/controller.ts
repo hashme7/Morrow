@@ -7,8 +7,12 @@ export class TaskController {
 
   async createTask(req: Request, res: Response) {
     try {
-      const taskData = req.body;
-      const newTask = await this.createTaskUseCase.execute(taskData);
+      const team_id = req.query.team_id as string;
+      const status = req.query.status as string; 
+      const id = req.query.id as string;
+      const name = req.query.name as string;
+      const priority = req.query.priority as string;
+      const newTask = await this.createTaskUseCase.execute({status,id,name ,priority ,team_id});
       res.status(201).json(newTask);
     } catch (error) {
       console.error(`Error creating task: ${error}`);
