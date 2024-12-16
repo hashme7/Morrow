@@ -15,7 +15,7 @@ const startServer = async (): Promise<void> => {
     );
   } catch (error) {
     console.log(error);
-  }
+  }  
 };  
    
 startServer();
