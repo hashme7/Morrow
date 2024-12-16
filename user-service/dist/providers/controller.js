@@ -24,12 +24,13 @@ const grpcProjectClient_1 = require("../infrastructure/grpc/grpcProjectClient");
 const getRequestsUseCases_1 = require("../usecases/getRequestsUseCases");
 const joinProject_1 = require("../usecases/joinProject");
 const rejectRequest_1 = require("../usecases/rejectRequest");
-const RabbitMQServiceInstance = new index_1.RabbitMQService();
 const repositoryInstance = new repository_1.default();
 //rpc
 const userRpcInstance = new userService_1.UserService(repositoryInstance);
 const projectRpcClient = new grpcProjectClient_1.GrpcProjectClient();
 new GrpcServer_1.GrpcServer(userRpcInstance);
+//rabbitmq
+const RabbitMQServiceInstance = new index_1.RabbitMQService();
 const createTeamInstance = new createTeamUseCases_1.CreateTeam(repositoryInstance, RabbitMQServiceInstance);
 const cloudinaryInstance = new cloudinary_1.Cloudinary();
 const getUserInstance = new getUserUsecases_1.GetUser(repositoryInstance);

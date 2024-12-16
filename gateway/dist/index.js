@@ -22,7 +22,7 @@ app.use('/project', dist_1.authenticate, (0, express_http_proxy_1.default)('http
 app.use('/user', dist_1.authenticate, (0, express_http_proxy_1.default)('http://localhost:3000'));
 app.use('/communicate', dist_1.authenticate, (0, express_http_proxy_1.default)('http://localhost:2000'));
 app.use('/task', (0, express_http_proxy_1.default)('http://localhost:5000'));
-app.use('/', (0, express_http_proxy_1.default)('http://localhost:1000'));
+app.use('/', (0, express_http_proxy_1.default)('http://localhost:9090'));
 app.listen(8000, () => {
     console.log(`gateway service is running on port :http://localhost:8000`);
 });

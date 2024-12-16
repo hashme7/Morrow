@@ -1,5 +1,7 @@
+import { hostname } from "os";
+
 export const rabbitMQConfig = {
-  uri: "amqp://rabbitmq",
+  uri: "amqp://localhost",
   queueName1: "project.team.creation",
   queueName2:"project.teamId.updation",
 };

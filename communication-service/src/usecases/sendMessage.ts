@@ -16,7 +16,7 @@ export class SendMessage implements ISendMessage {
       await this.rabbitMQServie.publishMessage("chat_queue", message);
       const msg = {
           ...message,
-          timestamp: message.timestamp.toDateString(),
+          timestamp: message.timestamp.toDateString(),  
         }
       await this.redisService.publish(
         `channel:room:${message.receiverId}`,

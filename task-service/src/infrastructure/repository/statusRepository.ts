@@ -87,7 +87,7 @@ export class StatusRepository implements IStatusRepository {
       if (updatedStatus) {
         return updatedStatus;
       } else {
-        throw new Error("can t able update the status");
+        throw new Error("can't able update the status");
       }
     } catch (error) {
       console.log("error on upating staus");

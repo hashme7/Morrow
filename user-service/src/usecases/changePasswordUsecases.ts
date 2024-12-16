@@ -19,7 +19,7 @@ export class ChangePassword {
     }
     if (!user || !(await bcrypt.compare(cpassword, user.password))) {
       console.log(`invalid credentials`)
-      return {
+      return {  
         status: 401,
         message: "invalid credentials OR user is not there",
         valid: false,

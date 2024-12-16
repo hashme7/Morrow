@@ -6,4 +6,4 @@ export interface ITaskRepository {
     deleteProject(taskId:mongoose.Types.ObjectId):Promise<void>;
     deleteTasksOnColumn(team_id:mongoose.Types.ObjectId,id:string):Promise<void>
   }
-  
+   

@@ -56,6 +56,7 @@ export class WebSocketServer {
       try {
         console.log("message",message)
         this.io.to(roomId).emit("new_message", message);
+        this.io.emit('')
       } catch (error) {
         console.log(`    
           `)

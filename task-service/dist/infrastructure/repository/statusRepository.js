@@ -101,7 +101,7 @@ class StatusRepository {
                     return updatedStatus;
                 }
                 else {
-                    throw new Error("can t able update the status");
+                    throw new Error("can't able update the status");
                 }
             }
             catch (error) {

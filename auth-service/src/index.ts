@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(__dirname, '.././.env') });
 const startServer = async (): Promise<void> => {
   try {
     await DBConfig();  
-    const port = process.env.PORT || 1000;
+    const port = process.env.PORT ||9090;
     const app = createServer();
     app?.listen(port, () =>
       console.log(`auth-service successfully running on port ${port}`)
@@ -16,6 +16,6 @@ const startServer = async (): Promise<void> => {
     console.log(error); 
   }
 };
-  
+     
 startServer();  
        

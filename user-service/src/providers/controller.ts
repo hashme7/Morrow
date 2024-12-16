@@ -21,16 +21,15 @@ import { GetRequests } from "../usecases/getRequestsUseCases";
 import { JoinProject } from "../usecases/joinProject";
 import { RejectRequest } from "../usecases/rejectRequest";
 
-const RabbitMQServiceInstance = new RabbitMQService();
 
 const repositoryInstance = new Repository();
 
 //rpc
 const userRpcInstance = new UserService(repositoryInstance);
-
 const projectRpcClient = new GrpcProjectClient();
-
 new GrpcServer(userRpcInstance);
+//rabbitmq
+const RabbitMQServiceInstance = new RabbitMQService();
 
 const createTeamInstance = new CreateTeam(
   repositoryInstance,
