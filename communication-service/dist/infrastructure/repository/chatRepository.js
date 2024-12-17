@@ -37,5 +37,13 @@ class ChatRepository {
             }
         });
     }
+    updateMsg(messageId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+            }
+            catch (error) {
+            }
+        });
+    }
 }
 exports.ChatRepository = ChatRepository;

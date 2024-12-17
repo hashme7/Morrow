@@ -13,11 +13,12 @@ exports.WebSocketServer = void 0;
 const socket_io_1 = require("socket.io");
 const socket_io_redis_1 = require("socket.io-redis");
 class WebSocketServer {
-    constructor(port, redisService, chatRepository, joinSocket) {
+    constructor(port, redisService, chatRepository, joinSocket, updateMsgSeen) {
         this.port = port;
         this.redisService = redisService;
         this.chatRepository = chatRepository;
         this.joinSocket = joinSocket;
+        this.updateMsgSeen = updateMsgSeen;
         this.MAX_RETRIES = 3;
         this.RETRY_INTERVAL = 5000;
         this.io = new socket_io_1.Server({
@@ -64,7 +65,7 @@ class WebSocketServer {
     configureSocketEvents() {
         this.io.on("connection", (socket) => {
             console.log(`User connected: ${socket.id}`);
-            socket.on("joinRoom", (roomId) => __awaiter(this, void 0, void 0, function* () {
+            socket.on("joinRoom", (roomId, userId) => __awaiter(this, void 0, void 0, function* () {
                 socket.join(roomId);
                 yield this.joinSocket.execute();
                 console.log(`User ${socket.id} joined room ${roomId}`);
@@ -72,6 +73,14 @@ class WebSocketServer {
             socket.on("disconnect", () => {
                 console.log(`User disconnected: ${socket.id}`);
             });
+            socket.on('message_seen', (_a) => __awaiter(this, [_a], void 0, function* ({ messageId, userId }) {
+                try {
+                    yield this.updateMsgSeen.execute({ messageId, userId });
+                }
+                catch (error) {
+                    throw error;
+                }
+            }));
         });
     }
 }

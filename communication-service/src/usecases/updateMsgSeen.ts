@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IChatRepository } from "../interfaces/chatRepository.interface";
 import { IUpdateMsgSeen } from "../interfaces/usecases.interface";
 
@@ -7,7 +8,7 @@ export class UpdateMsgSeen implements IUpdateMsgSeen{
     }
     async execute({ messageId, userId }: { messageId: string; userId: string; }): Promise<void> {
         try {
-            return (await this.repsitory.updateMsg());
+            return (await this.repsitory.updateMsg(new Types.ObjectId( messageId),new Types.ObjectId(userId)));
         } catch (error) {
             console.log(`error on updat msg seen :${error}`)
             throw error;
