@@ -10,17 +10,12 @@ export interface IRedisService {
   getPublisher(): Redis;
   getSubscriber(): Redis;
   close(): Promise<void>;
+  addActiveUser(socketId: string, userId: string): Promise<void>;
+  removeActiveUser(socketId: string, userId: string): Promise<void>;
+  getActiveUser(userId: string): Promise<string | null>;
 }
 export interface IMessageWorker {
-  /**
-   * Starts the message worker to consume messages and periodically flush batches.
-   */
   start(): void;
-
-  /**
-   * Flushes the current batch of messages to the repository.
-   * @returns A promise that resolves when the batch is saved.
-   */
   flushBatch(): Promise<void>;
 }
 

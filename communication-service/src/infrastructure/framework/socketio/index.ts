@@ -2,7 +2,10 @@ import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
-import { IJoinSocket, IUpdateMsgSeen } from "../../../interfaces/usecases.interface";
+import {
+  IJoinSocket,
+  IUpdateMsgSeen,
+} from "../../../interfaces/usecases.interface";
 import { Console } from "console";
 
 export class WebSocketServer {
@@ -15,7 +18,7 @@ export class WebSocketServer {
     public redisService: RedisService,
     public chatRepository: IChatRepository,
     public joinSocket: IJoinSocket,
-    public updateMsgSeen :IUpdateMsgSeen,
+    public updateMsgSeen: IUpdateMsgSeen
   ) {
     this.io = new Server({
       cors: {
@@ -55,34 +58,46 @@ export class WebSocketServer {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
       try {
-        console.log("message",message)
+        console.log("message", message);
         this.io.to(roomId).emit("new_message", message);
       } catch (error) {
-          throw error;
+        throw error;
       }
-    });  
+    });
   }
   public configureSocketEvents() {
     this.io.on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
 
       socket.on("joinRoom", async (roomId: string, userId: string) => {
-          
-        socket.join(roomId);
-        await this.joinSocket.execute();
-        console.log(`User ${socket.id} joined room ${roomId}`);
-      });
-
-      socket.on("disconnect", () => {
-        console.log(`User disconnected: ${socket.id}`);
-      });
-      socket.on('message_seen', async ({ messageId, userId }) => {
         try {
-          await this.updateMsgSeen.execute({messageId,userId})
+          await this.redisService.addActiveUser(socket.id, userId);
+          socket.join(roomId);
+          await this.joinSocket.execute();
+          console.log(`User ${socket.id} joined room ${roomId}`);
         } catch (error) {
           throw error;
         }
-      })
+      });
+
+      socket.on("disconnect", async(userId) => {
+        try {
+          await this.redisService.removeActiveUser(socket.id,userId)
+          console.log(`User disconnected: ${socket.id}`);
+        } catch (error) {
+          throw error;
+        }
+      });
+      socket.on("message_seen", async ({ messageId, userId }) => {
+        try {
+          const seenedMsg = await this.updateMsgSeen.execute({ messageId, userId });
+          const senderId = await this.redisService.getActiveUser(userId);
+          if (!senderId) return;
+          socket.to(senderId).emit('message_status', { seenedMsg });
+        } catch (error) {
+          throw error;
+        }
+      });
     });
   }
 }

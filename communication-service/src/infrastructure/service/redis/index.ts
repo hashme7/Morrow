@@ -36,6 +36,31 @@ export class RedisService implements IRedisService {
 
     this.addErrorListeners();
   }
+  async addActiveUser(socketId:string,userId:string): Promise<void> {
+    try {
+      await this.client.set(userId, socketId);
+      console.log(`User ${userId} added to active users.`);
+    } catch (error) {
+      console.log(`Error on adding active user to redis service`);
+      throw error
+    }
+  }
+  async removeActiveUser(socketId: string, userId: string): Promise<void>{
+    try {
+      await this.client.del(userId, socketId);
+      console.log(`User ${userId} removed from active users`);
+    } catch (error) {
+      console.log(`error on removing the active user from redis service`);
+      throw error;
+    }
+  }
+  async getActiveUser(userId: string): Promise<string | null>{
+    try {
+      return await this.client.get(userId);
+    } catch (error) {
+      throw error;
+    }
+  }
   async connect(): Promise<void> {
     try {
       await this.client.ping();
