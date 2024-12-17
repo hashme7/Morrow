@@ -11,5 +11,5 @@ export interface IGetMessage{
 }
 
 export interface IUpdateMsgSeen{
-    execute({messageId,userId}:{messageId:string,userId:string}):Promise<IMessage>
+    execute({messageId,userId}:{messageId:string,userId:string}):Promise<IMessage | null>
 }

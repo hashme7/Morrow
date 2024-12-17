@@ -66,16 +66,32 @@ class WebSocketServer {
         this.io.on("connection", (socket) => {
             console.log(`User connected: ${socket.id}`);
             socket.on("joinRoom", (roomId, userId) => __awaiter(this, void 0, void 0, function* () {
-                socket.join(roomId);
-                yield this.joinSocket.execute();
-                console.log(`User ${socket.id} joined room ${roomId}`);
-            }));
-            socket.on("disconnect", () => {
-                console.log(`User disconnected: ${socket.id}`);
-            });
-            socket.on('message_seen', (_a) => __awaiter(this, [_a], void 0, function* ({ messageId, userId }) {
                 try {
-                    yield this.updateMsgSeen.execute({ messageId, userId });
+                    yield this.redisService.addActiveUser(socket.id, userId);
+                    socket.join(roomId);
+                    yield this.joinSocket.execute();
+                    console.log(`User ${socket.id} joined room ${roomId}`);
+                }
+                catch (error) {
+                    throw error;
+                }
+            }));
+            socket.on("disconnect", (userId) => __awaiter(this, void 0, void 0, function* () {
+                try {
+                    yield this.redisService.removeActiveUser(socket.id, userId);
+                    console.log(`User disconnected: ${socket.id}`);
+                }
+                catch (error) {
+                    throw error;
+                }
+            }));
+            socket.on("message_seen", (_a) => __awaiter(this, [_a], void 0, function* ({ messageId, userId }) {
+                try {
+                    const seenedMsg = yield this.updateMsgSeen.execute({ messageId, userId });
+                    const senderId = yield this.redisService.getActiveUser(userId);
+                    if (!senderId)
+                        return;
+                    socket.to(senderId).emit('message_status', { seenedMsg });
                 }
                 catch (error) {
                     throw error;

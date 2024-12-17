@@ -29,7 +29,10 @@ class ChatRepository {
         return __awaiter(this, arguments, void 0, function* (roomId, page = 1, limit = 20) {
             try {
                 const skip = (page - 1) * limit;
-                const messages = yield chat_1.default.find({ receiverId: roomId }).sort({ timestamp: -1 }).skip(skip).limit(limit);
+                const messages = yield chat_1.default.find({ receiverId: roomId })
+                    .sort({ timestamp: -1 })
+                    .skip(skip)
+                    .limit(limit);
                 return messages.reverse();
             }
             catch (error) {
@@ -40,13 +43,10 @@ class ChatRepository {
     updateMsg(messageId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const updatedMsg = yield chat_1.default.findByIdAndUpdate(messageId, { $addToSet: { readBy: userId } }, { new: true }).lean;
-                if (updatedMsg) {
-                    return updatedMsg;
-                }
-                else {
-                    throw new Error("message not found");
-                }
+                const updatedMsg = yield chat_1.default.findByIdAndUpdate(messageId, { $addToSet: { readBy: userId } }, { new: true }).lean();
+                if (!updatedMsg)
+                    throw new Error('message not found');
+                return updatedMsg;
             }
             catch (error) {
                 throw error;

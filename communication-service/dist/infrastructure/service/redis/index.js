@@ -40,6 +40,40 @@ class RedisService {
         });
         this.addErrorListeners();
     }
+    addActiveUser(socketId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.client.set(userId, socketId);
+                console.log(`User ${userId} added to active users.`);
+            }
+            catch (error) {
+                console.log(`Error on adding active user to redis service`);
+                throw error;
+            }
+        });
+    }
+    removeActiveUser(socketId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.client.del(userId, socketId);
+                console.log(`User ${userId} removed from active users`);
+            }
+            catch (error) {
+                console.log(`error on removing the active user from redis service`);
+                throw error;
+            }
+        });
+    }
+    getActiveUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.client.get(userId);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
