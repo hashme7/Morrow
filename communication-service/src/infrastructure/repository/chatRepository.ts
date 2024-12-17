@@ -22,15 +22,14 @@ export class ChatRepository implements IChatRepository {
   }
   async updateMsg(messageId: Types.ObjectId, userId: Types.ObjectId): Promise<void> {
     try {
-      const updatedMsg = await ChatMessage.findOne({ _id: messageId }).lean();
+      const updatedMsg = await ChatMessage.findByIdAndUpdate(messageId, { $addToSet: { readBy: userId } }, { new: true }).lean;
       if (updatedMsg) {
-        
         return updatedMsg;
       } else {
-        throw new Error("message is not found")
+        throw new Error("message not found");
       }
     } catch (error) {
-      
+      throw error;
     }
   }
 }

@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateMsgSeen = void 0;
+const mongoose_1 = require("mongoose");
 class UpdateMsgSeen {
     constructor(repsitory) {
         this.repsitory = repsitory;
@@ -17,7 +18,7 @@ class UpdateMsgSeen {
     execute(_a) {
         return __awaiter(this, arguments, void 0, function* ({ messageId, userId }) {
             try {
-                return (yield this.repsitory.updateMsg());
+                return (yield this.repsitory.updateMsg(new mongoose_1.Types.ObjectId(messageId), new mongoose_1.Types.ObjectId(userId)));
             }
             catch (error) {
                 console.log(`error on updat msg seen :${error}`);

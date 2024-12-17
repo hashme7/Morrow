@@ -40,6 +40,13 @@ class ChatRepository {
     updateMsg(messageId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const updatedMsg = yield chat_1.default.findOne({ _id: messageId }).lean();
+                if (updatedMsg) {
+                    return updatedMsg;
+                }
+                else {
+                    throw new Error("message is not found");
+                }
             }
             catch (error) {
             }
