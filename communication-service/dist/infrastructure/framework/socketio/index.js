@@ -55,23 +55,11 @@ class WebSocketServer {
             try {
                 console.log("message", message);
                 this.io.to(roomId).emit("new_message", message);
-                this.io.emit('');
             }
             catch (error) {
-                console.log(`    
-          `);
                 throw error;
             }
         });
-    }
-    isValidJSON(message) {
-        try {
-            JSON.parse(message);
-            return true;
-        }
-        catch (_a) {
-            return false;
-        }
     }
     configureSocketEvents() {
         this.io.on("connection", (socket) => {

@@ -1,0 +1,17 @@
+import { IChatRepository } from "../interfaces/chatRepository.interface";
+import { IUpdateMsgSeen } from "../interfaces/usecases.interface";
+
+export class UpdateMsgSeen implements IUpdateMsgSeen{
+    constructor(private repsitory: IChatRepository) {
+        
+    }
+    async execute({ messageId, userId }: { messageId: string; userId: string; }): Promise<void> {
+        try {
+            return (await this.repsitory.updateMsg());
+        } catch (error) {
+            console.log(`error on updat msg seen :${error}`)
+            throw error;
+        }
+    }
+
+}

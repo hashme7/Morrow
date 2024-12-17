@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
 import { createAdapter } from "socket.io-redis";
-import { IJoinSocket } from "../../../interfaces/usecases.interface";
+import { IJoinSocket, IUpdateMsgSeen } from "../../../interfaces/usecases.interface";
 import { Console } from "console";
 
 export class WebSocketServer {
@@ -14,7 +14,8 @@ export class WebSocketServer {
     public port: number,
     public redisService: RedisService,
     public chatRepository: IChatRepository,
-    public joinSocket: IJoinSocket
+    public joinSocket: IJoinSocket,
+    public updateMsgSeen :IUpdateMsgSeen,
   ) {
     this.io = new Server({
       cors: {
@@ -56,28 +57,16 @@ export class WebSocketServer {
       try {
         console.log("message",message)
         this.io.to(roomId).emit("new_message", message);
-        this.io.emit('')
       } catch (error) {
-        console.log(`    
-          `)
           throw error;
       }
     });  
   }
-  private isValidJSON(message: string): boolean {
-    try { 
-      JSON.parse(message);
-      return true;
-    } catch {
-      return false;
-    } 
-  }
-
   public configureSocketEvents() {
     this.io.on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
 
-      socket.on("joinRoom", async (roomId: string) => {
+      socket.on("joinRoom", async (roomId: string,userId:string) => {
         socket.join(roomId);
         await this.joinSocket.execute();
         console.log(`User ${socket.id} joined room ${roomId}`);
@@ -86,6 +75,13 @@ export class WebSocketServer {
       socket.on("disconnect", () => {
         console.log(`User disconnected: ${socket.id}`);
       });
+      socket.on('message_seen', async ({ messageId, userId }) => {
+        try {
+          await this.updateMsgSeen.execute({messageId,userId})
+        } catch (error) {
+          throw error;
+        }
+      })
     });
   }
 }

@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import ChatMessage from "../../entities_modal/chat";
 import { IChatRepository } from "../../interfaces/chatRepository.interface";
 import { IMessage } from "../../interfaces/types/Data";
@@ -17,6 +18,13 @@ export class ChatRepository implements IChatRepository {
       return messages.reverse();
     } catch (error) {
       throw error;      
+    }
+  }
+  async updateMsg(messageId: Types.ObjectId, userId: Types.ObjectId): Promise<void> {
+    try {
+      
+    } catch (error) {
+      
     }
   }
 }

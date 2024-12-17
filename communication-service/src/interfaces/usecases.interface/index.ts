@@ -9,3 +9,7 @@ export interface IJoinSocket{
 export interface IGetMessage{
     execute(roomId:string,page:number):Promise<IMessage[]>
 }
+
+export interface IUpdateMsgSeen{
+    execute({messageId,userId}:{messageId:string,userId:string}):Promise<IMessage>
+}
