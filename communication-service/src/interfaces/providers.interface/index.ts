@@ -16,7 +16,7 @@ export interface IRedisService {
   getActiveUser(userId: string): Promise<string | null>;
 }
 export interface IMessageWorker {
-  start(): void;
+  start(): void;  
   flushBatch(): Promise<void>;
 }
 
