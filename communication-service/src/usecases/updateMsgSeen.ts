@@ -5,7 +5,7 @@ import { IMessage } from "../interfaces/types/Data";
 import { IMessageWorker } from "../interfaces/providers.interface";
 
 export class UpdateMsgSeen implements IUpdateMsgSeen{
-    constructor(private repsitory: IChatRepository,private workerMsg:IMessageWorker) {
+    constructor(private repsitory: IChatRepository) {
         
     }
     async execute({ messageId, userId }: { messageId: string; userId: string; }): Promise<IMessage | undefined> {
