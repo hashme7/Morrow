@@ -15,8 +15,8 @@ class MessageWorker {
         this.rabbitMQService = rabbitMQService;
         this.chatRepository = chatRepository;
         this.batch = [];
-        this.BATCH_SIZE = 300;
-        this.FLUSH_INTERVAL = 5000;
+        this.BATCH_SIZE = 200;
+        this.FLUSH_INTERVAL = 200;
     }
     start() {
         this.rabbitMQService.consumeMessages("chat_queue", (message) => {

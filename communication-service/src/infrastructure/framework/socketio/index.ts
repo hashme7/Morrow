@@ -94,7 +94,7 @@ export class WebSocketServer {
           const senderId = await this.redisService.getActiveUser(userId);
           if (!senderId) return;
           socket.to(senderId).emit('message_status', { seenedMsg });
-        } catch (error) {
+        } catch (error) { 
           throw error;
         }
       });
