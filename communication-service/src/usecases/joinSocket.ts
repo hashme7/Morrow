@@ -10,4 +10,4 @@ export class JoinSocket{
             throw error;
         }
     };
-}
+}   
