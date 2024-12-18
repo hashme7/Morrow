@@ -12,9 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateMsgSeen = void 0;
 const mongoose_1 = require("mongoose");
 class UpdateMsgSeen {
-    constructor(repsitory, workerMsg) {
+    constructor(repsitory) {
         this.repsitory = repsitory;
-        this.workerMsg = workerMsg;
     }
     execute(_a) {
         return __awaiter(this, arguments, void 0, function* ({ messageId, userId }) {
