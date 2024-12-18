@@ -6,13 +6,13 @@ import {
 
 export class Controller {
   constructor(
-    private createProjectCases: ICreateProjectCases,
+    private createProjectCases: ICreateProjectCases,  
     private getProjectByUserIdCases: IGetProjectsByUserId
   ) {}
   async createProject(req: Request, res: Response) {
     try {
       const { userId } = req.query;
-      const data = req.body;
+      const data = req.body;  
       const response = await this.createProjectCases.execute(
         data,
         userId as string  
