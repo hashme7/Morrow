@@ -18,7 +18,7 @@ export class UpdateMsgSeen implements IUpdateMsgSeen{
                 return undefined;
             }
         } catch (error) {
-            console.log(`error on updat msg seen :${error}`)
+            console.log(`error on updat msg seen :${error}`)   
             throw error;
         }
     }
