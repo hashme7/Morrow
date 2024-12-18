@@ -7,3 +7,4 @@ export interface IMessage {
     timestamp: Date;
     readBy: string[];
 }
+  
