@@ -18,6 +18,7 @@ class UpdateMsgSeen {
     execute(_a) {
         return __awaiter(this, arguments, void 0, function* ({ messageId, userId }) {
             try {
+                console.log(`                                 update mess seeen `);
                 return (yield this.repsitory.updateMsg(new mongoose_1.Types.ObjectId(messageId), new mongoose_1.Types.ObjectId(userId)));
             }
             catch (error) {
