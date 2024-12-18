@@ -12,14 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateMsgSeen = void 0;
 const mongoose_1 = require("mongoose");
 class UpdateMsgSeen {
-    constructor(repsitory) {
+    constructor(repsitory, workerMsg) {
         this.repsitory = repsitory;
+        this.workerMsg = workerMsg;
     }
     execute(_a) {
         return __awaiter(this, arguments, void 0, function* ({ messageId, userId }) {
             try {
-                console.log(`                                 update mess seeen `);
-                return (yield this.repsitory.updateMsg(new mongoose_1.Types.ObjectId(messageId), new mongoose_1.Types.ObjectId(userId)));
+                console.log(`                update message ${messageId} userId: ${userId}    `);
+                const updatedMsg = yield this.repsitory.updateMsg(new mongoose_1.Types.ObjectId(messageId), new mongoose_1.Types.ObjectId(userId));
+                if (updatedMsg) {
+                    return updatedMsg;
+                }
+                else {
+                    return undefined;
+                }
             }
             catch (error) {
                 console.log(`error on updat msg seen :${error}`);

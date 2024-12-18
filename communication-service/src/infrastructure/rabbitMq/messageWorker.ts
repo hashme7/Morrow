@@ -1,11 +1,12 @@
 import { RabbitMQService } from ".";
 import { IChatRepository } from "../../interfaces/chatRepository.interface";
+import { IMessageWorker } from "../../interfaces/providers.interface";
 import { IMessage } from "../../interfaces/types/Data";
 
-export class MessageWorker {
+export class MessageWorker implements IMessageWorker{
   private batch: IMessage[] = [];
   private readonly BATCH_SIZE = 200;
-  private readonly FLUSH_INTERVAL = 200;
+  private readonly FLUSH_INTERVAL = 200;   
   constructor(
     private rabbitMQService: RabbitMQService,
     private chatRepository: IChatRepository
@@ -19,9 +20,9 @@ export class MessageWorker {
         }
       });
       setInterval(() => {
-        if (this.batch.length > 0) {
+        if (this.batch.length > 0) {  
           this.flushBatch();
-        }
+        }  
       }, this.FLUSH_INTERVAL);
   }
   async flushBatch(): Promise<void>{

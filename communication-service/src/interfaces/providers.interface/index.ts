@@ -1,6 +1,7 @@
 import { Redis } from 'ioredis';
 import { Server } from 'socket.io';
 import { IChatRepository } from '../chatRepository.interface';
+import { IMessage } from '../types/Data';
 
 export interface IRedisService {
   connect(): Promise<void>;
