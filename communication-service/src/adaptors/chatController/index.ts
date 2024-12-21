@@ -28,7 +28,7 @@ export class ChatController {
       console.error("Error creating message:", (error as Error).message);
       throw error;
     }
-  }
+  }  
   async getMessage(req: Request, res: Response) {
     try {
       const roomId = req.query.receiverId as string;
