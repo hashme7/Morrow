@@ -13,7 +13,12 @@ export class CreateTeam {
     const response = JSON.parse(message.content.toString());
     const newTeam = await this.repository.createTeam(response);
     if(newTeam){
-      await this.repository.addTeamMembers(response.userId,newTeam._id)
+      await this.repository.addTeamMembers(response.userId, newTeam._id)
+      await this.repository.addRole(
+        response.userId,
+        newTeam._id,
+        "ProjectManager"
+      );
       await this.rabbitMQ.publish(rabbitMQConfig.queueName2,{
         projectId:newTeam.projectId,
         teamId:newTeam._id.toString().trim(),

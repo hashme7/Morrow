@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { IUser } from "./user";
 import { IProject } from "./project";
 
@@ -10,7 +10,7 @@ export interface response {
       refreshToken?:string | null | undefined
       user?:IUser |null
     },
-    data?:IUser  | {team_id:mongoose.Types.ObjectId}[]| null | IUser[] | string[] | IFinalRequests[],
+    data?:IUser  | {team_id:mongoose.Types.ObjectId}[]| null | IUser[] | string[] | IFinalRequests[] | IRole,
     valid?:boolean,
     userId?:mongoose.Types.ObjectId,
     totalItems?:number,
@@ -40,4 +40,10 @@ export interface IFinalRequests {
   plannedEndDate: Date | undefined;
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
+}
+
+export interface IRole {
+  user_account: Types.ObjectId;
+  team_id: Types.ObjectId;
+  role: "Developer" | "TeamLead" | "ProjectManager";
 }

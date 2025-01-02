@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const mongodb_1 = require("mongodb");
 class UserAuthController {
-    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, updateProfileCases, getRequestDetails, joinProject, rejectRequest) {
+    constructor(getUserCases, changePasswordCases, changeEmailCases, getTeamMembers, updateImg, getAllUsers, createRequest, updateProfileCases, getRequestDetails, joinProject, rejectRequest, changeRole) {
         this.getUserCases = getUserCases;
         this.changePasswordCases = changePasswordCases;
         this.changeEmailCases = changeEmailCases;
@@ -27,6 +27,7 @@ class UserAuthController {
         this.getRequestDetails = getRequestDetails;
         this.joinProject = joinProject;
         this.rejectRequest = rejectRequest;
+        this.changeRole = changeRole;
     }
     getUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -102,7 +103,6 @@ class UserAuthController {
     updateImage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(req.file, "_____");
                 const { userId } = req.params;
                 if (!req.file) {
                     res.status(400).json({ message: "no files provided" });
@@ -154,9 +154,8 @@ class UserAuthController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { projectId, userId, note } = req.query;
-                console.log(note, "note.......");
-                const { status, message } = yield this.createRequest.execute(Number(projectId), new mongodb_1.ObjectId(userId), note);
-                res.status(status).json({ message });
+                const newRequest = yield this.createRequest.execute(Number(projectId), new mongodb_1.ObjectId(userId), note);
+                res.status(201).json(newRequest);
             }
             catch (error) {
                 console.log(`Error on create Request : ${error}`);
@@ -200,6 +199,19 @@ class UserAuthController {
             catch (error) {
                 console.log(`Error on get Request : ${error}`);
                 res.status(500).json({ message: `Internel server error` });
+            }
+        });
+    }
+    updateRole(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { userId, teamId, role } = req.query;
+                const { status, data, message } = yield this.changeRole.execute(userId, teamId, role);
+                res.status(status).json({ data, message });
+            }
+            catch (error) {
+                console.log(`Error update Role : ${error}`);
+                res.status(500).json({ message: "Internel server Error" });
             }
         });
     }

@@ -24,6 +24,7 @@ const grpcProjectClient_1 = require("../infrastructure/grpc/grpcProjectClient");
 const getRequestsUseCases_1 = require("../usecases/getRequestsUseCases");
 const joinProject_1 = require("../usecases/joinProject");
 const rejectRequest_1 = require("../usecases/rejectRequest");
+const updateRole_1 = require("../usecases/updateRole");
 const repositoryInstance = new repository_1.default();
 //rpc
 const userRpcInstance = new userService_1.UserService(repositoryInstance);
@@ -44,5 +45,6 @@ const updateProfile = new updateProfileCases_1.UpdateProfile(repositoryInstance)
 const getRequest = new getRequestsUseCases_1.GetRequests(repositoryInstance, projectRpcClient);
 const joinProject = new joinProject_1.JoinProject(repositoryInstance);
 const rejectRequest = new rejectRequest_1.RejectRequest(repositoryInstance);
+const changeRole = new updateRole_1.UpdateRole(repositoryInstance);
 new addTeamConsumer_1.AddTeamConsumer(createTeamInstance);
-exports.authControllerInstance = new controller_1.default(getUserInstance, changePasswordInstance, changeEmailInstance, getTeamMembers, updateImg, getAllUsers, sendRequest, updateProfile, getRequest, joinProject, rejectRequest);
+exports.authControllerInstance = new controller_1.default(getUserInstance, changePasswordInstance, changeEmailInstance, getTeamMembers, updateImg, getAllUsers, sendRequest, updateProfile, getRequest, joinProject, rejectRequest, changeRole);

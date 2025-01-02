@@ -22,6 +22,7 @@ class CreateTeam {
             const newTeam = yield this.repository.createTeam(response);
             if (newTeam) {
                 yield this.repository.addTeamMembers(response.userId, newTeam._id);
+                yield this.repository.addRole(response.userId, newTeam._id, "ProjectManager");
                 yield this.rabbitMQ.publish(rabbitMQConfig_1.rabbitMQConfig.queueName2, {
                     projectId: newTeam.projectId,
                     teamId: newTeam._id.toString().trim(),

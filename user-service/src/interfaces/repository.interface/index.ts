@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from "mongoose";
 import { IRequest, ITeam, IUser } from "../types/user";
-import { IAddMember, IAddTeamMessage } from "../types/response";
+import { IAddMember, IAddTeamMessage, IRole } from "../types/response";
 
 export interface IRepository {
   deleteRequest(requestId: mongoose.Types.ObjectId): Promise<void>;
@@ -47,12 +47,23 @@ export interface IRepository {
     teamId: mongoose.Types.ObjectId,
     userId: mongoose.Types.ObjectId,
     note: string
-  ): Promise<void>;
+  ): Promise<IRequest>;
   getRequests(userId: mongoose.Types.ObjectId): Promise<IRequest[]>;
   updateProfile(
     userId: mongoose.Types.ObjectId,
     field: string,
     value: string
   ): Promise<void>;
-  addRole(userId:mongoose.Types.ObjectId,teamId:mongoose.Types.ObjectId,role:string):Promise<void>;
+  addRole(
+    userId: mongoose.Types.ObjectId,
+    teamId: mongoose.Types.ObjectId,
+    role: string
+  ): Promise<IRole>;
+  changeRole(
+    userId: mongoose.Types.ObjectId,
+    teamId: mongoose.Types.ObjectId,
+    role: string
+  ): Promise<IRole>;
+  getRolesByTeamId(teamId: mongoose.Types.ObjectId): Promise<IRole[]>;
+  getRole(teamId: string, userId: string): Promise<IRole | null>;
 }

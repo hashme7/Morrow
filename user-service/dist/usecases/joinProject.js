@@ -15,11 +15,11 @@ class JoinProject {
     constructor(repository) {
         this.repository = repository;
     }
-    ;
     execute(userId, requestId, teamId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.repository.addTeamMembers(new mongodb_1.ObjectId(userId), new mongodb_1.ObjectId(teamId));
+                yield this.repository.addRole(new mongodb_1.ObjectId(userId), new mongodb_1.ObjectId(teamId), "Developer");
                 yield this.repository.deleteRequest(new mongodb_1.ObjectId(requestId));
                 return { status: 204, message: "successfully entered in a project" };
             }

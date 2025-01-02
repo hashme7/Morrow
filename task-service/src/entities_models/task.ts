@@ -6,6 +6,7 @@ const TaskSchema = new Schema<ITask>(
     teamId: { type: Schema.Types.ObjectId, ref: "Team", required: true },
     name: { type: String, required: true },
     status: { type: Schema.Types.ObjectId, ref: "Status" },
+    assignee:[{type:Schema.Types.ObjectId}],
     priority: {
       type: String,
       enum: ["Urgent", "Low", "Normal", "High"],

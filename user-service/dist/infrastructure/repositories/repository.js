@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = __importDefault(require("../../entities_models/userModel"));
 const teamModel_1 = __importDefault(require("../../entities_models/teamModel"));
 const verificationCodeModel_1 = __importDefault(require("../../entities_models/verificationCodeModel"));
+const mongoose_1 = require("mongoose");
 const teamMemberModel_1 = __importDefault(require("../../entities_models/teamMemberModel"));
 const requestModal_1 = __importDefault(require("../../entities_models/requestModal"));
 const roleModal_1 = __importDefault(require("../../entities_models/roleModal"));
@@ -22,11 +23,38 @@ class Repository {
     constructor() {
         console.log("repository initialized");
     }
+    getRolesByTeamId(teamId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (yield roleModal_1.default.find({ team_id: teamId }));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    changeRole(userId, teamId, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatingRole = yield roleModal_1.default.findOne({
+                    team_id: teamId,
+                    user_account: userId,
+                });
+                if (!updatingRole)
+                    throw new Error("given role is not found..");
+                updatingRole.role = role;
+                return (yield updatingRole.save()).toObject();
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     deleteRequest(requestId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield requestModal_1.default.deleteOne({ _id: requestId });
-                console.log('deleted......');
+                console.log("deleted......");
             }
             catch (error) {
                 throw error;
@@ -36,7 +64,7 @@ class Repository {
     getRequests(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return (yield requestModal_1.default.find({ user_account: userId }));
+                return yield requestModal_1.default.find({ user_account: userId });
             }
             catch (error) {
                 throw error;
@@ -52,6 +80,7 @@ class Repository {
                 console.error(`Error marking user as verified: ${error}`);
                 throw error;
             }
+            ;
         });
     }
     addRole(userId, teamId, role) {
@@ -60,9 +89,9 @@ class Repository {
                 const newRole = yield roleModal_1.default.create({
                     user_account: userId,
                     team_id: teamId,
-                    role
+                    role,
                 });
-                yield newRole.save();
+                return (yield newRole.save()).toObject();
             }
             catch (error) {
                 console.log(`error on adding role ${error}`);
@@ -135,7 +164,7 @@ class Repository {
             try {
                 const users = yield userModel_1.default.find({
                     _id: { $in: membersId },
-                }).exec();
+                }).lean();
                 return users;
             }
             catch (error) {
@@ -162,7 +191,7 @@ class Repository {
                 console.log(userId);
                 const teamIds = yield teamMemberModel_1.default.find({ user_account: userId }, { team_id: 1, _id: 0 }).exec();
                 const teamIdsList = teamIds.map((team) => team.team_id.toString());
-                console.log('teamIdsList                  ', teamIdsList);
+                console.log("teamIdsList                  ", teamIdsList);
                 return teamIdsList;
             }
             catch (error) {
@@ -269,9 +298,9 @@ class Repository {
                 const newRequest = new requestModal_1.default({
                     team_id: teamId,
                     user_account: userId,
-                    note: note
+                    note: note,
                 });
-                yield newRequest.save();
+                return (yield newRequest.save()).toObject();
             }
             catch (error) {
                 console.log(error);
@@ -312,6 +341,16 @@ class Repository {
             const result = yield userModel_1.default.updateOne({ _id: userId }, { $set: updateData });
             if (result.modifiedCount === 0) {
                 throw new Error("No changes made. User not found or field value is the same.");
+            }
+        });
+    }
+    getRole(teamId, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (yield roleModal_1.default.findOne({ team_id: new mongoose_1.Types.ObjectId(teamId), user_account: new mongoose_1.Types.ObjectId(userId) }).lean());
+            }
+            catch (error) {
+                throw error;
             }
         });
     }

@@ -1,4 +1,3 @@
-import { hostname } from "os";
 
 export const rabbitMQConfig = {
   uri: "amqp://localhost",

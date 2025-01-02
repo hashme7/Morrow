@@ -1,4 +1,5 @@
 import { IRepository } from "../interfaces/repository.interface";
+import { IUser } from "../interfaces/types/user";
 
 export class GetTeamMembers {
   constructor(private readonly repository: IRepository) {
@@ -14,12 +15,20 @@ export class GetTeamMembers {
       const teamMembersId = await this.repository.getTeamMembers(teamId);
       const totalItems = teamMembersId.length;
       const offset = (page - 1) * limit;
-      const paginatedMembers = await this.repository.findUsersByIds(
+      const members = await this.repository.findUsersByIds(
         teamMembersId,
         offset,
         limit
       );
-
+      const roles = await this.repository.getRolesByTeamId(teamId);
+      const hashRoles = new Map();
+      for (let role of roles) {
+        hashRoles.set(role.user_account.toString(),role.role);
+      }
+      const paginatedMembers = members.map((user: IUser) => {
+        let role = hashRoles.get(user._id?.toString());
+        return { ...user ,role:role };
+      })
       return {
         status: 200,
         message: "Team members found",

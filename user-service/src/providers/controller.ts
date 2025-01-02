@@ -20,6 +20,7 @@ import { GrpcProjectClient } from "../infrastructure/grpc/grpcProjectClient";
 import { GetRequests } from "../usecases/getRequestsUseCases";
 import { JoinProject } from "../usecases/joinProject";
 import { RejectRequest } from "../usecases/rejectRequest";
+import { UpdateRole } from "../usecases/updateRole";
 
 
 const repositoryInstance = new Repository();
@@ -47,6 +48,7 @@ const updateProfile = new UpdateProfile(repositoryInstance);
 const getRequest = new GetRequests(repositoryInstance,projectRpcClient)
 const joinProject = new JoinProject(repositoryInstance);
 const rejectRequest = new RejectRequest(repositoryInstance);
+const changeRole = new UpdateRole(repositoryInstance);
 
 new AddTeamConsumer(createTeamInstance);
 
@@ -61,6 +63,7 @@ export const authControllerInstance = new UserAuthController(
   updateProfile,
   getRequest,
   joinProject,
-  rejectRequest
+  rejectRequest,
+  changeRole
 );
 

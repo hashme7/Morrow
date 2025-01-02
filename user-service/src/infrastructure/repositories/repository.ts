@@ -4,8 +4,8 @@ import VerificationCode from "../../entities_models/verificationCodeModel";
 import { IRepository } from "../../interfaces/repository.interface";
 import { IOtp } from "../../interfaces/types/otp.interface";
 import { IRequest, ITeam, IUser } from "../../interfaces/types/user";
-import { IAddTeamMessage } from "../../interfaces/types/response";
-import mongoose, { ObjectId } from "mongoose";
+import { IAddTeamMessage, IRole } from "../../interfaces/types/response";
+import mongoose, { ObjectId, Types } from "mongoose";
 import TeamMember from "../../entities_models/teamMemberModel";
 import Requests from '../../entities_models/requestModal';
 import Roles from '../../entities_models/roleModal'
@@ -14,20 +14,44 @@ class Repository implements IRepository {
   constructor() {
     console.log("repository initialized");
   }
-  async deleteRequest(requestId: mongoose.Types.ObjectId): Promise<void> {
+  async getRolesByTeamId(teamId: mongoose.Types.ObjectId): Promise<IRole[]> {
     try {
-      await Requests.deleteOne({_id:requestId});
-      console.log('deleted......')
+      return (await Roles.find({team_id:teamId}));
     } catch (error) {
       throw error;
     }
   }
-  
+  async changeRole(
+    userId: mongoose.Types.ObjectId,
+    teamId: mongoose.Types.ObjectId,
+    role: "Developer" | "TeamLead" | "ProjectManager"
+  ): Promise<IRole> {
+    try {
+      const updatingRole = await Roles.findOne({
+        team_id: teamId,
+        user_account: userId,
+      });
+      if (!updatingRole) throw new Error("given role is not found..");
+      updatingRole.role = role;
+      return (await updatingRole.save()).toObject();
+    } catch (error) {
+      throw error;
+    }
+  }
+  async deleteRequest(requestId: mongoose.Types.ObjectId): Promise<void> {
+    try {
+      await Requests.deleteOne({ _id: requestId });
+      console.log("deleted......");
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getRequests(userId: mongoose.Types.ObjectId): Promise<IRequest[]> {
     try {
-      return (await Requests.find({user_account:userId}));
+      return await Requests.find({ user_account: userId });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
   async markUserAsVerified(userId: ObjectId): Promise<void> {
@@ -36,23 +60,27 @@ class Repository implements IRepository {
     } catch (error) {
       console.error(`Error marking user as verified: ${error}`);
       throw error;
-    }
+    };
   }
-  
-  async addRole(userId:mongoose.Types.ObjectId,teamId:mongoose.Types.ObjectId,role:string){
+
+  async addRole(
+    userId: mongoose.Types.ObjectId,
+    teamId: mongoose.Types.ObjectId,
+    role: "Developer" | "TeamLead" | "ProjectManager"
+  ) {
     try {
       const newRole = await Roles.create({
-        user_account:userId,
-        team_id:teamId,
-        role
-      })
-      await newRole.save();
+        user_account: userId,
+        team_id: teamId,
+        role,
+      });
+      return (await newRole.save()).toObject();
     } catch (error) {
       console.log(`error on adding role ${error}`);
       throw error;
     }
   }
- 
+
   async verifyOtp(userId: ObjectId, code: number): Promise<boolean> {
     try {
       const otpRecord = await VerificationCode.findOne({ user: userId }).sort({
@@ -107,7 +135,7 @@ class Repository implements IRepository {
     try {
       const users = await User.find({
         _id: { $in: membersId },
-      }).exec();
+      }).lean();
       return users;
     } catch (error) {
       console.log(`Error on finding users by ids : ${error}`);
@@ -132,10 +160,10 @@ class Repository implements IRepository {
       console.log(userId);
       const teamIds = await TeamMember.find(
         { user_account: userId },
-        { team_id: 1,_id:0}
+        { team_id: 1, _id: 0 }
       ).exec();
       const teamIdsList = teamIds.map((team) => team.team_id.toString());
-      console.log('teamIdsList                  ',teamIdsList)
+      console.log("teamIdsList                  ", teamIdsList);
       return teamIdsList;
     } catch (error) {
       console.log(`error on finding teamIds:${error}`);
@@ -170,7 +198,7 @@ class Repository implements IRepository {
     }
   }
   async addTeamMembers(
-    userId: mongoose.Types.ObjectId,  
+    userId: mongoose.Types.ObjectId,
     teamId: mongoose.Types.ObjectId
   ) {
     try {
@@ -227,7 +255,7 @@ class Repository implements IRepository {
   async countAllUsers() {
     return await User.countDocuments();
   }
-  async findAllUsers(offset:number,limit:number) {
+  async findAllUsers(offset: number, limit: number) {
     try {
       const data = await User.find({}).skip(offset).limit(limit);
       return data;
@@ -236,31 +264,34 @@ class Repository implements IRepository {
     }
   }
 
-  async createRequest(teamId:mongoose.Types.ObjectId,userId:mongoose.Types.ObjectId,note:string){
+  async createRequest(
+    teamId: mongoose.Types.ObjectId,
+    userId: mongoose.Types.ObjectId,
+    note: string
+  ) :Promise<IRequest>{
     try {
       const newRequest = new Requests({
-        team_id:teamId,
-        user_account:userId,
-        note:note
+        team_id: teamId,
+        user_account: userId,
+        note: note,
       });
-      await newRequest.save();
+      return (await newRequest.save()).toObject();
     } catch (error) {
       console.log(error);
       throw error;
     }
   }
 
-
-  async getRequest(userId:mongoose.Types.ObjectId){
+  async getRequest(userId: mongoose.Types.ObjectId) {
     try {
-      const RequestData = await Requests.find({user_account:userId});
-      console.log(RequestData,"fkjaksjdfkasjkdfjaksdfjkasdjfk;asf");
+      const RequestData = await Requests.find({ user_account: userId });
+      console.log(RequestData, "fkjaksjdfkasjkdfjaksdfjkasdjfk;asf");
       return RequestData;
     } catch (error) {
       console.log(`errror on get request
       ${error}
       
-      `)
+      `);
       throw error;
     }
   }
@@ -277,12 +308,25 @@ class Repository implements IRepository {
     }
     return null;
   }
-  async updateProfile(userId:mongoose.Types.ObjectId,field:string,value:string){
+  async updateProfile(
+    userId: mongoose.Types.ObjectId,
+    field: string,
+    value: string
+  ) {
     const updateData: { [key: string]: any } = {};
     updateData[field] = value;
-    const result = await User.updateOne({_id:userId},{ $set: updateData })
+    const result = await User.updateOne({ _id: userId }, { $set: updateData });
     if (result.modifiedCount === 0) {
-      throw new Error("No changes made. User not found or field value is the same.");
+      throw new Error(
+        "No changes made. User not found or field value is the same."
+      );
+    }
+  }
+  async getRole(teamId:string,userId:string) {
+    try {
+      return (await Roles.findOne({ team_id: new Types.ObjectId(teamId), user_account: new Types.ObjectId(userId)}).lean());
+    } catch (error) {
+      throw error
     }
   }
 }

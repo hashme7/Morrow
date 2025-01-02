@@ -11,6 +11,7 @@ import {
   IRejectRequest,
   IUpdateImg,
   IUpdateProfile,
+  IUpdateRole,
 } from "../interfaces/usecases.interface/index.js";
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
@@ -27,7 +28,8 @@ class UserAuthController {
     private readonly updateProfileCases: IUpdateProfile,
     private readonly getRequestDetails: IGetRequests,
     private readonly joinProject: IJoinProject,
-    private readonly rejectRequest:IRejectRequest
+    private readonly rejectRequest: IRejectRequest,
+    private readonly changeRole: IUpdateRole,
   ) {}
   async getUser(req: Request, res: Response) {
     const { userId } = req.params;
@@ -100,7 +102,6 @@ class UserAuthController {
   }
   async updateImage(req: Request, res: Response) {
     try {
-      console.log(req.file, "_____");
       const { userId } = req.params;
       if (!req.file) {
         res.status(400).json({ message: "no files provided" });
@@ -144,13 +145,12 @@ class UserAuthController {
   async sendRequest(req: Request, res: Response) {
     try {
       const { projectId, userId, note } = req.query;
-      console.log(note, "note.......");
-      const { status, message } = await this.createRequest.execute(
+      const newRequest = await this.createRequest.execute(
         Number(projectId),
         new ObjectId(userId as string),
         note as string
       );
-      res.status(status).json({ message });
+      res.status(201).json(newRequest);
     } catch (error) {
       console.log(`Error on create Request : ${error}`);
       res.status(500).json({ message: "Internel Server error" });
@@ -158,7 +158,7 @@ class UserAuthController {
   }
   async acceptReq(req: Request, res: Response) {
     try {
-      const { userId, requestId ,teamId} = req.query;
+      const { userId, requestId, teamId } = req.query;
       const { status, message } = await this.joinProject.execute(
         userId as string,
         requestId as string,
@@ -170,14 +170,16 @@ class UserAuthController {
       res.status(500).json({ message: "Internel Server Error" });
     }
   }
-  async declineReq(req:Request,res:Response){
+  async declineReq(req: Request, res: Response) {
     try {
-      const {userId,requestId} = req.query;
-      const {status,message} = await this.rejectRequest.execute(requestId as string);
-      res.status(status).json({message});
+      const { userId, requestId } = req.query;
+      const { status, message } = await this.rejectRequest.execute(
+        requestId as string
+      );
+      res.status(status).json({ message });
     } catch (error) {
       console.log(`Error on declining request ${error}`);
-      res.status(500).json({message:"Internel Server Error"});
+      res.status(500).json({ message: "Internel Server Error" });
     }
   }
   async getRequest(req: Request, res: Response) {
@@ -192,6 +194,18 @@ class UserAuthController {
       res.status(500).json({ message: `Internel server error` });
     }
   }
+
+  async updateRole(req: Request, res: Response) {
+    try {
+      const { userId, teamId, role } = req.query;
+      const { status, data, message } = await this.changeRole.execute(userId as string, teamId as string, role as ("Developer" | "TeamLead" | "ProjectManager"));
+      res.status(status).json({ data, message });
+    } catch (error) {
+      console.log(`Error update Role : ${error}`);
+      res.status(500).json({ message: "Internel server Error" });
+    }
+  }
+
   async logout(req: Request, res: Response) {
     try {
       res.clearCookie("accessToken");

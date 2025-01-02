@@ -24,7 +24,17 @@ class GetTeamMembers {
                 const teamMembersId = yield this.repository.getTeamMembers(teamId);
                 const totalItems = teamMembersId.length;
                 const offset = (page - 1) * limit;
-                const paginatedMembers = yield this.repository.findUsersByIds(teamMembersId, offset, limit);
+                const members = yield this.repository.findUsersByIds(teamMembersId, offset, limit);
+                const roles = yield this.repository.getRolesByTeamId(teamId);
+                const hashRoles = new Map();
+                for (let role of roles) {
+                    hashRoles.set(role.user_account.toString(), role.role);
+                }
+                const paginatedMembers = members.map((user) => {
+                    var _a;
+                    let role = hashRoles.get((_a = user._id) === null || _a === void 0 ? void 0 : _a.toString());
+                    return Object.assign(Object.assign({}, user), { role: role });
+                });
                 return {
                     status: 200,
                     message: "Team members found",

@@ -30,6 +30,6 @@ export interface ITeamIds{
 export interface IRequest{
     _id: any;
     team_id:mongoose.Types.ObjectId;
-    user_id:mongoose.Types.ObjectId;
+    user_account:mongoose.Types.ObjectId;
     note:string,
 }

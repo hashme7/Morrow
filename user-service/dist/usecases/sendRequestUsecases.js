@@ -20,13 +20,10 @@ class SendRequest {
             try {
                 const teamId = yield this.repository.getTeamIdByProject(projectId);
                 if (!teamId) {
-                    return {
-                        status: 404,
-                        message: "no team id found with given project id",
-                    };
+                    return null;
                 }
-                yield this.repository.createRequest(teamId, userId, note);
-                return { status: 201, message: "request send successfully" };
+                const newRequest = yield this.repository.createRequest(teamId, userId, note);
+                return newRequest;
             }
             catch (error) {
                 console.log(`Error on send Request : ${error}`);
