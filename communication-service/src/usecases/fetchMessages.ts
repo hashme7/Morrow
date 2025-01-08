@@ -10,4 +10,4 @@ export class FetchMessages implements IGetMessage{
             throw error;
         }
     };
-}
+}   
