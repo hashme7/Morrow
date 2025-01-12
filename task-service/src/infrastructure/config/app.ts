@@ -11,10 +11,10 @@ export const createServer = () => {
     app.use(morgan('tiny'))
 
     const corsOptions = {
-      origin: "http://localhost:5173", 
-      credentials: true, 
+      origin: ["http://localhost:5173", "https://morrow-frontend.vercel.app"],
+      credentials: true,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"], 
+      allowedHeaders: ["Content-Type", "Authorization"],
     };
 
     app.use(cors(corsOptions));

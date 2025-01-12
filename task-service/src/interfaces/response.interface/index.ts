@@ -1,4 +1,4 @@
-import { ObjectId, Types } from "mongoose";
+import mongoose, { ObjectId, Types } from "mongoose";
 
 export interface ISubTask {
   name: string;
@@ -85,4 +85,34 @@ export interface IDbDesign extends Document {
   nodes: Node[];
   edges: Edges[];
   viewport: Viewport;
+}
+export interface addDiagramData{
+  projectId: number;
+  nodes: Node[];
+  edges: Edges[];
+  viewport: Viewport;
+}
+
+// APITOOL USECSES
+export interface targetDetails {
+  projectId?:number,
+  url: string;
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS" | "HEAD";
+  body?: Record<string, any>;
+  queryParams?: Record<string, string>;
+  headers?: Record<string, string>;
+}
+export interface resForReq {
+  status: number; 
+  headers: Record<string, any>; 
+  body: any; 
+  time: number;
+}
+export interface IApi {
+  _id?:mongoose.Types.ObjectId,
+  projectId: number;
+  url: string;
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS" | "HEAD";
+  body: any;
+  response?: string;
 }

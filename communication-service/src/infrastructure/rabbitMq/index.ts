@@ -8,7 +8,7 @@ export class RabbitMQService {
 
   async connect(): Promise<void> {
     try {
-      this.connection = await connect("amqp://localhost");
+      this.connection = await connect(process.env.RABBITMQ_URI || "amqp://localhost");
       this.channel = await this.connection.createChannel();
       console.log("Connected to RabbitMQ and channel created.");
     } catch (error) {

@@ -11,7 +11,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const dist_1 = require("morrow-common/dist");
 const app = (0, express_1.default)();
 const corsOptions = {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://morrow-frontend.vercel.app"],
     credentials: true,
 };
 app.use((0, cors_1.default)(corsOptions));

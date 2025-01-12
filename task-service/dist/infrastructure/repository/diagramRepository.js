@@ -16,6 +16,16 @@ exports.DiagramRepository = void 0;
 const diagram_1 = __importDefault(require("../../entities_models/diagram/diagram"));
 class DiagramRepository {
     constructor() { }
+    getDiagram(projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return (yield diagram_1.default.findOne({ projectId }));
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     save(dbDesign) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

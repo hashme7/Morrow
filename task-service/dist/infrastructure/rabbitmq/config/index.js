@@ -2,6 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rabbitMQConfig = void 0;
 exports.rabbitMQConfig = {
-    uri: "amqp://localhost",
+    uri: process.env.RABBITMQ_URI || "amqp://localhost",
     addDiagram: "diagram.addDiagram",
 };

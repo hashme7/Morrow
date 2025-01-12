@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  apiController,
   diagramController,
   statusController,
   taskController,
@@ -39,5 +40,13 @@ router
 router
   .route("/save-diagram")
   .post(diagramController.saveDiagram.bind(diagramController));
+router
+  .route("/get-diagram")
+  .get(diagramController.getDiagram.bind(diagramController));
+
+// (APITOOL-ROUTES) //
+router.route("/save-api").post(apiController.saveApi.bind(apiController));
+router.route('/api-test').post(apiController.sendToTargetApi.bind(apiController));
+router.route('/get-apis/:projectId').get(apiController.getApi.bind(apiController));
 
 export default router;

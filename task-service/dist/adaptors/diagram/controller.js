@@ -11,14 +11,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DiagramController = void 0;
 class DiagramController {
-    constructor(uploadDiagram) {
+    constructor(uploadDiagram, fetchDiagram) {
         this.uploadDiagram = uploadDiagram;
+        this.fetchDiagram = fetchDiagram;
     }
     saveDiagram(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { dbDesign } = req.body;
-                const diagram = yield (this.uploadDiagram.execute(dbDesign));
+                const diagram = yield this.uploadDiagram.execute(dbDesign);
+                res.status(200).json(diagram);
+            }
+            catch (error) {
+                res.status(500).json("Internel Server Error");
+            }
+        });
+    }
+    getDiagram(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { projectId } = req.query;
+                const diagram = yield this.fetchDiagram.execute(Number(projectId));
                 res.status(200).json(diagram);
             }
             catch (error) {

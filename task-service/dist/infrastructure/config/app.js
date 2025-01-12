@@ -14,7 +14,7 @@ const createServer = () => {
         app.use(express_1.default.json());
         app.use((0, morgan_1.default)('tiny'));
         const corsOptions = {
-            origin: "http://localhost:5173",
+            origin: ["http://localhost:5173", "https://morrow-frontend.vercel.app"],
             credentials: true,
             methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             allowedHeaders: ["Content-Type", "Authorization"],

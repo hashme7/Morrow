@@ -1,7 +1,10 @@
 import {
+  IApi,
   IDbDesign,
   IReqTask,
   IStatus,
+  resForReq,
+  targetDetails,
 } from "./../response.interface/index";
 import mongoose from "mongoose";
 import { ITask } from "../response.interface";
@@ -40,6 +43,27 @@ export interface ICahngeTaskStatus {
     status: string
   ): Promise<ITask | undefined>;
 }
+// Diagram Usecases
 export interface ICreateDiagram {
   execute(dbDesign:IDbDesign): Promise<IDbDesign | null>;
+}
+export interface IFetchDiagram{
+  execute(projectId: number): Promise<IDbDesign | null>;
+}
+// API USECASES
+export interface ISendRequest{
+  execute(targetDetails:targetDetails):Promise<resForReq>
+}
+export interface ICheckApi {
+  execute(
+    projectId: number,
+    method: string,
+    url: string
+  ): Promise<boolean>;
+}
+export interface IUploadApi{
+  execute(apiDetails:IApi): Promise<IApi>;
+}
+export interface IFetchApis{
+  execute(projectId: number): Promise<IApi[]>;
 }

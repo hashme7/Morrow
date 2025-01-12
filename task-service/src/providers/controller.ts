@@ -13,10 +13,18 @@ import { ChangeTaskStatus } from "../usecases/task/changeTaskStatus";
 import { DiagramRepository } from "../infrastructure/repository/diagramRepository";
 import { DiagramController } from "../adaptors/diagram/controller";
 import { SaveDiagram } from "../usecases/diagram/saveDiagram";
-
+import { FetchDiagram } from "../usecases/diagram/fetchDiagram";
+import { ApiController } from "../adaptors/apitool/controller";
+import { SendRequest } from "../usecases/apitool/sendRequest";
+import { UploadApi } from "../usecases/apitool/uploadApi";
+import { ApiRepository } from "../infrastructure/repository/apitoolRepository";
+import { CheckApi } from "../usecases/apitool/apiCheckDB";
+import { FetchApis } from "../usecases/apitool/fetchApis";
+// REPOSITORY //
 const taskRepository = new TaskRepository();
 const statusRepository = new StatusRepository();
 const dbRepository = new DiagramRepository();
+const apiRepository = new ApiRepository();
 
 //usecases
 // (TASK-USECASES) //
@@ -33,6 +41,13 @@ const deleteStatus = new DeleteStatus(statusRepository);
 
 // (DIAGRAM-USECASES) //
 const saveDiagram = new SaveDiagram(dbRepository);
+const getDiagram = new FetchDiagram(dbRepository);
+
+// (API-USECASES) //
+const sendApi = new SendRequest();
+const uploadApi = new UploadApi(apiRepository);
+const checkApi = new CheckApi(apiRepository);
+const getApi = new FetchApis(apiRepository);
 
 
 // (RABBIT-MQ) CONSUMER//
@@ -55,4 +70,7 @@ export const statusController = new StatusController(
 );
 
 // (DIAGRAM-CONTROLLER) //
-export const diagramController = new DiagramController(saveDiagram);
+export const diagramController = new DiagramController(saveDiagram, getDiagram);
+
+// (APITOOL-CONTROLLER) //
+export const apiController = new ApiController(sendApi,checkApi,uploadApi,getApi);

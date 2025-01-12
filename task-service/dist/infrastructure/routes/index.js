@@ -36,4 +36,11 @@ router
 router
     .route("/save-diagram")
     .post(controller_1.diagramController.saveDiagram.bind(controller_1.diagramController));
+router
+    .route("/get-diagram")
+    .get(controller_1.diagramController.getDiagram.bind(controller_1.diagramController));
+// (APITOOL-ROUTES) //
+router.route("/save-api").post(controller_1.apiController.saveApi.bind(controller_1.apiController));
+router.route('/api-test').post(controller_1.apiController.sendToTargetApi.bind(controller_1.apiController));
+router.route('/get-apis/:projectId').get(controller_1.apiController.getApi.bind(controller_1.apiController));
 exports.default = router;

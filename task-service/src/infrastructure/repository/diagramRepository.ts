@@ -6,6 +6,13 @@ import DbDesignModal from "../../entities_models/diagram/diagram";
 
 export class DiagramRepository implements IDBRepository {
   constructor() { }
+  async getDiagram(projectId: number): Promise<IDbDesign | null> {
+    try {
+      return (await DbDesignModal.findOne({projectId}));
+    } catch (error) {
+      throw error;
+    }
+  }
   async save(dbDesign: IDbDesign): Promise<IDbDesign | null> {
     try {
       const filter = { projectId: dbDesign.projectId };
@@ -26,4 +33,5 @@ export class DiagramRepository implements IDBRepository {
       throw error;
     }
   }
+  
 }

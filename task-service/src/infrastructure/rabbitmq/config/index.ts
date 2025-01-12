@@ -1,4 +1,4 @@
 export const rabbitMQConfig = {
-    uri: "amqp://localhost",
-    addDiagram:"diagram.addDiagram",
+    uri: process.env.RABBITMQ_URI ||"amqp://localhost",
+    addDiagram: "diagram.addDiagram",
 }
