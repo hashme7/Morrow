@@ -12,7 +12,7 @@ import { UpdateMsgSeen } from "../usecases/updateMsgSeen";
 import dotenv from "dotenv";
 import path from "path";
 
-
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 
 const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379);

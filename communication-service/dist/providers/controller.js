@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const chatController_1 = require("../adaptors/chatController");
 const socketio_1 = require("../infrastructure/framework/socketio");
@@ -10,6 +13,9 @@ const fetchMessages_1 = require("../usecases/fetchMessages");
 const joinSocket_1 = require("../usecases/joinSocket");
 const sendMessage_1 = require("../usecases/sendMessage");
 const updateMsgSeen_1 = require("../usecases/updateMsgSeen");
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../.env") });
 const redisService = new redis_1.RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379);
 const chatRepository = new chatRepository_1.ChatRepository();
 const rabbitMQService = new rabbitMq_1.RabbitMQService();
