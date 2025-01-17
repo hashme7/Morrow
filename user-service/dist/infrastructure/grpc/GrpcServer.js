@@ -11,9 +11,13 @@ class GrpcServer {
     }
     start() {
         this.server.addService(cmn_1.UserServiceService, this.userService);
-        this.server.bindAsync("localhost:8080", grpc_js_1.ServerCredentials.createInsecure(), () => {
+        this.server.bindAsync("localhost:8080", grpc_js_1.ServerCredentials.createInsecure(), (error) => {
+            if (error) {
+                console.error("Server binding error:", error);
+                return;
+            }
             console.log("gRPC server is running at user service on port : 8080");
-            this.server.start();
+            // this.server.start();
         });
     }
 }

@@ -25,6 +25,8 @@ class RedisService {
             password: this.password,
             username: this.user,
             maxRetriesPerRequest: 100,
+            tls: {},
+            keepAlive: 30000,
             stringNumbers: false,
         });
         this.subscriber = new ioredis_1.Redis({
@@ -33,6 +35,8 @@ class RedisService {
             password: this.password,
             username: this.user,
             maxRetriesPerRequest: 100,
+            tls: {},
+            keepAlive: 30000,
             stringNumbers: false,
         });
         this.addErrorListeners();

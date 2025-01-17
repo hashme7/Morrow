@@ -28,8 +28,8 @@ const updateRole_1 = require("../usecases/updateRole");
 const repositoryInstance = new repository_1.default();
 //rpc
 const userRpcInstance = new userService_1.UserService(repositoryInstance);
-const projectRpcClient = new grpcProjectClient_1.GrpcProjectClient();
 new GrpcServer_1.GrpcServer(userRpcInstance);
+const projectRpcClient = new grpcProjectClient_1.GrpcProjectClient();
 //rabbitmq
 const RabbitMQServiceInstance = new index_1.RabbitMQService();
 const createTeamInstance = new createTeamUseCases_1.CreateTeam(repositoryInstance, RabbitMQServiceInstance);

@@ -1,7 +1,4 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "deno.enablePaths": [
     "supabase/functions"
   ],
@@ -21,5 +18,7 @@
     "http",
     "net"
   ],
-  "github.experimental.multipleAccounts": true
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  }
 }

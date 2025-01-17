@@ -11,14 +11,16 @@ export class RedisService implements IRedisService {
     private host: string,
     private port: number,
     private password?: string,
-    private user?:string,
+    private user?: string
   ) {
     this.client = new Redis({
       host: this.host,
       port: this.port,
       password: this.password,
-      username:this.user,
+      username: this.user,
       maxRetriesPerRequest: 100,
+      tls: {},
+      keepAlive: 30000,
       stringNumbers: false,
     });
 
@@ -26,14 +28,16 @@ export class RedisService implements IRedisService {
       host: this.host,
       port: this.port,
       password: this.password,
-      username:this.user,
+      username: this.user,
       maxRetriesPerRequest: 100,
+      tls: {},
+      keepAlive: 30000,
       stringNumbers: false,
     });
 
     this.addErrorListeners();
   }
-  async addActiveUser(socketId: string, userId: string): Promise<void> {  
+  async addActiveUser(socketId: string, userId: string): Promise<void> {
     try {
       await this.client.set(userId, socketId);
       console.log(`User ${userId} added to active users.`);

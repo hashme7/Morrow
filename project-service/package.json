@@ -9,7 +9,7 @@
     "dev": "npm run build &&  concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
     "serve": "nodemon ./dist/index.js",
-    "start":"node ./dist/index.js"
+    "start": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,7 @@
     "@types/pg": "^8.11.10",
     "@types/uuid": "^10.0.0",
     "grpc-tools": "^1.12.4",
-    "prisma": "^6.0.1",
+    "prisma": "^6.2.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "ts-proto": "^2.2.5",
@@ -32,7 +32,8 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.12.3",
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^6.2.1",
+    "@supabase/supabase-js": "^2.47.16",
     "amqplib": "^0.10.4",
     "concurrently": "^9.0.1",
     "dotenv": "^16.4.5",

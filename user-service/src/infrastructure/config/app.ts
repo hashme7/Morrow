@@ -2,6 +2,10 @@ import express from "express";
 import cors from "cors";
 import userRouter from "../routes/userRoutes";
 import morgan from 'morgan'
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
 export const createServer = () => {
   try {

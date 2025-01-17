@@ -1,4 +1,9 @@
-FROM node:18-alpine
+FROM node:18-alpine3.18
+
+RUN apk update && apk add --no-cache \
+  libssl3 \
+  bash \
+  && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
@@ -8,4 +13,6 @@ RUN npm install
 
 COPY . .
 
-CMD [ "npm","start" ]
+RUN npx prisma generate
+
+CMD [ "npm", "start" ]

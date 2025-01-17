@@ -27,8 +27,9 @@ const repositoryInstance = new Repository();
 
 //rpc
 const userRpcInstance = new UserService(repositoryInstance);
-const projectRpcClient = new GrpcProjectClient();
 new GrpcServer(userRpcInstance);
+const projectRpcClient = new GrpcProjectClient();
+
 //rabbitmq
 const RabbitMQServiceInstance = new RabbitMQService();
 

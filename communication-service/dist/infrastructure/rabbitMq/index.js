@@ -14,6 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RabbitMQService = void 0;
 const amqplib_1 = __importDefault(require("amqplib"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../../../.env") });
 class RabbitMQService {
     constructor() {
         this.connect();
@@ -21,7 +24,7 @@ class RabbitMQService {
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.connection = yield amqplib_1.default.connect(process.env.RABBITMQ_URI || "amqp://localhost");
+                this.connection = yield amqplib_1.default.connect(process.env.RABBITMQ_URL || "amqp://localhost");
                 this.channel = yield this.connection.createChannel();
                 console.log("Connected to RabbitMQ and channel created.");
             }

@@ -19,7 +19,7 @@ export interface IMessageWorker {
   start(): void;  
   flushBatch(): Promise<void>;
 }
-
+ 
 export interface IWebSocketServer {
   io: Server;
   readonly MAX_RETRIES: number;

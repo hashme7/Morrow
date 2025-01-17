@@ -8,6 +8,9 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const userRoutes_1 = __importDefault(require("../routes/userRoutes"));
 const morgan_1 = __importDefault(require("morgan"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../../../.env") });
 const createServer = () => {
     try {
         const app = (0, express_1.default)();

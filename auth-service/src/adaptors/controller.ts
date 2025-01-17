@@ -60,13 +60,13 @@ export class Controller {
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
         });
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
+          sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.status(200).json({
@@ -115,20 +115,21 @@ export class Controller {
         const newAccessToken = JWTService.createAccessToken(id, role);
         const newRefreshToken = JWTService.createRefreshToken(id, role);
         res.cookie("accessToken", newAccessToken, {
-          httpOnly: false,
-          secure: false,
-          sameSite: "strict",
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
         });
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: true,
+          sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.status(200).json({
           message: "Token refreshed successfully",
           accessToken: newAccessToken,
+          refreshToken:newRefreshToken,
           valid: true,
           userId:refreshResponse.userId
         });
@@ -143,7 +144,6 @@ export class Controller {
 
   async logout(req: Request, res: Response) {
     try {
-      console.log("logout......");
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
       res.status(200).json({ message: "Logged out successfully" });
@@ -169,13 +169,13 @@ export class Controller {
       res.cookie("accessToken", tokens.accessToken, {
         httpOnly: false,
         secure: false,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.status(status).json({
@@ -202,13 +202,13 @@ export class Controller {
       res.cookie("accessToken", tokens.accessToken, {
         httpOnly: false,
         secure: false,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       res.status(status).json({

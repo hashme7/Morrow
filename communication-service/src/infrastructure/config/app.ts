@@ -2,7 +2,10 @@ import express from "express";
 import cors from "cors";
 import morgan from 'morgan'
 import chatRouter from '../routes/chatRoutes';
+import dotenv from "dotenv";
+import path from "path";
 
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 export const createServer = () => {
   try {
     const app = express();
