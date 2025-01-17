@@ -78,7 +78,10 @@ class RedisService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.client.ping();
-                console.log("Redis client connected");
+                console.log("Redis client connected", `
+        
+        
+        ${this.port},${this.host} fjaskd`);
             }
             catch (error) {
                 console.error("Error connecting to Redis:", error);
@@ -140,7 +143,7 @@ class RedisService {
             console.error("Redis subscriber error:", err);
         });
         this.client.on("connect", () => {
-            console.log("Redis client connected");
+            console.log("Redis client connected", this.host, this.port);
         });
         this.subscriber.on("connect", () => {
             console.log("Redis subscriber connected");

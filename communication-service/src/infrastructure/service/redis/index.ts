@@ -64,7 +64,10 @@ export class RedisService implements IRedisService {
   async connect(): Promise<void> {
     try {
       await this.client.ping();
-      console.log("Redis client connected");
+      console.log("Redis client connected",`
+        
+        
+        ${this.port},${this.host} fjaskd`);
     } catch (error) {
       console.error("Error connecting to Redis:", error);
       throw error;
@@ -127,7 +130,7 @@ export class RedisService implements IRedisService {
     });
 
     this.client.on("connect", () => {
-      console.log("Redis client connected");
+      console.log("Redis client connected",this.host,this.port);
     });
 
     this.subscriber.on("connect", () => {
