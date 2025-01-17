@@ -10,12 +10,15 @@ export class RedisService implements IRedisService {
   constructor(
     private host: string,
     private port: number,
-    private password?: string
+    private password?: string,
+    private user?:string,
   ) {
     this.client = new Redis({
       host: this.host,
       port: this.port,
       password: this.password,
+      username:this.user,
+      maxRetriesPerRequest: 100,
       retryStrategy: (times: number) => {
         const delay = Math.min(times * 50, 2000);
         return delay;
@@ -27,6 +30,8 @@ export class RedisService implements IRedisService {
       host: this.host,
       port: this.port,
       password: this.password,
+      username:this.user,
+      maxRetriesPerRequest: 100,
       retryStrategy: (times: number) => {
         const delay = Math.min(times * 50, 2000);
         return delay;
@@ -36,16 +41,16 @@ export class RedisService implements IRedisService {
 
     this.addErrorListeners();
   }
-  async addActiveUser(socketId:string,userId:string): Promise<void> {
+  async addActiveUser(socketId: string, userId: string): Promise<void> {
     try {
       await this.client.set(userId, socketId);
       console.log(`User ${userId} added to active users.`);
     } catch (error) {
       console.log(`Error on adding active user to redis service`);
-      throw error
+      throw error;
     }
   }
-  async removeActiveUser(socketId: string, userId: string): Promise<void>{
+  async removeActiveUser(socketId: string, userId: string): Promise<void> {
     try {
       await this.client.del(userId, socketId);
       console.log(`User ${userId} removed from active users`);
@@ -54,7 +59,7 @@ export class RedisService implements IRedisService {
       throw error;
     }
   }
-  async getActiveUser(userId: string): Promise<string | null>{
+  async getActiveUser(userId: string): Promise<string | null> {
     try {
       return await this.client.get(userId);
     } catch (error) {
@@ -64,10 +69,11 @@ export class RedisService implements IRedisService {
   async connect(): Promise<void> {
     try {
       await this.client.ping();
-      console.log("Redis client connected",`
-        
-        
-        ${this.port},${this.host} fjaskd`);
+      console.log(
+        "Redis client connected",
+        `
+        ${this.port},${this.host} fjaskd`
+      );
     } catch (error) {
       console.error("Error connecting to Redis:", error);
       throw error;
@@ -104,11 +110,11 @@ export class RedisService implements IRedisService {
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
       try {
-        const parsedMessage = JSON.parse(message); 
-        console.log(`parsed message from subscriber`,parsedMessage);
+        const parsedMessage = JSON.parse(message);
+        console.log(`parsed message from subscriber`, parsedMessage);
         callback(channel, parsedMessage);
       } catch (error) {
-        console.log(`error pmessage subsriber`) 
+        console.log(`error pmessage subsriber`);
       }
     });
   }
@@ -130,7 +136,7 @@ export class RedisService implements IRedisService {
     });
 
     this.client.on("connect", () => {
-      console.log("Redis client connected",this.host,this.port);
+      console.log("Redis client connected", this.host, this.port);
     });
 
     this.subscriber.on("connect", () => {

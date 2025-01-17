@@ -14,14 +14,17 @@ const ioredis_1 = require("ioredis");
 // import { RedisClientType } from "redis";
 // import { IMessage } from "../../../interfaces/types/Data";
 class RedisService {
-    constructor(host, port, password) {
+    constructor(host, port, password, user) {
         this.host = host;
         this.port = port;
         this.password = password;
+        this.user = user;
         this.client = new ioredis_1.Redis({
             host: this.host,
             port: this.port,
             password: this.password,
+            username: this.user,
+            maxRetriesPerRequest: 100,
             retryStrategy: (times) => {
                 const delay = Math.min(times * 50, 2000);
                 return delay;
@@ -32,6 +35,8 @@ class RedisService {
             host: this.host,
             port: this.port,
             password: this.password,
+            username: this.user,
+            maxRetriesPerRequest: 100,
             retryStrategy: (times) => {
                 const delay = Math.min(times * 50, 2000);
                 return delay;
@@ -79,8 +84,6 @@ class RedisService {
             try {
                 yield this.client.ping();
                 console.log("Redis client connected", `
-        
-        
         ${this.port},${this.host} fjaskd`);
             }
             catch (error) {
