@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import proxy from 'express-http-proxy';
 import cors from 'cors';
 import morgan from 'morgan'
@@ -17,12 +17,15 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(cookieParser());
 
+app.use('/health', (req:Request,res:Response) => {
+  res.status(200).json({ message: "gateway is running successfully on 8000" });
+})
 app.use('/project',authenticate,proxy('http://localhost:4000'));   
 app.use('/user',authenticate,proxy('http://localhost:3000'));
 app.use('/communicate',authenticate,proxy('http://localhost:2000'));
-app.use('/task',proxy('http://localhost:5000'));
+app.use('/task',authenticate,proxy('http://localhost:5000'));
 app.use('/',proxy('http://localhost:9090'));
    
 app.listen(8000,()=>{
     console.log(`gateway service is running on port :http://localhost:8000`)
-})     
+})      
