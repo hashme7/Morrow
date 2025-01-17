@@ -19,10 +19,6 @@ export class RedisService implements IRedisService {
       password: this.password,
       username:this.user,
       maxRetriesPerRequest: 100,
-      retryStrategy: (times: number) => {
-        const delay = Math.min(times * 50, 2000);
-        return delay;
-      },
       stringNumbers: false,
     });
 
@@ -32,10 +28,6 @@ export class RedisService implements IRedisService {
       password: this.password,
       username:this.user,
       maxRetriesPerRequest: 100,
-      retryStrategy: (times: number) => {
-        const delay = Math.min(times * 50, 2000);
-        return delay;
-      },
       stringNumbers: false,
     });
 

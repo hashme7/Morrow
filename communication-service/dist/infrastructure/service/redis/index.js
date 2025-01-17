@@ -25,10 +25,6 @@ class RedisService {
             password: this.password,
             username: this.user,
             maxRetriesPerRequest: 100,
-            retryStrategy: (times) => {
-                const delay = Math.min(times * 50, 2000);
-                return delay;
-            },
             stringNumbers: false,
         });
         this.subscriber = new ioredis_1.Redis({
@@ -37,10 +33,6 @@ class RedisService {
             password: this.password,
             username: this.user,
             maxRetriesPerRequest: 100,
-            retryStrategy: (times) => {
-                const delay = Math.min(times * 50, 2000);
-                return delay;
-            },
             stringNumbers: false,
         });
         this.addErrorListeners();
