@@ -8,7 +8,8 @@ import { FetchMessages } from "../usecases/fetchMessages";
 import { JoinSocket } from "../usecases/joinSocket";
 import { SendMessage } from "../usecases/sendMessage";
 import { UpdateMsgSeen } from "../usecases/updateMsgSeen";
-const redisService = new RedisService("localhost", 6379);
+
+const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379);
 const chatRepository = new ChatRepository();
 const rabbitMQService = new RabbitMQService();
 const messageWorker = new MessageWorker(rabbitMQService, chatRepository);

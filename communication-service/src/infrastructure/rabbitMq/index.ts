@@ -1,4 +1,4 @@
-import { Connection, Channel, connect } from "amqplib";
+import amqplib, { Connection, Channel } from "amqplib";
 export class RabbitMQService {
   private connection!: Connection;
   private channel!: Channel;
@@ -8,7 +8,7 @@ export class RabbitMQService {
 
   async connect(): Promise<void> {
     try {
-      this.connection = await connect(process.env.RABBITMQ_URI || "amqp://localhost");
+      this.connection = await amqplib.connect(process.env.RABBITMQ_URI || "amqp://localhost");
       this.channel = await this.connection.createChannel();
       console.log("Connected to RabbitMQ and channel created.");
     } catch (error) {
