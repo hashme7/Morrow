@@ -33,7 +33,7 @@ export class RedisService implements IRedisService {
 
     this.addErrorListeners();
   }
-  async addActiveUser(socketId: string, userId: string): Promise<void> {
+  async addActiveUser(socketId: string, userId: string): Promise<void> {  
     try {
       await this.client.set(userId, socketId);
       console.log(`User ${userId} added to active users.`);
