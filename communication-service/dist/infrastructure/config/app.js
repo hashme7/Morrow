@@ -15,10 +15,15 @@ const createServer = () => {
         app.use(express_1.default.json({ limit: "50mb" }));
         app.use(express_1.default.urlencoded({ extended: true, limit: "50mb" }));
         const corsOptions = {
-            origin: "http://localhost:5173",
+            origin: ["http://localhost:5173", "https://morrow-frontend.vercel.app"],
             credentials: true,
             methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+            allowedHeaders: [
+                "Content-Type",
+                "Authorization",
+                "X-Requested-With",
+                "Accept",
+            ],
         };
         app.use((0, cors_1.default)(corsOptions));
         app.options("*", (0, cors_1.default)(corsOptions));

@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RabbitMQService = void 0;
-const amqplib_1 = require("amqplib");
+const amqplib_1 = __importDefault(require("amqplib"));
 class RabbitMQService {
     constructor() {
         this.connect();
@@ -18,7 +21,7 @@ class RabbitMQService {
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.connection = yield (0, amqplib_1.connect)("amqp://localhost");
+                this.connection = yield amqplib_1.default.connect(process.env.RABBITMQ_URI || "amqp://localhost");
                 this.channel = yield this.connection.createChannel();
                 console.log("Connected to RabbitMQ and channel created.");
             }
