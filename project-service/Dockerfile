@@ -11,7 +11,11 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY src/ src/
+
+COPY tsconfig.json tsconfig.json
+
+RUN npm run build
 
 RUN npx prisma generate
 
