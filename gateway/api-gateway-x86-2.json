@@ -1,0 +1,116 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:eu-north-1:588738569959:task-definition/api-gateway-x86-2:9",
+    "containerDefinitions": [
+        {
+            "name": "api-gateway-x86-2",
+            "image": "588738569959.dkr.ecr.eu-north-1.amazonaws.com/morrow/api-gateway:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "api-gateway-x86",
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "COMMUNICATION_SERVICE",
+                    "value": "http://communication-service-x86.morrow-name-space:2000"
+                },
+                {
+                    "name": "PROJECT_SERVICE",
+                    "value": "http://project-service-x86.morrow-name-space:4000"
+                },
+                {
+                    "name": "PORT",
+                    "value": "8000"
+                },
+                {
+                    "name": "TASK_SERVICE",
+                    "value": "http://task-service-x86.morrow-name-space:5000"
+                },
+                {
+                    "name": "USER_SERVICE",
+                    "value": "http://user-service-x86.morrow-name-space:3000"
+                },
+                {
+                    "name": "AUTH_SERVICE",
+                    "value": "http://auth-service-x86.morrow-name-space:9090"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/api-gateway-x86-2",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "eu-north-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "api-gateway-x86-2",
+    "executionRoleArn": "arn:aws:iam::588738569959:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 9,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.28"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2025-01-19T08:32:03.016Z",
+    "registeredBy": "arn:aws:iam::588738569959:root",
+    "enableFaultInjection": false,
+    "tags": []
+}
