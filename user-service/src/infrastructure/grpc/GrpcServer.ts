@@ -15,12 +15,11 @@ export class GrpcServer {
       "localhost:8080",
       ServerCredentials.createInsecure(),
       (error) => {
-        if (error) {
+        if (error) { 
           console.error("Server binding error:", error);
           return;
         }
-        console.log("gRPC server is running at user service on port : 8080");
-        // this.server.start();
+        console.log("gRPC server is running at user service on port : 8080 ");
       }
     );
   }

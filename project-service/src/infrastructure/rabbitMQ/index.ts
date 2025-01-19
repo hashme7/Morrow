@@ -17,7 +17,7 @@ export class RabbitMQService {
     try {
       this.connection = await amqplib.connect(rabbitMQConfig.uri!);
       this.channel = await this.connection.createChannel();
-      console.log(`RabbitMQ is connected successfully.`);
+      console.log(`RabbitMQ is connected successfully. ${rabbitMQConfig.uri},${this.connection}`);
     } catch (error) {
       console.log(`Error connecting RabbitMQ: ${error}`);
       if(attempt<=this.maxRetries){

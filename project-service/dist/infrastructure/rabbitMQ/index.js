@@ -27,7 +27,7 @@ class RabbitMQService {
             try {
                 this.connection = yield amqplib_1.default.connect(rabbitMQConfig_1.rabbitMQConfig.uri);
                 this.channel = yield this.connection.createChannel();
-                console.log(`RabbitMQ is connected successfully.`);
+                console.log(`RabbitMQ is connected successfully. ${rabbitMQConfig_1.rabbitMQConfig.uri},${this.connection}`);
             }
             catch (error) {
                 console.log(`Error connecting RabbitMQ: ${error}`);

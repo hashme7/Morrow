@@ -115,7 +115,7 @@ export class Controller {
         const newAccessToken = JWTService.createAccessToken(id, role);
         const newRefreshToken = JWTService.createRefreshToken(id, role);
         res.cookie("accessToken", newAccessToken, {
-          httpOnly: true,
+          httpOnly: false,
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
@@ -144,8 +144,18 @@ export class Controller {
 
   async logout(req: Request, res: Response) {
     try {
-      res.clearCookie("accessToken");
-      res.clearCookie("refreshToken");
+      res.clearCookie("accessToken", {
+      httpOnly: false, 
+      secure: true,
+      sameSite: "none",
+    });
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+
       res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
       console.log(error, "error on");

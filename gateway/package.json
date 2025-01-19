@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run tsc-watch\" \"npm run serve\"",
+    "dev": "concurrently \"npm run tsc-watch\" \"npm start\"",
     "tsc-watch": "tsc --watch",
-    "serve": "nodemon ./dist/index.js"
+    "start": "nodemon ./dist/index.js"
   },
   "keywords": [],
   "author": "",

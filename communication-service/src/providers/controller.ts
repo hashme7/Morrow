@@ -14,7 +14,7 @@ import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 
-const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379,process.env.REDISPASS,process.env.REDISUSER || "default");
+const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379, process.env.REDISPASS,process.env.REDISUSER || "default");
 const chatRepository = new ChatRepository();
 const rabbitMQService = new RabbitMQService();
 const messageWorker = new MessageWorker(rabbitMQService, chatRepository);

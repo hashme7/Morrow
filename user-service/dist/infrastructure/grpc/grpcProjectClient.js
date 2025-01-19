@@ -8,13 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GrpcProjectClient = void 0;
 const cmn_js_1 = require("morrow-common/dist/grpc/cmn.js");
 const grpc_js_1 = require("@grpc/grpc-js");
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../../../.env") });
+console.log(process.env.GRPC_PROJECT_SERVICE_URI, "asdkf", process.env.PORT);
 class GrpcProjectClient {
     constructor() {
-        this.client = new cmn_js_1.ProjectServiceClient("localhost:7070", grpc_js_1.credentials.createInsecure());
+        this.client = new cmn_js_1.ProjectServiceClient(process.env.GRPC_PROJECT_SERVER_URI || "localhost:7070", grpc_js_1.credentials.createInsecure());
         console.log(`grpc client for project server is running`);
     }
     getProjectByTeamId(teamIds) {
