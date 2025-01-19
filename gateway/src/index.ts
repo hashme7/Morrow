@@ -26,7 +26,7 @@ app.use("/health", (req: Request, res: Response) => {
   
   res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
-console.log("process",process.env.PROJECT_SERVICE)
+console.log("process",process.env.PROJECT_SERVICE) 
 app.use(
   "/project",  
   authenticate,
