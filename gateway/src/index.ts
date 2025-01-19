@@ -28,7 +28,7 @@ app.use("/health", (req: Request, res: Response) => {
 });
 console.log("process",process.env.PROJECT_SERVICE)
 app.use(
-  "/project",
+  "/project",  
   authenticate,
   proxy(process.env.PROJECT_SERVICE || "http://localhost:4000")
 );
