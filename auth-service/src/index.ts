@@ -12,7 +12,7 @@ const startServer = async (): Promise<void> => {
     app?.listen(port, () => {
       console.log("cicd updates");
       
-      console.log(`auth-service successfully running on port ${port}`);
+      console.log(`auth-service successfully running on port ${port} `);
     });
   } catch (error) {
     console.log(error);
