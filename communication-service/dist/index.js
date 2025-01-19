@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DBConfig_1 = require("./infrastructure/config/DBConfig");
+const app_1 = require("./infrastructure/config/app");
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
-const app_1 = require("./infrastructure/config/app");
 dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../.env") });
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -132,7 +132,7 @@ class Controller {
                     const newAccessToken = morrow_common_1.JWTService.createAccessToken(id, role);
                     const newRefreshToken = morrow_common_1.JWTService.createRefreshToken(id, role);
                     res.cookie("accessToken", newAccessToken, {
-                        httpOnly: true,
+                        httpOnly: false,
                         secure: true,
                         sameSite: "none",
                         maxAge: 24 * 60 * 60 * 1000,
@@ -163,8 +163,16 @@ class Controller {
     logout(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                res.clearCookie("accessToken");
-                res.clearCookie("refreshToken");
+                res.clearCookie("accessToken", {
+                    httpOnly: false,
+                    secure: true,
+                    sameSite: "none",
+                });
+                res.clearCookie("refreshToken", {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
+                });
                 res.status(200).json({ message: "Logged out successfully" });
             }
             catch (error) {

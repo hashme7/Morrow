@@ -16,8 +16,7 @@ class GrpcServer {
                 console.error("Server binding error:", error);
                 return;
             }
-            console.log("gRPC server is running at user service on port : 8080");
-            // this.server.start();
+            console.log("gRPC server is running at user service on port : 8080 ");
         });
     }
 }
