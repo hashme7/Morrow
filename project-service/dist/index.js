@@ -22,6 +22,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         (0, DBconfig_1.DBConfig)();
         const app = (0, appConfig_1.createServer)();
         const port = process.env.PORT || 4000;
+        console.log("updated...");
         app === null || app === void 0 ? void 0 : app.listen(port, () => {
             console.log(`project-service successfully running on port ${port}`);
         });
