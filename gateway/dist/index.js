@@ -22,6 +22,7 @@ app.use(express_1.default.json());
 app.use((0, morgan_1.default)("tiny"));
 app.use((0, cookie_parser_1.default)());
 app.use("/health", (req, res) => {
+    console.log("health checking... 1");
     res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
 console.log("process", process.env.PROJECT_SERVICE);
