@@ -10,8 +10,11 @@ const startServer = async (): Promise<void> => {
     await DBConfig();
     const port = process.env.PORT || 3000;
     const app = createServer();
-    app?.listen(port, () =>   
+    app?.listen(port, () => {
+      console.log("updated code...");
+      
       console.log(`user-service successfully running on port ${port}`)
+    }
     );
   } catch (error) {
     console.log(error); 
