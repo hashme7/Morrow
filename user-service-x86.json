@@ -1,0 +1,134 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:eu-north-1:588738569959:task-definition/user-service-x86:2",
+    "containerDefinitions": [
+        {
+            "name": "user-service-x86",
+            "image": "588738569959.dkr.ecr.eu-north-1.amazonaws.com/morrow/user-service:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "user-service-x86",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                },
+                {
+                    "name": "grpc-service",
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "appProtocol": "grpc"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "GITHUB_CLIENT_ID",
+                    "value": "Ov23liQLEQjkuY7FHHPO"
+                },
+                {
+                    "name": "GMAIL",
+                    "value": "morrowshp@gmail.com"
+                },
+                {
+                    "name": "MONGO_URL",
+                    "value": "mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Users?retryWrites=true&w=majority&appName=Morrow"
+                },
+                {
+                    "name": "PORT",
+                    "value": "3000"
+                },
+                {
+                    "name": "JWT_SECRET",
+                    "value": "secret_key"
+                },
+                {
+                    "name": "GITHUB_CLIENT_SECRET",
+                    "value": "02e4bb399e68fad50b85077cbfaccc9c9e95286f"
+                },
+                {
+                    "name": "GPASSWORD",
+                    "value": "dhaupxvdrvjptfpb"
+                },
+                {
+                    "name": "GRPC_PROJECT_SERVICE_URI",
+                    "value": "project-service-x86.morrow-name-space:7070"
+                },
+                {
+                    "name": "RABBITMQ_URI",
+                    "value": "amqps://rhmgxucz:U_il_-AzOWJjRnm5seFTFe_gfII8J3eF@puffin.rmq2.cloudamqp.com/rhmgxucz"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/user-service-x86",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "eu-north-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "user-service-x86",
+    "executionRoleArn": "arn:aws:iam::588738569959:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.28"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2025-01-18T14:49:39.311Z",
+    "registeredBy": "arn:aws:iam::588738569959:root",
+    "tags": []
+}
