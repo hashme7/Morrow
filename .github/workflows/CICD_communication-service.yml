@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "deploy-br" ]
     paths: ["communication-service/**"]
-
+   
 env:
   AWS_REGION: eu-north-1                   # Set your preferred AWS region
   ECR_REPOSITORY: morrom/communication-service     # Set your Amazon ECR repository name
