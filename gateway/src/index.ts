@@ -16,11 +16,12 @@ const corsOptions = {
     "http://localhost:5173",
     "https://morrow-frontend.vercel.app",
     "https://morrow-frontend-git-main-hashme7s-projects.vercel.app",
-    "morrow-frontend-pq1y24igi-hashme7s-projects.vercel.app",
+    "https://morrow-frontend-pq1y24igi-hashme7s-projects.vercel.app",
   ],
   credentials: true,
 };
 
+app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
