@@ -12,7 +12,7 @@ export class AuthenticateToken implements IAuthenticateToken {
       if (decoded) {
         const userData = await this.repository.findById(decoded.id);
 
-        if (userData) {
+        if (userData) { 
           return {
             status: 200,
             message: "Token is valid",
