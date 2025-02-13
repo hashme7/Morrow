@@ -17,6 +17,7 @@ const amqplib_1 = __importDefault(require("amqplib"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../../../.env") });
+console.log(process.env.RABBITMQ_URL, "rabbitmq");
 class RabbitMQService {
     constructor() {
         this.connect();
