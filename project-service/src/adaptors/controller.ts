@@ -4,7 +4,7 @@ import {
   IGetProjectsByUserId,
 } from "../interfaces/usecase.interface";
 
-export class Controller {
+export class Controller { 
   constructor(
     private createProjectCases: ICreateProjectCases,  
     private getProjectByUserIdCases: IGetProjectsByUserId
