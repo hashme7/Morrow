@@ -11,13 +11,13 @@ class GrpcServer {
     }
     start() {
         this.server.addService(cmn_1.ProjectServiceService, this.projectService);
-        this.server.bindAsync("localhost:7070", grpc_js_1.ServerCredentials.createInsecure(), (err, port) => {
-            if (err) {
-                console.error("Failed to bind gRPC server:", err);
+        this.server.bindAsync("0.0.0.0:8080", grpc_js_1.ServerCredentials.createInsecure(), (error, port) => {
+            if (error) {
+                console.error("Server binding error:", error);
                 return;
             }
-            console.log(`gRPC server is running at project service on port: ${port}`);
-            this.server.start();
+            console.log(`gRPC server is running at user service on port: ${port}`);
+            console.log(`gRPC server address: ${this.server}`);
         });
     }
 }

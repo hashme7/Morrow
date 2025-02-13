@@ -8,7 +8,7 @@ const MessageSchema = new mongoose.Schema<IMessage>({
     required: true,
   },
   receiverId:{
-    type:String,
+    type:String, 
     required:true,
   },
   content: {

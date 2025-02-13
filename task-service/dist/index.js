@@ -22,6 +22,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         (0, dbConfig_1.DBConfig)();
         const app = (0, app_1.createServer)();
         const port = process.env.PORT || 5000;
+        console.log("updating... ");
         app === null || app === void 0 ? void 0 : app.listen(port, () => {
             console.log(`task-service successfully running on port ${port}`);
         });

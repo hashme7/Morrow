@@ -26,6 +26,9 @@ class GrpcProjectClient {
     }
     getProjectByTeamId(teamIds) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!teamIds || teamIds.length === 0) {
+                throw new Error("teamIds must be a non-empty array");
+            }
             console.log("teamidssssssssssssssss", teamIds);
             const projectRequest = { teamIds };
             return new Promise((resolve, reject) => {
