@@ -12,7 +12,12 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://morrow-frontend.vercel.app"],
+  origin: [
+    "http://localhost:5173",
+    "https://morrow-frontend.vercel.app",
+    "https://morrow-frontend-git-main-hashme7s-projects.vercel.app",
+    "morrow-frontend-pq1y24igi-hashme7s-projects.vercel.app",
+  ],
   credentials: true,
 };
 
