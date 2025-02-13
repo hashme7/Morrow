@@ -34,9 +34,10 @@ export class RedisService implements IRedisService {
       keepAlive: 30000,
       stringNumbers: false,
     });
-
+    console.log(`redis client: ${this.subscriber.options} ,redis sub:${this.client.options}`);
     this.addErrorListeners();
   }
+  
   async addActiveUser(socketId: string, userId: string): Promise<void> {
     try {
       await this.client.set(userId, socketId);

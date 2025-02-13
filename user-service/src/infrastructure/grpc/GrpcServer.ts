@@ -12,14 +12,15 @@ export class GrpcServer {
   start(): void {
     this.server.addService(UserServiceService, this.userService );
     this.server.bindAsync(
-      "localhost:8080",
+      "0.0.0.0:8080",
       ServerCredentials.createInsecure(),
-      (error) => {
-        if (error) { 
+      (error, port) => {
+        if (error) {
           console.error("Server binding error:", error);
           return;
         }
-        console.log("gRPC server is running at user service on port : 8080 ");
+        console.log(`gRPC server is running at user service on port: ${port}`);
+        console.log(`gRPC server address: ${this.server}`);
       }
     );
   }

@@ -22,6 +22,7 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, DBConfig_1.DBConfig)();
         const port = process.env.PORT || 2000;
         const app = (0, app_1.createServer)();
+        console.log("updated");
         app === null || app === void 0 ? void 0 : app.listen(port, () => console.log(`communication-service successfully running on port ${port}`));
     }
     catch (error) {

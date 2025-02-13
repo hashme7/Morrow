@@ -19,7 +19,10 @@ export class GrpcProjectClient implements IGrpcProjectClient{
     );
     console.log(`grpc client for project server is running`);
   }
-  async getProjectByTeamId(teamIds:string[]):Promise<ProjectsResponse>{
+  async getProjectByTeamId(teamIds: string[]): Promise<ProjectsResponse>{
+    if (!teamIds || teamIds.length === 0) {
+      throw new Error("teamIds must be a non-empty array");
+    }
     console.log("teamidssssssssssssssss",teamIds);
     const projectRequest:ProjectRequest = {teamIds};
     return new Promise((resolve,reject)=>{

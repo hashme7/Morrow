@@ -6,7 +6,6 @@ import {
   IJoinSocket,
   IUpdateMsgSeen,
 } from "../../../interfaces/usecases.interface";
-import { Console } from "console";
 
 export class WebSocketServer {
   public io: Server;

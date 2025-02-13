@@ -5,7 +5,7 @@ export class ChatController {
   constructor(
     private sendMessage: ISendMessage,
     private fetchMessage: IGetMessage
-  ) {}
+  ) {}    
   async sendChat(req: Request, res: Response) {
     try {
       const senderId = req.query.senderId as string;   
