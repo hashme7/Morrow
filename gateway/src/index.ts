@@ -64,7 +64,10 @@ const createProxy = (serviceUrl: string) =>
 
 app.use(
   "/project",
-  authenticate,
+  authenticate, (req, res, next) => {
+    console.log(req.originalUrl)
+    next()
+  } ,
   createProxy(process.env.PROJECT_SERVICE || "http://localhost:4000")
 );
 app.use(
