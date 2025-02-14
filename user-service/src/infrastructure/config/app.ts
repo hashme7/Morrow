@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userRouter from "../routes/userRoutes";
-import morgan from 'morgan'
+import morgan from "morgan";
 import dotenv from "dotenv";
 import path from "path";
 
@@ -10,30 +10,17 @@ dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 export const createServer = () => {
   try {
     const app = express();
-    app.use(morgan('tiny'))
+    app.use(morgan("tiny"));
     app.use(express.json({ limit: "50mb" }));
     app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-    const corsOptions = {
-      origin: [
-        "http://localhost:5173",
-        "https://morrow-frontend.vercel.app",
-        "https://morrow-frontend-git-main-hashme7s-projects.vercel.app",
-        "https://morrow-frontend-pq1y24igi-hashme7s-projects.vercel.app",
-      ],
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      allowedHeaders: [
-        "Content-Type",
-        "Authorization",
-        "X-Requested-With",
-        "Accept",
-      ],
-    };
-
-    app.use(cors(corsOptions));
-    app.options("*", cors(corsOptions));
-
+    app.use(
+      cors({
+        origin: "https://morrow.hashim-dev007.online",
+        credentials: true,
+      })
+    );
+    
     app.use("/", userRouter);
     return app;
   } catch (error) {
