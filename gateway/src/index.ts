@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, {  Request, Response } from "express";
 import proxy from "express-http-proxy";
 import cors from "cors";
 import morgan from "morgan";
@@ -24,20 +24,21 @@ app.use(express.json());
 app.use(morgan("tiny"));
 app.use(cookieParser());
 
-app.use((req: Request, res: Response, next: NextFunction): void => {
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    );
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.sendStatus(200);
-    return;
-  }
-  next();
+app.options("*", (req: Request, res: Response) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, x-requested-with"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.sendStatus(204);
 });
+
+
 
 app.use("/health", (req: Request, res: Response) => {
   console.log("health checking... 1");
