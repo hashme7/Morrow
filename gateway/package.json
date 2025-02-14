@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run tsc-watch\" \"npm start\"",
     "tsc-watch": "tsc --watch",
-    "start": "nodemon ./dist/index.js"
+    "start": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
