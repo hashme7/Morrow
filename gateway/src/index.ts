@@ -51,7 +51,7 @@ app.use((req:Request, res:Response, next:NextFunction):void => {
 });
 
 app.use("/health", (req: Request, res: Response) => {
-  console.log("health checking... 1");
+  console.log("health checking... 12");
   res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
 console.log("process",process.env.PROJECT_SERVICE) 
