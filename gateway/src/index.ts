@@ -73,6 +73,10 @@ app.use(
 app.use(
   "/user",
   authenticate,
+  (req, res, next) => {
+    console.log(req.originalUrl);
+    next();
+  },
   createProxy(process.env.USER_SERVICE || "http://localhost:3000")
 );
 app.use(
