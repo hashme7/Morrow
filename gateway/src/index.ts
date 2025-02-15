@@ -21,14 +21,12 @@ const corsOptions = {
   credentials: true,
 };
 
-
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(cookieParser());
 
-app.use((req:Request, res:Response, next:NextFunction):void => {
+app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.method === "OPTIONS") {
     console.log(`-------------------------
       
@@ -36,7 +34,7 @@ app.use((req:Request, res:Response, next:NextFunction):void => {
               ${req.method} and ${req.url}
 
       -----------------------------
-      `)
+      `);
     res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
     res.header(
       "Access-Control-Allow-Methods",
@@ -54,26 +52,82 @@ app.use("/health", (req: Request, res: Response) => {
   console.log("health checking... 12");
   res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
-console.log("process",process.env.PROJECT_SERVICE) 
-app.use(  
+console.log("process", process.env.PROJECT_SERVICE);
+app.use(
   "/project",
   authenticate,
-  proxy(process.env.PROJECT_SERVICE || "http://localhost:4000")
+  proxy(process.env.PROJECT_SERVICE || "http://localhost:4000", {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        cookie: srcReq.headers.cookie || "", // Forward cookies
+      };
+      return proxyReqOpts;
+    },
+  })
 );
-app.use("/user", (req, res, next) => {
-  console.log(`
+app.use(
+  "/user",
+  (req, res, next) => {
+    console.log(`
     ++++++++++++++++++++++++++++++
     
     ${req.url} 
     
     ++++++++++++++++++++++++++++++
     `);
-  console.log("/user proxying ")
-  next();
-} ,authenticate, proxy(process.env.USER_SERVICE||"http://localhost:3000"));
-app.use("/communicate", authenticate, proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000"));
-app.use("/task", authenticate, proxy(process.env.TASK_SERVICE || "http://localhost:5000"));
-app.use("/auth", proxy(process.env.AUTH_SERVICE || "http://localhost:9090"));
+    console.log("/user proxying ");
+    next();
+  },
+  authenticate,
+  proxy(process.env.USER_SERVICE || "http://localhost:3000", {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        cookie: srcReq.headers.cookie || "", 
+      };
+      return proxyReqOpts;
+    },
+  })
+);
+app.use(
+  "/communicate",
+  authenticate,
+  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        cookie: srcReq.headers.cookie || "", 
+      };
+      return proxyReqOpts;
+    },
+  })
+);
+app.use(
+  "/task",
+  authenticate,
+  proxy(process.env.TASK_SERVICE || "http://localhost:5000", {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        cookie: srcReq.headers.cookie || "", 
+      };
+      return proxyReqOpts;
+    },
+  })
+);
+app.use(
+  "/auth",
+  proxy(process.env.AUTH_SERVICE || "http://localhost:9090", {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        cookie: srcReq.headers.cookie || "", // Forward cookies
+      };
+      return proxyReqOpts;
+    },
+  })
+);
 
 app.listen(process.env.PORT || 8000, () => {
   console.log(`gateway service is running on port :http://localhost:8000`);
