@@ -41,6 +41,7 @@ export class Controller {
       console.log(error);
     }
   }
+  
   async resendOtp(req: Request, res: Response) {
     try {
       const { userId } = req.body;
@@ -50,6 +51,7 @@ export class Controller {
       console.log(error);
     }
   }
+
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
     try {
@@ -69,9 +71,10 @@ export class Controller {
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
+
         console.log(`
-  res.cookie from login : ${JSON.stringify(res.getHeaders(), null, 2)}
-`);
+          res.cookie from login : ${JSON.stringify(res.getHeaders(), null, 2)}
+        `);
 
         res.status(200).json({
           message: "Login successful",
