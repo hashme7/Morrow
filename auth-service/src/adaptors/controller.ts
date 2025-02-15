@@ -69,6 +69,13 @@ export class Controller {
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
+        console.log(`
+          
+          
+          
+          res.cookie from login :${res.getHeaders()}
+          
+          `);
         res.status(200).json({
           message: "Login successful",
           accessToken,
