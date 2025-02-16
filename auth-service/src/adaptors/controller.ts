@@ -64,12 +64,14 @@ export class Controller {
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
+          domain:"morrow.hashim-dev007.online"
         });
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
+          domain:"morrow.hashim-dev007.online"
         });
 
         console.log(`
@@ -129,12 +131,14 @@ export class Controller {
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
+          domain:"morrow.hashim-dev007.online"
         });
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
+          domain: "morrow.hashim-dev007.online",
         });
         res.status(200).json({
           message: "Token refreshed successfully",
@@ -188,15 +192,17 @@ export class Controller {
       }
       res.cookie("accessToken", tokens.accessToken, {
         httpOnly: false,
-        secure: false,
+        secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
+        domain: "morrow.hashim-dev007.online",
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        domain: "morrow.hashim-dev007.online",
       });
       res.status(status).json({
         message: message,
@@ -223,15 +229,16 @@ export class Controller {
       }
       res.cookie("accessToken", tokens.accessToken, {
         httpOnly: false,
-        secure: false,
+        secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        domain: "morrow.hashim-dev007.online",
       });
       res.status(status).json({
         message: message,
