@@ -22,6 +22,11 @@ const corsOptions = {
   ],
   credentials: true,
 };
+app.use((req, res, next) => {
+  console.log("🔎 CORS Debug:", req.headers.origin);
+  console.log("🛠 Allowed Origins:", corsOptions.origin);
+  next();
+});
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
