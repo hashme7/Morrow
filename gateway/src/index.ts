@@ -11,6 +11,8 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 const corsOptions = {
   origin: [
     "http://localhost:5173",
@@ -20,7 +22,6 @@ const corsOptions = {
   ],
   credentials: true,
 };
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -28,13 +29,6 @@ app.use(cookieParser());
 
 app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.method === "OPTIONS") {
-    console.log(`-------------------------
-      
-                    options method called
-              ${req.method} and ${req.url}
-
-      -----------------------------
-      `);
     res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
     res.header(
       "Access-Control-Allow-Methods",
@@ -60,7 +54,7 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
-        cookie: srcReq.headers.cookie || "", // Forward cookies
+        cookie: srcReq.headers.cookie || "", 
       };
       return proxyReqOpts;
     },
@@ -68,17 +62,6 @@ app.use(
 );
 app.use(
   "/user",
-  (req, res, next) => {
-    console.log(`
-    ++++++++++++++++++++++++++++++
-    
-    ${req.url} 
-    
-    ++++++++++++++++++++++++++++++
-    `);
-    console.log("/user proxying ");
-    next();
-  },
   authenticate,
   proxy(process.env.USER_SERVICE || "http://localhost:3000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
@@ -122,7 +105,7 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
-        cookie: srcReq.headers.cookie || "", // Forward cookies
+        cookie: srcReq.headers.cookie || "",
       };
       return proxyReqOpts;
     },
