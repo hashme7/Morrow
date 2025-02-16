@@ -12,6 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const app = express();
 
 app.set("trust proxy", 1);
+console.log("truestedkskak..................................")
 
 const corsOptions = {
   origin: [
