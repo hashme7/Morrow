@@ -64,14 +64,14 @@ export class Controller {
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
-          domain:"morrow.hashim-dev007.online"
+          domain: "morrow-frontend.vercel.app",
         });
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          domain:"morrow.hashim-dev007.online"
+          domain: "morrow-frontend.vercel.app",
         });
 
         console.log(`
@@ -131,14 +131,14 @@ export class Controller {
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
-          domain:"morrow.hashim-dev007.online"
+          domain: "morrow-frontend.vercel.app",
         });
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          domain: "morrow.hashim-dev007.online",
+          domain: "morrow-frontend.vercel.app",
         });
         res.status(200).json({
           message: "Token refreshed successfully",
@@ -195,14 +195,14 @@ export class Controller {
         secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
-        domain: "morrow.hashim-dev007.online",
+        domain: "morrow-frontend.vercel.app",
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: "morrow.hashim-dev007.online",
+        domain: "morrow-frontend.vercel.app",
       });
       res.status(status).json({
         message: message,
@@ -232,13 +232,14 @@ export class Controller {
         secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
+        domain: "morrow-frontend.vercel.app",
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: "morrow.hashim-dev007.online",
+        domain: "morrow-frontend.vercel.app",
       });
       res.status(status).json({
         message: message,
