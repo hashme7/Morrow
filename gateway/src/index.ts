@@ -102,6 +102,10 @@ app.use(
 app.use(
   "/auth",
   proxy(process.env.AUTH_SERVICE || "http://localhost:9090", {
+     userResHeaderDecorator(headers, userReq, userRes) {
+      console.log("🔍 Response Headers from Auth Service:", headers);
+      return headers;
+    },
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
