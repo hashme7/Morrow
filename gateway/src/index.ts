@@ -22,6 +22,11 @@ const corsOptions = {
   ],
   credentials: true,
 };
+app.use((req, res, next) => {
+  console.log("🔎 CORS Debug:", req.headers.origin);
+  console.log("🛠 Allowed Origins:", corsOptions.origin);
+  next();
+});
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -102,6 +107,10 @@ app.use(
 app.use(
   "/auth",
   proxy(process.env.AUTH_SERVICE || "http://localhost:9090", {
+     userResHeaderDecorator(headers, userReq, userRes) {
+      console.log("🔍 Response Headers from Auth Service:", headers);
+      return headers;
+    },
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
