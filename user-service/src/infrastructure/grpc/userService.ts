@@ -33,9 +33,9 @@ export class UserService implements UserServiceServer {
           ****************************************************************
 
           `);
-        const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
-        const response: TeamResponse = { teamIds };
-        callback(null, response);
+        // const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
+        // const response: TeamResponse = { teamIds };
+        callback(null, {teamIds:[]});
       } catch (error) {
         console.error("Error in getTeamIds:", error);
         callback(
