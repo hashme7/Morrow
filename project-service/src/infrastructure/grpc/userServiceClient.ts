@@ -20,6 +20,7 @@ export class GrpcClient {
   }
   async getTeamIds(userId: string): Promise<TeamResponse | undefined> {
     const userRequest: UserRequest = { userId };
+    console.log("1",userId,userRequest,"userid and userRequest")
     return new Promise((resolve, reject) => {
       this.client.getTeamIds(userRequest, (err: ServiceError | null, response: TeamResponse) => {
         if (err) {
