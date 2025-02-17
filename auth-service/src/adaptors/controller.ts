@@ -126,7 +126,7 @@ export class Controller {
         const newAccessToken = JWTService.createAccessToken(id, role);
         const newRefreshToken = JWTService.createRefreshToken(id, role);
         res.cookie("accessToken", newAccessToken, {
-          httpOnly: false,
+          httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
