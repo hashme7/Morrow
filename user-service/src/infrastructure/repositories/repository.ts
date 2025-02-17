@@ -159,7 +159,7 @@ class Repository implements IRepository {
     try {
       console.log(`
         
-        usereid from getteamidsbyuserid
+        usereId from get team ids by userid
         ${userId}
         
         
