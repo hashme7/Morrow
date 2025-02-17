@@ -11,7 +11,7 @@ const startServer = async (): Promise<void> => {
     const port = process.env.PORT || 3000;
     const app = createServer();
     app?.listen(port, () => {
-      console.log("updated code...");
+      console.log("updated code...123");
       
       console.log(`user-service successfully running on port ${port}`)
     }
