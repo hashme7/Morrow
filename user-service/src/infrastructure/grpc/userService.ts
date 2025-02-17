@@ -21,9 +21,9 @@ export class UserService implements UserServiceServer {
 
 
 
-        userId:${JSON.parse(userId)};
-
-        ${typeof userId} ${typeof userId}
+        
+        ${call.request}
+        ${typeof userId} ${userId}
 
 
 
