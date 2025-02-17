@@ -17,6 +17,20 @@ export class UserService implements UserServiceServer {
     ): Promise<void> => {
       try {
         const { userId } = call.request;
+        console.log(`
+          
+
+
+ 
+
+          userId:${userId};
+
+          ${typeof userId} ${typeof new ObjectId(userId
+
+          )}
+
+
+          `)
         const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
         const response: TeamResponse = { teamIds };
         callback(null, response);
