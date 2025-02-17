@@ -37,7 +37,7 @@ export class UserService implements UserServiceServer {
         // const response: TeamResponse = { teamIds };
         callback(null, {teamIds:[]});
       } catch (error) {
-        console.error("Error in getTeamIds:", error);
+        console.error("Error in getTeamIds :-", error);
         callback(
           {
             code: 13,
