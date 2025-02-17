@@ -23,7 +23,7 @@ export class UserService implements UserServiceServer {
 
         userId:${userId};
 
-        ${typeof userId} ${typeof new ObjectId(userId)}
+        ${typeof userId} ${typeof userId}
 
 
 
@@ -35,6 +35,9 @@ export class UserService implements UserServiceServer {
       try {
         // const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
         // const response: TeamResponse = { teamIds };
+        console.log(`
+          fkasjkdfjask;dfkasjdkfjasdklfjaslk;djf;lkasdf
+          `)
         callback(null, {teamIds:[]});
       } catch (error) {
         console.error("Error in getTeamIds :-", error);
