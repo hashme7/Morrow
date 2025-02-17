@@ -24,7 +24,7 @@
     "ioredis": "^5.4.1",
     "mongoose": "^8.8.2",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.14",
+    "morrow-common": "^1.5.61",
     "nodemon": "^3.1.7",
     "socket.io": "^4.8.1",
     "socket.io-redis": "^6.1.1"
