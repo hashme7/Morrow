@@ -10,7 +10,7 @@ const startServer = async () => {
     DBConfig();
     const app = createServer();
     const port = process.env.PORT || 4000;
-    console.log("updated...")
+    console.log("updated...1")
     app?.listen(port,()=>{
       console.log(`project-service successfully running on port ${port}`)
     })
