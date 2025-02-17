@@ -16,7 +16,7 @@ class Repository implements IRepository {
   }
   async getRolesByTeamId(teamId: mongoose.Types.ObjectId): Promise<IRole[]> {
     try {
-      return (await Roles.find({team_id:teamId}));
+      return await Roles.find({ team_id: teamId });
     } catch (error) {
       throw error;
     }
@@ -60,7 +60,7 @@ class Repository implements IRepository {
     } catch (error) {
       console.error(`Error marking user as verified: ${error}`);
       throw error;
-    };
+    }
   }
 
   async addRole(
@@ -155,7 +155,7 @@ class Repository implements IRepository {
       throw error;
     }
   }
-  async getTeamIdsByUserId(userId: string): Promise<string[]> {
+  async getTeamIdsByUserId(userId: mongoose.Types.ObjectId): Promise<string[]> {
     try {
       console.log(userId);
       const teamIds = await TeamMember.find(
@@ -268,7 +268,7 @@ class Repository implements IRepository {
     teamId: mongoose.Types.ObjectId,
     userId: mongoose.Types.ObjectId,
     note: string
-  ) :Promise<IRequest>{
+  ): Promise<IRequest> {
     try {
       const newRequest = new Requests({
         team_id: teamId,
@@ -322,11 +322,14 @@ class Repository implements IRepository {
       );
     }
   }
-  async getRole(teamId:string,userId:string) {
+  async getRole(teamId: string, userId: string) {
     try {
-      return (await Roles.findOne({ team_id: new Types.ObjectId(teamId), user_account: new Types.ObjectId(userId)}).lean());
+      return await Roles.findOne({
+        team_id: new Types.ObjectId(teamId),
+        user_account: new Types.ObjectId(userId),
+      }).lean();
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

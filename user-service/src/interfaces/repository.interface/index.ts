@@ -23,7 +23,7 @@ export interface IRepository {
     userId: mongoose.Types.ObjectId,
     email: string
   ): Promise<IUser | null>;
-  getTeamIdsByUserId(userId: string): Promise<string[]>;
+  getTeamIdsByUserId(userId: mongoose.Types.ObjectId): Promise<string[]>;
   addTeamMembers(
     userId: mongoose.Types.ObjectId,
     teamId: mongoose.Types.ObjectId

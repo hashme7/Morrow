@@ -1,5 +1,6 @@
 import { IRepository } from '../interfaces/repository.interface';
 import { response } from '../interfaces/types/response';
+import { ObjectId } from 'mongodb';
 
 export class GetTeamIdsUseCase {
   private readonly repository: IRepository;
@@ -9,7 +10,7 @@ export class GetTeamIdsUseCase {
 
   async execute(userId: string): Promise<response> {
     try {
-      const teamIds = await this.repository.getTeamIdsByUserId(userId);
+      const teamIds = await this.repository.getTeamIdsByUserId(new ObjectId(userId));
       return  { status: 200, message: "data fetched.", data: teamIds };
     } catch (error) {
       console.error(`Failed to get team IDs for user ${userId}:`, error);
