@@ -15,24 +15,24 @@ export class UserService implements UserServiceServer {
       call: ServerUnaryCall<UserRequest, TeamResponse>,
       callback: sendUnaryData<TeamResponse>
     ): Promise<void> => {
+      const { userId } = call.request;
+      console.log(`
+        ***************************************************************
+
+
+
+        userId:${userId};
+
+        ${typeof userId} ${typeof new ObjectId(userId)}
+
+
+
+
+
+        ****************************************************************
+
+        `);
       try {
-        const { userId } = call.request;
-        console.log(`
-          ***************************************************************
-
- 
-
-          userId:${userId};
-
-          ${typeof userId} ${typeof new ObjectId(userId)}
-
-
-
-
-
-          ****************************************************************
-
-          `);
         // const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
         // const response: TeamResponse = { teamIds };
         callback(null, {teamIds:[]});
