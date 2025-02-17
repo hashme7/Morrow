@@ -136,7 +136,6 @@ export const ProjectsResponse: MessageFns<ProjectsResponse> = {
           if (tag !== 10) {
             break;
           }
-
           message.projects.push(Project.decode(reader, reader.uint32()));
           continue;
         }
