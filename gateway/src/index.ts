@@ -12,7 +12,6 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const app = express();
 
 app.set("trust proxy", 1);
-console.log("truestedkskak..................................")
 
 const corsOptions = {
   origin: [
@@ -23,11 +22,11 @@ const corsOptions = {
   ],
   credentials: true,
 };
-app.use((req, res, next) => {
-  console.log("🔎 CORS Debug:", req.headers.origin);
-  console.log("🛠 Allowed Origins:", corsOptions.origin);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("🔎 CORS Debug:", req.headers.origin);
+//   console.log("🛠 Allowed Origins:", corsOptions.origin);
+//   next();
+// });
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));

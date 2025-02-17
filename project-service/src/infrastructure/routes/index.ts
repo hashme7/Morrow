@@ -7,7 +7,7 @@ routes
   .route("/create")
   .post(controllerInstance.createProject.bind(controllerInstance));
 routes
-  .route("/getprojects/:userId")
+  .route("/getprojects")
   .get(controllerInstance.getProject.bind(controllerInstance));
 
 export default routes;
