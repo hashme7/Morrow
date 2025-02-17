@@ -2,6 +2,7 @@ import { UserRequest, TeamResponse } from "morrow-common/dist/grpc/cmn";
 import { handleUnaryCall, sendUnaryData, ServerUnaryCall } from "@grpc/grpc-js";
 import { IRepository } from "../../interfaces/repository.interface";
 import { UserServiceServer } from "morrow-common/dist/grpc/cmn";
+import { ObjectId } from "mongodb";
 
 // Implementation of the UserServiceServer interface
 export class UserService implements UserServiceServer {
@@ -16,7 +17,7 @@ export class UserService implements UserServiceServer {
     ): Promise<void> => {
       try {
         const { userId } = call.request;
-        const teamIds = await repository.getTeamIdsByUserId(userId);
+        const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
         const response: TeamResponse = { teamIds };
         callback(null, response);
       } catch (error) {
