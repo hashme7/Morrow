@@ -173,7 +173,8 @@ class Repository implements IRepository {
       return teamIdsList;
     } catch (error) {
       console.log(`error on finding teamIds:${error}`);
-      throw error;
+      // throw error;
+      return [];
     }
   }
   async getTeamIdByProject(
