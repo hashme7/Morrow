@@ -65,14 +65,12 @@ export class Controller {
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
-          domain: "localhost",
         });
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          domain: "localhost",
         });
 
         console.log(`
@@ -132,14 +130,12 @@ export class Controller {
           secure: true,
           sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
-          domain: "localhost",
         });
         res.cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          domain: "localhost",
         });
         res.status(200).json({
           message: "Token refreshed successfully",
@@ -197,14 +193,12 @@ export class Controller {
         secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
-        domain: "localhost",
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: "localhost",
       });
       res.status(status).json({
         message: message,
@@ -234,14 +228,12 @@ export class Controller {
         secure: true,
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
-        domain: "localhost",
       });
       res.cookie("refreshToken", tokens.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: "localhost",
       });
       res.status(status).json({
         message: message,
