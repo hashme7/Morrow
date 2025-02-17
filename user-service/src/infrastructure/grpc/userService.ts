@@ -21,7 +21,7 @@ export class UserService implements UserServiceServer {
 
 
 
-        userId:${userId};
+        userId:${JSON.parse(userId)};
 
         ${typeof userId} ${typeof userId}
 
