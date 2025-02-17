@@ -17,6 +17,6 @@ const startServer = async () => {
   } catch (error) {
     console.log(`Project service : Error on starting server ${error}`)
   }
-};
+};  
 
 startServer();   
