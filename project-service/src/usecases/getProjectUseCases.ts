@@ -10,7 +10,7 @@ export class getProjectsByUserId {
   }
   async execute(userId: string) {
     try { 
-      const {teamIds} = await this.grpcClient.getTeamIds({userId});
+      const {teamIds} = await this.grpcClient.getTeamIds(userId);
       const projects = await this.repository.getProjectsByTeamIds(
         teamIds
       );
