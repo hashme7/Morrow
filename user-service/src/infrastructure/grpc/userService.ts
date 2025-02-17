@@ -16,6 +16,7 @@ export class UserService implements UserServiceServer {
       callback: sendUnaryData<TeamResponse>
     ): Promise<void> => {
       const { userId } = call.request;
+      console.log("userId:",userId)
       console.log(`
         ***************************************************************
 
