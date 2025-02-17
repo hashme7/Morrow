@@ -25,6 +25,10 @@ export class Controller {
   }
   async getProject(req: Request, res: Response) {
     const { userId } = req.params;
+    console.log(`
+      
+      userId:${userId};
+      `)
     try {
       const {status,message,data} = await this.getProjectByUserIdCases.execute(userId);
       console.log(`status,message

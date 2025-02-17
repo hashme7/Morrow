@@ -13,7 +13,7 @@ import { ProjectService } from '../infrastructure/grpc/ProjectService';
 const rabbitMQInstance = new RabbitMQService();
 
 const repositoryInstance = new Repository();
-
+  
 
 const projectRpcService = new ProjectService(repositoryInstance);
 
