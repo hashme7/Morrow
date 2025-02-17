@@ -71,18 +71,24 @@ class Controller {
                 if (result.status === 200 && result.tokens) {
                     const { accessToken, refreshToken } = result.tokens;
                     const { userId } = result;
+                    console.log("access token is updated ....");
                     res.cookie("accessToken", accessToken, {
                         httpOnly: false,
                         secure: true,
                         sameSite: "none",
                         maxAge: 24 * 60 * 60 * 1000,
+                        domain: "localhost",
                     });
                     res.cookie("refreshToken", refreshToken, {
                         httpOnly: true,
                         secure: true,
                         sameSite: "none",
                         maxAge: 7 * 24 * 60 * 60 * 1000,
+                        domain: "localhost",
                     });
+                    console.log(`
+          res.cookie from login : ${JSON.stringify(res.getHeaders(), null, 2)}
+        `);
                     res.status(200).json({
                         message: "Login successful",
                         accessToken,
@@ -113,7 +119,7 @@ class Controller {
                 }
                 const { status, valid, message, userId } = yield this.authenticateToken.execute(token);
                 if (valid) {
-                    console.log('validate complete....', status);
+                    console.log("validate complete....", status);
                     res.status(status).json({ status, valid, message, userId });
                     return;
                 }
@@ -136,19 +142,21 @@ class Controller {
                         secure: true,
                         sameSite: "none",
                         maxAge: 24 * 60 * 60 * 1000,
+                        domain: "localhost",
                     });
                     res.cookie("refreshToken", newRefreshToken, {
                         httpOnly: true,
                         secure: true,
                         sameSite: "none",
                         maxAge: 7 * 24 * 60 * 60 * 1000,
+                        domain: "localhost",
                     });
                     res.status(200).json({
                         message: "Token refreshed successfully",
                         accessToken: newAccessToken,
                         refreshToken: newRefreshToken,
                         valid: true,
-                        userId: refreshResponse.userId
+                        userId: refreshResponse.userId,
                     });
                     return;
                 }
@@ -190,21 +198,23 @@ class Controller {
                 }
                 const { status, message, tokens, userId } = yield this.googleAuth.execute(token);
                 if (!(tokens === null || tokens === void 0 ? void 0 : tokens.accessToken) || !(tokens === null || tokens === void 0 ? void 0 : tokens.refreshToken)) {
-                    console.log('tokens created......');
+                    console.log("tokens created......");
                     res.status(304).json({ message: "tokens not created..." });
                     return;
                 }
                 res.cookie("accessToken", tokens.accessToken, {
                     httpOnly: false,
-                    secure: false,
+                    secure: true,
                     sameSite: "none",
                     maxAge: 24 * 60 * 60 * 1000,
+                    domain: "localhost",
                 });
                 res.cookie("refreshToken", tokens.refreshToken, {
                     httpOnly: true,
-                    secure: false,
+                    secure: true,
                     sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60 * 1000,
+                    domain: "localhost",
                 });
                 res.status(status).json({
                     message: message,
@@ -232,15 +242,17 @@ class Controller {
                 }
                 res.cookie("accessToken", tokens.accessToken, {
                     httpOnly: false,
-                    secure: false,
+                    secure: true,
                     sameSite: "none",
                     maxAge: 24 * 60 * 60 * 1000,
+                    domain: "localhost",
                 });
                 res.cookie("refreshToken", tokens.refreshToken, {
                     httpOnly: true,
-                    secure: false,
+                    secure: true,
                     sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60 * 1000,
+                    domain: "localhost",
                 });
                 res.status(status).json({
                     message: message,
