@@ -34,12 +34,10 @@ export class UserService implements UserServiceServer {
 
         `);
       try {
-        // const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
-        // const response: TeamResponse = { teamIds };
-        console.log(`
-          fkasjkdfjask;dfkasjdkfjasdklfjaslk;djf;lkasdf
-          `)
-        callback(null, {teamIds:[]});
+        const teamIds = await repository.getTeamIdsByUserId(new ObjectId(userId));
+        const response: TeamResponse = { teamIds };
+        
+        callback(null, response);
       } catch (error) {
         console.error("Error in getTeamIds :-", error);
         callback(null,{teamIds:[]})
