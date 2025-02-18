@@ -7,6 +7,12 @@ export const modify = (req:Request, res:Response, next:NextFunction) => {
           req.headers.cookie.split("; ").map((c) => c.split("="))
         )
         : {};
+    console.log(`
+        +++++++++++++++++++++++
+        cookies:${cookies}
+        
+        +++++++++++++++++++++++
+        `)
     const decodedAt = JWTService.verifyToken(cookies.accessToken);
     console.log(`
 
