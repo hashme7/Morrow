@@ -17,9 +17,17 @@ export class AddTeamConsumer {
   }
   private async startConsuming() {
     this.channel.consume(rabbitMQConfig.queueName1, async (message) => {
+      console.log(`
+        
+        
+        consumer get the meessage from ....
+        
+        `)
+      console.log(message)
       if (message) {
         try {
           const projectData = message.content.toString();
+          
           await this.createTeamCases.execute(message);
           this.channel.ack(message);
         } catch (error) {

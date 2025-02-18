@@ -44,6 +44,7 @@ export class TaskController {
     try {
       const { teamId } = req.params;
       console.log("task teamid", teamId);
+      
       const tasks = await this.fetchTask.execute(new ObjectId(teamId));
       res.status(200).json(tasks);
     } catch (error) {
