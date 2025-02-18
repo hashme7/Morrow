@@ -93,9 +93,14 @@ app.use(
   "/task",
   authenticate,
   proxy(process.env.TASK_SERVICE || "http://localhost:5000", {
+    userResHeaderDecorator(headers, userReq, userRes) {
+      console.log("🔍 Response Headers from Auth Service:", headers);
+      return headers;
+    },
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
+        ...srcReq.header,
         cookie: srcReq.headers.cookie || "",
       };
       return proxyReqOpts;
