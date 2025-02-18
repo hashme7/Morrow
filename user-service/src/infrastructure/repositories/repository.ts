@@ -164,7 +164,6 @@ class Repository implements IRepository {
         
         
         `);
-      return [];
       const teamIds = await TeamMember.find(
         { user_account: userId },
         { team_id: 1, _id: 0 }
