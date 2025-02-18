@@ -16,7 +16,7 @@ export const createServer = () => {
 
     app.use(
       cors({
-        origin: "https://morrow.hashim-dev007.online",
+        origin: "https://morrow-frontend.vercel.app",
         credentials: true,
       })
     );
