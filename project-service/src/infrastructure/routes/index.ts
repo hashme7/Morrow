@@ -6,7 +6,7 @@ const routes = express.Router();
 
 routes
   .route("/create")
-  .post(controllerInstance.createProject.bind(controllerInstance));
+  .post(modify,controllerInstance.createProject.bind(controllerInstance));
 routes
   .route("/getprojects")
   .get(modify, controllerInstance.getProject.bind(controllerInstance));

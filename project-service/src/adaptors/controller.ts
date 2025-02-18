@@ -11,7 +11,7 @@ export class Controller {
   ) {}
   async createProject(req: Request, res: Response) {
     try {
-      const { userId } = req.query;
+      const { userId } = req.params;
       const data = req.body;  
       const response = await this.createProjectCases.execute(
         data,
