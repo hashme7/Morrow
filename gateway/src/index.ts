@@ -14,9 +14,9 @@ const app = express();
 app.set("trust proxy", 1);
 
 const corsOptions = {
-  origin: "https://morrow-frontend.vercel.app",
+  origin: "https://morrow-frontend.vercel.app/",
   credentials: true,
-};
+}
 // app.use((req, res, next) => {
 //   console.log("🔎 CORS Debug:", req.headers.origin);
 //   console.log("🛠 Allowed Origins:", corsOptions.origin);
