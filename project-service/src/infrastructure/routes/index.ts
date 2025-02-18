@@ -1,6 +1,6 @@
 import express from "express";
 import { controllerInstance } from "../../providers/controller";
-import { authenticate } from "morrow-common";
+import { modify } from "../middlewares/setParamsMiddleware";
 
 const routes = express.Router();
 
@@ -9,6 +9,6 @@ routes
   .post(controllerInstance.createProject.bind(controllerInstance));
 routes
   .route("/getprojects")
-  .get(authenticate, controllerInstance.getProject.bind(controllerInstance));
+  .get(modify, controllerInstance.getProject.bind(controllerInstance));
 
 export default routes;
