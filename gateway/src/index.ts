@@ -34,6 +34,7 @@ app.use(cookieParser());
 
 app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.method === "OPTIONS") {
+    console.log("req.headers.orgin from options method",req.headers.origin)
     res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
     res.header(
       "Access-Control-Allow-Methods",
@@ -51,7 +52,6 @@ app.use("/health", (req: Request, res: Response) => {
   console.log("health checking... 123");
   res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
-console.log("process", process.env.PROJECT_SERVICE);
 app.use(
   "/project",
   authenticate,
@@ -60,6 +60,7 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
+        ...srcReq.header,
         cookie: srcReq.headers.cookie || "",
       };
       return proxyReqOpts;
@@ -70,30 +71,32 @@ app.use(
 app.use(
   "/user",
   authenticate,
-  proxy(process.env.USER_SERVICE || "http://localhost:3000")
-  // //  {
-  //   proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-  //     proxyReqOpts.headers = {
-  //       ...proxyReqOpts.headers,
-  //       cookie: srcReq.headers.cookie || "", 
-  //     };
-  //     return proxyReqOpts;
-  //   },
-  // })
+  proxy(process.env.USER_SERVICE || "http://localhost:3000",
+   {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        ...srcReq.header,
+        cookie: srcReq.headers.cookie || "",
+      };
+      return proxyReqOpts;
+    },
+  })
 );
 app.use(
   "/communicate",
   authenticate,
-  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000")
-  // // {
-  //   proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-  //     proxyReqOpts.headers = {
-  //       ...proxyReqOpts.headers,
-  //       cookie: srcReq.headers.cookie || "", 
-  //     };
-  //     return proxyReqOpts;
-  //   },
-  // })
+  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
+  {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        ...srcReq.header,
+        cookie: srcReq.headers.cookie || "",
+      };
+      return proxyReqOpts;
+    },
+  })
 );
 app.use(
   "/task",
@@ -118,6 +121,7 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
+        ...srcReq.header,
         cookie: srcReq.headers.cookie || "",
       };
       return proxyReqOpts;
