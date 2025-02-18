@@ -157,19 +157,11 @@ class Repository implements IRepository {
   }
   async getTeamIdsByUserId(userId: mongoose.Types.ObjectId): Promise<string[]> {
     try {
-      console.log(`
-        
-        usereId from get team ids by userid
-        ${userId}
-        
-        
-        `);
       const teamIds = await TeamMember.find(
         { user_account: userId },
         { team_id: 1, _id: 0 }
       ).exec();
       const teamIdsList = teamIds.map((team) => team.team_id.toString());
-      console.log("teamIdsList                  ", teamIdsList);
       return teamIdsList;
     } catch (error) {
       console.log(`error on finding teamIds:${error}`);
