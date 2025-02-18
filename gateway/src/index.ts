@@ -14,12 +14,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://morrow-frontend.vercel.app",
-    "https://morrow-frontend-git-main-hashme7s-projects.vercel.app",
-    "https://morrow-frontend-pq1y24igi-hashme7s-projects.vercel.app",
-  ],
+  origin: "https://morrow-frontend.vercel.app",
   credentials: true,
 };
 // app.use((req, res, next) => {
@@ -34,7 +29,7 @@ app.use(cookieParser());
 
 app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.method === "OPTIONS") {
-    console.log("req.headers.orgin from options method",req.headers.origin)
+    console.log("req.headers.orgin from options method", req.headers.origin);
     res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
     res.header(
       "Access-Control-Allow-Methods",
@@ -55,8 +50,7 @@ app.use("/health", (req: Request, res: Response) => {
 app.use(
   "/project",
   authenticate,
-  proxy(process.env.PROJECT_SERVICE || "http://localhost:4000",
-  {
+  proxy(process.env.PROJECT_SERVICE || "http://localhost:4000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
@@ -65,14 +59,12 @@ app.use(
       };
       return proxyReqOpts;
     },
-
   })
 );
 app.use(
   "/user",
   authenticate,
-  proxy(process.env.USER_SERVICE || "http://localhost:3000",
-   {
+  proxy(process.env.USER_SERVICE || "http://localhost:3000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
@@ -86,8 +78,7 @@ app.use(
 app.use(
   "/communicate",
   authenticate,
-  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
-  {
+  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
@@ -105,7 +96,7 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
-        cookie: srcReq.headers.cookie || "", 
+        cookie: srcReq.headers.cookie || "",
       };
       return proxyReqOpts;
     },
@@ -114,7 +105,7 @@ app.use(
 app.use(
   "/auth",
   proxy(process.env.AUTH_SERVICE || "http://localhost:9090", {
-     userResHeaderDecorator(headers, userReq, userRes) {
+    userResHeaderDecorator(headers, userReq, userRes) {
       console.log("🔍 Response Headers from Auth Service:", headers);
       return headers;
     },
