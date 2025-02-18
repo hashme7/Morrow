@@ -6,6 +6,10 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY src/ src/
 
-CMD [ "node","./dist/index.js" ]
+COPY tsconfig.json tsconfig.json
+
+RUN npm run build
+
+CMD ["node", "./dist/index.js"]
