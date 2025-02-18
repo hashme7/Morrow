@@ -40,14 +40,14 @@ export class UserService implements UserServiceServer {
         callback(null, response);
       } catch (error) {
         console.error("Error in getTeamIds :-", error);
-        callback(null,{teamIds:[]})
-        // callback(
-        //   {
-        //     code: 13,
-        //     message: "Unknown error occurred",
-        //   },  
-        //   null
-        // );
+        // callback(null,{teamIds:[]})
+        callback(
+          {
+            code: 13,
+            message: "Unknown error occurred",
+          },  
+          null
+        );
       }
     }; 
 
