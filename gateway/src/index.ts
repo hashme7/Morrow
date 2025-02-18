@@ -55,17 +55,17 @@ console.log("process", process.env.PROJECT_SERVICE);
 app.use(
   "/project",
   authenticate,
-  proxy(process.env.PROJECT_SERVICE || "http://localhost:4000") 
-  // {
-  //   proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-  //     proxyReqOpts.headers = {
-  //       ...proxyReqOpts.headers,
-  //       cookie: srcReq.headers.cookie || "",
-  //     };
-  //     return proxyReqOpts;
-  //   },
-    // })
-    
+  proxy(process.env.PROJECT_SERVICE || "http://localhost:4000",
+  {
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers = {
+        ...proxyReqOpts.headers,
+        cookie: srcReq.headers.cookie || "",
+      };
+      return proxyReqOpts;
+    },
+
+  })
 );
 app.use(
   "/user",

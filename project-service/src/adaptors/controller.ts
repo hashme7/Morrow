@@ -24,6 +24,7 @@ export class Controller {
     }
   }
   async getProject(req: Request, res: Response) {
+    console.log(req.params,"res.paras.")
     const { userId } = req.params;
     console.log(`
       

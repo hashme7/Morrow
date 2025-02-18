@@ -7,5 +7,5 @@ declare module "morrow-common" {
 
   export const delay: (ms: number) => Promise<void>;
 
-  export { UserRequest,UserServiceServer,UserServiceClient,UserServiceService,TeamResponse} from 'morrow-common';
+  export { UserRequest,UserServiceServer,UserServiceClient,UserServiceService,TeamResponse,authenticate} from 'morrow-common';
 }
