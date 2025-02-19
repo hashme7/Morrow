@@ -19,7 +19,7 @@ export const authenticate = (
     const decodedRT = JWTService.verifyToken(refreshToken);
     if (decodedRT) {
       req.params.userId = decodedRT.id;
-      console.log("req.url", req.url);
+      console.log("req.params", req.params);
       next();
     }else{
       console.log("unauthorized........");
@@ -28,7 +28,7 @@ export const authenticate = (
   } else {
     
     req.params.userId = decodedAT.id;
-    console.log("req.url", req.url);
+    console.log("req.params", req.params);
     next();
   }
 };
