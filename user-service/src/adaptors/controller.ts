@@ -185,6 +185,9 @@ class UserAuthController {
   async getRequest(req: Request, res: Response) {
     try {
       const { userId } = req.params;
+      if (!userId) {
+        res.status(401).json({message:"athentication failed"})
+      }
       const { status, data, message } = await this.getRequestDetails.execute(
         new ObjectId(userId as string)
       );
