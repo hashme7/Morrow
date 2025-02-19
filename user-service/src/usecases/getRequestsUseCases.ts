@@ -13,7 +13,18 @@ export class GetRequests {
   async execute(userId: Types.ObjectId) {
     try {
       const requests = await this.repository.getRequests(userId);
+      console.log(`
+
+        requests:${requests}
+
+        `);
+      
       const teamIds = requests.map((req) => req.team_id.toString());
+      console.log(`
+
+        teamIds:${teamIds}
+
+        `);
       const { projects } = await this.grpcProjectClient.getProjectByTeamId(
         teamIds
       );
