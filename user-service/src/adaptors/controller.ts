@@ -184,7 +184,7 @@ class UserAuthController {
   }
   async getRequest(req: Request, res: Response) {
     try {
-      const { userId } = req.query;
+      const { userId } = req.params;
       const { status, data, message } = await this.getRequestDetails.execute(
         new ObjectId(userId as string)
       );
