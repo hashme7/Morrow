@@ -1,23 +1,26 @@
 import express from "express";
 import { authControllerInstance } from "../../providers/controller";
 import upload from "../middlewares/multerConfig";
+import { modify } from "morrow-common";
 
 const router = express.Router();
 
+router.use(modify)
+
 router
-  .route("/user-details/:userId")
+  .route("/user-details")
   .get(authControllerInstance.getUser.bind(authControllerInstance));
 router
-  .route("/user-profile/:field/:userId")
+  .route("/user-profile/:field")
   .put(authControllerInstance.updateProfile.bind(authControllerInstance));
 router
-  .route("changeEmail/:userId")
+  .route("changeEmail")
   .put(authControllerInstance.updateEmail.bind(authControllerInstance));
 router
   .route("/users")
   .get(authControllerInstance.findAllUsers.bind(authControllerInstance));
 router
-  .route("/profileImg/:userId")
+  .route("/profileImg")
   .put(
     upload.single("avatar"),
     authControllerInstance.updateImage.bind(authControllerInstance)
