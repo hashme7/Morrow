@@ -23,7 +23,6 @@ export class GrpcProjectClient implements IGrpcProjectClient{
     if (!teamIds || teamIds.length === 0) {
       throw new Error("teamIds must be a non-empty array");
     }
-    console.log("teamidssssssssssssssss",teamIds);
     const projectRequest:ProjectRequest = {teamIds};
     return new Promise((resolve,reject)=>{
         this.client.getProjectDetails(projectRequest,(err:ServiceError | null,response:ProjectsResponse)=>{
