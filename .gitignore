@@ -2,4 +2,10 @@
 # Keep environment variables out of version control
 **/.env
 **/project-service-x86.json
+**/user-service-x86.json
+**/api-gateway-x86-2.json
+**/auth-service-x86.json
 **/dist
+**/package-lock.json
+**/tsconfig.tsbuildinfo
+**/.vscode
