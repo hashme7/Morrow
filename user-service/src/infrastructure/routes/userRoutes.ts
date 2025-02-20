@@ -5,43 +5,64 @@ import { modify } from "morrow-common";
 
 const router = express.Router();
 
-router.use(modify) 
-
 router
   .route("/user-details")
-  .get(authControllerInstance.getUser.bind(authControllerInstance));
+  .get(modify, authControllerInstance.getUser.bind(authControllerInstance));
+
 router
   .route("/user-profile/:field")
-  .put(authControllerInstance.updateProfile.bind(authControllerInstance));
+  .put(
+    modify,
+    authControllerInstance.updateProfile.bind(authControllerInstance)
+  );
+
 router
-  .route("changeEmail")
-  .put(authControllerInstance.updateEmail.bind(authControllerInstance));
+  .route("/changeEmail")
+  .put(modify, authControllerInstance.updateEmail.bind(authControllerInstance));
+
 router
   .route("/users")
-  .get(authControllerInstance.findAllUsers.bind(authControllerInstance));
+  .get(
+    modify,
+    authControllerInstance.findAllUsers.bind(authControllerInstance)
+  );
+
 router
   .route("/profileImg")
   .put(
+    modify,
     upload.single("avatar"),
     authControllerInstance.updateImage.bind(authControllerInstance)
   );
+
 router
   .route("/getTeamMembers")
-  .get(authControllerInstance.getTeamMember.bind(authControllerInstance));
+  .get(
+    modify,
+    authControllerInstance.getTeamMember.bind(authControllerInstance)
+  );
+
 router
   .route("/createRequest")
-  .post(authControllerInstance.sendRequest.bind(authControllerInstance));
+  .post(
+    modify,
+    authControllerInstance.sendRequest.bind(authControllerInstance)
+  );
+
 router
   .route("/getRequests")
-  .get(authControllerInstance.getRequest.bind(authControllerInstance));
+  .get(modify, authControllerInstance.getRequest.bind(authControllerInstance));
+
 router
   .route("/acceptRequest")
-  .post(authControllerInstance.acceptReq.bind(authControllerInstance));
+  .post(modify, authControllerInstance.acceptReq.bind(authControllerInstance));
+
 router
   .route("/declineRequest")
-  .post(authControllerInstance.declineReq.bind(authControllerInstance));
+  .post(modify, authControllerInstance.declineReq.bind(authControllerInstance));
+
 router
   .route("/logout")
-  .post(authControllerInstance.logout.bind(authControllerInstance));
+  .post(modify, authControllerInstance.logout.bind(authControllerInstance));
 
 export default router;
