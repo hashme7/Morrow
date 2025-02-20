@@ -52,7 +52,7 @@ app.use(
   authenticate,
   proxy(process.env.PROJECT_SERVICE || "http://localhost:4000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      console.log("cookie:",srcReq.headers.cookie)
+      console.log("cookie of project:",srcReq.headers.cookie)
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
         ...srcReq.header,
@@ -67,6 +67,7 @@ app.use(
   authenticate,
   proxy(process.env.USER_SERVICE || "http://localhost:3000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      console.log("cookies of user:", srcReq.headers.cookie);
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
         ...srcReq.header,
