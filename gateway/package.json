@@ -20,7 +20,7 @@
     "express-http-proxy": "^2.1.1",
     "http-proxy-middleware": "^3.0.3",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.68"
+    "morrow-common": "^1.5.70"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
