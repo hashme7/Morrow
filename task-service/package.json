@@ -18,7 +18,7 @@
     "amqplib": "^0.10.5",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "http-status": "^2.0.0",
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.1",

@@ -23,6 +23,7 @@
     "morrow-common": "^1.5.64"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.5",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express-http-proxy": "^1.6.6",
