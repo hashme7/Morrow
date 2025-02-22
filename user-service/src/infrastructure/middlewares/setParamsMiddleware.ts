@@ -14,7 +14,7 @@ export const modify = (req: Request, res: Response, next: NextFunction) => {
     // }
   console.log(`
         +++++++++++++++++++++++
-        cookies:${cookies}
+        cookies:${cookies.accessToken}, ${cookies.refreshToken}
         
         +++++++++++++++++++++++
         `);
