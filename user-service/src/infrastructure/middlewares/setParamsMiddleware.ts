@@ -6,7 +6,10 @@ export const modify = (req: Request, res: Response, next: NextFunction) => {
     ? Object.fromEntries(
         req.headers.cookie.split("; ").map((c) => c.split("="))
       )
-    : {};
+      : {};
+    if (req.cookies.accessToken && req.cookies.refreshToken) {
+        console.log("refresh token and access token is there...",req.cookies.accessToken)
+    }
   console.log(`
         +++++++++++++++++++++++
         cookies:${cookies}
