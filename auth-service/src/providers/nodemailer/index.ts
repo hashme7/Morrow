@@ -14,7 +14,7 @@ class Nodemailer implements mailerInterface {
       service: "Gmail",
       host: "smtp.gmail.com",
       port: 587,
-      secure: true,
+      secure: false,
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GPASSWORD,
