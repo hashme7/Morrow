@@ -12,13 +12,12 @@ class Nodemailer implements mailerInterface {
     console.log("nodemailer iniatialized");
     this.transporter = nodemailer.createTransport({
       service: "Gmail",
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GPASSWORD,
       },
+      logger: true,
+      debug: true,
     });
   }
   async sendMail(email: string, code: number): Promise<boolean> {
@@ -27,7 +26,7 @@ class Nodemailer implements mailerInterface {
       from: process.env.GMAIL,
       to: email,
       subject: "Morrow Account Verification - Your Verification Code Inside",
-      message: `Dear ${email},
+      text: `Dear ${email},
 
 Welcome to Morrow. We're delighted to have you join our growing community of users. To ensure the security of your Morrow account, please confirm your email address by entering the following verification code:
 
