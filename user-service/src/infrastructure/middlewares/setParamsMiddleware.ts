@@ -1,18 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { JWTService } from "morrow-common";
+import { JWTService } from "morrow-common/dist/jwt/jwt";
 
 export const modify = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.headers.cookie, "request.cookies");
   const cookies = req.headers.cookie
     ? Object.fromEntries(
         req.headers.cookie.split("; ").map((c) => c.split("="))
       )
     : {};
-  console.log(`
-        +++++++++++++++++++++++
-        cookies:${cookies.accessToken}, ${cookies.refreshToken}
-        +++++++++++++++++++++++
-        `);
+  console.log(`+++++++++++++++++++++++`);
+  console.log(cookies);
+  console.log(`+++++++++++++++++++++++`);
+
   const decodedAt = JWTService.verifyToken(cookies.accessToken);
   console.log(`
 
