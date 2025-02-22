@@ -1,7 +1,7 @@
 import express from "express";
 import { authControllerInstance } from "../../providers/controller";
 import upload from "../middlewares/multerConfig";
-import { modify } from '../middlewares/setParamsMiddleware';
+import { modify } from "../middlewares/setParamsMiddleware";
 
 const router = express.Router();
 
