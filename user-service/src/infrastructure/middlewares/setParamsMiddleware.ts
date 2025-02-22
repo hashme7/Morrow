@@ -8,25 +8,20 @@ export const modify = (req: Request, res: Response, next: NextFunction) => {
         req.headers.cookie.split("; ").map((c) => c.split("="))
       )
     : {};
-
-  // if (req.cookies.accessToken && req.cookies.refreshToken) {
-  //     console.log("refresh token and access token is there...",req.cookies.accessToken)
-  // }
   console.log(`
         +++++++++++++++++++++++
         cookies:${cookies.accessToken}, ${cookies.refreshToken}
         +++++++++++++++++++++++
         `);
-//   const decodedAt = JWTService.verifyToken(cookies.accessToken);
-//   console.log(`
+  const decodedAt = JWTService.verifyToken(cookies.accessToken);
+  console.log(`
 
-//         .................................
-//         decodedAt:- ${decodedAt}
-//         .................................
-//         `);
-//   if (decodedAt) {
-//     req.params.userId = decodedAt.id;
-//   }
-    //   next();
-    res.json({message:"tested"})
+        .................................
+        decodedAt:- ${decodedAt}
+        .................................
+        `);
+  if (decodedAt) {
+    req.params.userId = decodedAt.id;
+  }
+  next();
 };
