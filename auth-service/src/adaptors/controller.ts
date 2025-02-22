@@ -59,7 +59,6 @@ export class Controller {
       if (result.status === 200 && result.tokens) {
         const { accessToken, refreshToken } = result.tokens;
         const { userId } = result;
-        console.log("access token is updated ....")
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
           secure: true,
