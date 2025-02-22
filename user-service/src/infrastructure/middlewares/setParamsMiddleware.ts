@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { JWTService } from "morrow-common";
+import { JWTService } from "morrow-common/dist/jwt/jwt";
 
 export const modify = (req: Request, res: Response, next: NextFunction) => {
   const cookies = req.headers.cookie
