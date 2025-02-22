@@ -10,13 +10,14 @@ export const modify = (req:Request, res:Response, next:NextFunction) => {
     console.log(`+++++++++++++++++++++++`)
     console.log(cookies)
     console.log(`+++++++++++++++++++++++`);
+    console.log(req.params)
     
     const decodedAt = JWTService.verifyToken(cookies.accessToken);
     console.log(`
 
         .................................
         decodedAt:- ${decodedAt}
-        .................................
+        .................................   
         `)
     if (decodedAt) {
         req.params.userId = decodedAt.id;
