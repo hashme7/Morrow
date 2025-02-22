@@ -21,7 +21,7 @@ class Nodemailer implements mailerInterface {
       },
     });
   }
-  sendMail(email: string, code: number): boolean {
+  async sendMail(email: string, code: number): Promise<boolean> {
     console.log("on sendMail");
     let mailOption = {
       from: process.env.GMAIL,
@@ -123,7 +123,7 @@ The Morrow Team
 </html>`,
     };
     try {
-      this.transporter.sendMail(mailOption);
+      await this.transporter.sendMail(mailOption);
       console.log("email send successfully.....");
       return true;
     } catch (error) {
