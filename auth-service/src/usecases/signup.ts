@@ -32,7 +32,7 @@ export class signupUser {
       const newUser = await this.repository.insertOne(hashedUser);
       const verificationCode = generateVerificationCode();
       await this.repository.saveOtp(newUser._id, verificationCode);
-      const res = this.nodemailer.sendMail(userData.email, verificationCode);
+      const res =await this.nodemailer.sendMail(userData.email, verificationCode);
       if (res) {
         return {
           status: 201,

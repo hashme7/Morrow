@@ -1,5 +1,5 @@
 interface mailerInterface {
-    sendMail(email:string, code:number):boolean
+     sendMail(email:string, code:number):Promise<boolean>
     sendVerificationMail(id:any,to:any):Promise<any>
 }
 export default mailerInterface
