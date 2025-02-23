@@ -13,7 +13,7 @@ export const createServer = () => {
     app.use(express.json({ limit: "50mb" }));
     app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-    app.use(
+    app.use( 
       cors({
         origin: ["https://morrow-frontend.vercel.app","http://localhost:5173"],
         credentials: true,
