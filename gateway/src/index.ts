@@ -98,7 +98,10 @@ app.use(
   createProxyMiddleware({
     target: process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
     changeOrigin: true,
-    ws: true, 
+    ws: true,
+    pathRewrite: {
+      "^/communicate/socket.io": "/socket.io",
+    },
     on: {
       proxyReq: (proxyReq, req, res) => {
         if (req.headers.cookie) {
