@@ -65,8 +65,11 @@ export class WebSocketServer {
     });
   }
   public configureSocketEvents() {
-    this.io.on("connection", (socket) => {
+    this.io.of("/socket").on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
+      socket.on("ping", () => {
+        socket.emit("pong");
+      });
 
       socket.on("joinRoom", async (roomId: string, userId: string) => {
         try {
@@ -79,9 +82,9 @@ export class WebSocketServer {
         }
       });
 
-      socket.on("disconnect", async(userId) => {
+      socket.on("disconnect", async (userId) => {
         try {
-          await this.redisService.removeActiveUser(socket.id,userId)
+          await this.redisService.removeActiveUser(socket.id, userId);
           console.log(`User disconnected: ${socket.id}`);
         } catch (error) {
           throw error;
@@ -89,11 +92,14 @@ export class WebSocketServer {
       });
       socket.on("message_seen", async ({ messageId, userId }) => {
         try {
-          const seenedMsg = await this.updateMsgSeen.execute({ messageId, userId });
+          const seenedMsg = await this.updateMsgSeen.execute({
+            messageId,
+            userId,
+          });
           const senderId = await this.redisService.getActiveUser(userId);
           if (!senderId) return;
-          socket.to(senderId).emit('message_status', { seenedMsg });
-        } catch (error) { 
+          socket.to(senderId).emit("message_status", { seenedMsg });
+        } catch (error) {
           throw error;
         }
       });
