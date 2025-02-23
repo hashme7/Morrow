@@ -28,7 +28,7 @@ export class WebSocketServer {
         methods: ["GET", "POST"],
         credentials: true,
       },
-      path: "/communicate/socket.io",
+      path: "/socket.io",
       allowEIO3: true,
     });
   }
