@@ -23,6 +23,7 @@ export class WebSocketServer {
       cors: {
         origin: "*",
         methods: ["GET", "POST"],
+        credentials:true,
       },
     });
   }
