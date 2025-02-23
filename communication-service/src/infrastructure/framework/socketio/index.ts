@@ -21,10 +21,14 @@ export class WebSocketServer {
   ) {
     this.io = new Server({
       cors: {
-        origin: "*",
+        origin: [
+          "https://morrow.hashim-dev007.online",
+          "https://morrow-frontend.vercel.app",
+        ],
         methods: ["GET", "POST"],
         credentials: true,
       },
+      path: "/communicate/socket.io",
       allowEIO3: true,
     });
   }
