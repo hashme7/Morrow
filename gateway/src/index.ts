@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { authenticate } from "morrow-common/dist";
 import dotenv from "dotenv";
 import path from "path";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -14,9 +15,9 @@ const app = express();
 app.set("trust proxy", 1);
 
 const corsOptions = {
-  origin: ["https://morrow-frontend.vercel.app","http://localhost:5173"],
+  origin: ["https://morrow-frontend.vercel.app", "http://localhost:5173"],
   credentials: true,
-}
+};
 // app.use((req, res, next) => {
 //   console.log("🔎 CORS Debug:", req.headers.origin);
 //   console.log("🛠 Allowed Origins:", corsOptions.origin);
@@ -52,7 +53,7 @@ app.use(
   authenticate,
   proxy(process.env.PROJECT_SERVICE || "http://localhost:4000", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      console.log("cookie of project:",srcReq.headers.cookie)
+      console.log("cookie of project:", srcReq.headers.cookie);
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
         ...srcReq.header,
@@ -77,17 +78,38 @@ app.use(
     },
   })
 );
+// app.use(
+//   "/communicate",
+//   authenticate,
+//   proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
+//     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+//       proxyReqOpts.headers = {
+//         ...proxyReqOpts.headers,
+//         ...srcReq.header,
+//         cookie: srcReq.headers.cookie || "",
+//       };
+//       return proxyReqOpts;
+//     },
+//   })
+// );
 app.use(
   "/communicate",
   authenticate,
-  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      proxyReqOpts.headers = {
-        ...proxyReqOpts.headers,
-        ...srcReq.header,
-        cookie: srcReq.headers.cookie || "",
-      };
-      return proxyReqOpts;
+  createProxyMiddleware({
+    target: process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
+    changeOrigin: true,
+    ws: true, 
+    on: {
+      proxyReq: (proxyReq, req, res) => {
+        if (req.headers.cookie) {
+          proxyReq.setHeader("cookie", req.headers.cookie);
+        }
+      },
+      proxyReqWs: (proxyReq, req, socket, options, head) => {
+        if (req.headers.cookie) {
+          proxyReq.setHeader("cookie", req.headers.cookie);
+        }
+      },
     },
   })
 );
@@ -116,7 +138,7 @@ app.use(
       };
       return proxyReqOpts;
     },
-  }) 
+  })
 );
 
 app.listen(process.env.PORT || 8000, () => {
