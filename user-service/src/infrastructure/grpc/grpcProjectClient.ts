@@ -3,8 +3,7 @@ import { ProjectServiceClient } from "morrow-common/dist/grpc/cmn.js";
 import { credentials,  ServiceError } from "@grpc/grpc-js";
 import { IGrpcProjectClient } from "../../interfaces/grpc";
 import dotenv from "dotenv";
-import path from "path";
-
+import path from "path";  
 
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
@@ -17,7 +16,10 @@ export class GrpcProjectClient implements IGrpcProjectClient{
       process.env.GRPC_PROJECT_SERVER_URI || "localhost:7070",
       credentials.createInsecure()
     );
-    console.log(`grpc client for project server is running`);
+    console.log(
+      `grpc client for project server is running`,
+      process.env.GRPC_PROJECT_SERVICE_URI
+    );
   }
   async getProjectByTeamId(teamIds: string[]): Promise<ProjectsResponse>{
     if (!teamIds || teamIds.length === 0) {
