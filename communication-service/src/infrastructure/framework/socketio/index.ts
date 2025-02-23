@@ -9,7 +9,7 @@ import {
 } from "../../../interfaces/usecases.interface";
 
 export class WebSocketServer {
-  private httpServer: HTTPServer; 
+  private httpServer: HTTPServer;
   public io: Server;
   public readonly MAX_RETRIES: number = 3;
   public readonly RETRY_INTERVAL: number = 5000;
@@ -26,11 +26,13 @@ export class WebSocketServer {
       cors: {
         origin: [
           "https://morrow.hashim-dev007.online",
-          "https://morrow-frontend.vercel.app","http://localhost:5173"
+          "https://morrow-frontend.vercel.app",
+          "http://localhost:5173",
         ],
         methods: ["GET", "POST"],
         credentials: true,
       },
+      path: "/socket.io",
       allowEIO3: true,
     });
   }
