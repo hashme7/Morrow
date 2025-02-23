@@ -1,3 +1,4 @@
+import http, { Server as HTTPServer } from "http";
 import { Server } from "socket.io";
 import { RedisService } from "../../service/redis";
 import { IChatRepository } from "../../../interfaces/chatRepository.interface";
@@ -8,6 +9,7 @@ import {
 } from "../../../interfaces/usecases.interface";
 
 export class WebSocketServer {
+  private httpServer: HTTPServer; 
   public io: Server;
   public readonly MAX_RETRIES: number = 3;
   public readonly RETRY_INTERVAL: number = 5000;
@@ -19,11 +21,12 @@ export class WebSocketServer {
     public joinSocket: IJoinSocket,
     public updateMsgSeen: IUpdateMsgSeen
   ) {
-    this.io = new Server({
+    this.httpServer = http.createServer();
+    this.io = new Server(this.httpServer, {
       cors: {
         origin: [
           "https://morrow.hashim-dev007.online",
-          "https://morrow-frontend.vercel.app",
+          "https://morrow-frontend.vercel.app","http://localhost:5173"
         ],
         methods: ["GET", "POST"],
         credentials: true,
@@ -44,8 +47,9 @@ export class WebSocketServer {
 
       this.configureSocketEvents();
 
-      this.io.listen(this.port);
-      console.log(`WebSocket server started on port ${this.port}`);
+      this.httpServer.listen(this.port, () => {
+        console.log(`WebSocket server with HTTP started on port ${this.port}`);
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.error(`Error starting WebSocket server: ${error.message}`);
