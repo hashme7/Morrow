@@ -75,7 +75,7 @@ export class WebSocketServer {
     });
   }
   public configureSocketEvents() {
-    this.io.of("/socket").on("connection", (socket) => {
+    this.io.of("/socket.io").on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
       socket.on("ping", () => {
         socket.emit("pong");
