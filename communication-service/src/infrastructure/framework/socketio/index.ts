@@ -23,8 +23,9 @@ export class WebSocketServer {
       cors: {
         origin: "*",
         methods: ["GET", "POST"],
-        credentials:true,
+        credentials: true,
       },
+      allowEIO3: true,
     });
   }
 
