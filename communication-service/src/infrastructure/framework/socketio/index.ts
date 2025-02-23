@@ -31,7 +31,6 @@ export class WebSocketServer {
         methods: ["GET", "POST"],
         credentials: true,
       },
-      path: "/socket.io",
       allowEIO3: true,
     });
   }
@@ -75,7 +74,7 @@ export class WebSocketServer {
     });
   }
   public configureSocketEvents() {
-    this.io.of("/socket").on("connection", (socket) => {
+    this.io.of("/socket.io").on("connection", (socket) => {
       console.log(`User connected: ${socket.id}`);
       socket.on("ping", () => {
         socket.emit("pong");
