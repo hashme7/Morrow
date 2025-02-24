@@ -12,19 +12,19 @@ const startServer = async (): Promise<void> => {
     await DBConfig();
     const port = process.env.PORT || 2000;
     const app = createServer();  
-    if (app) {
+    const instance = app?.listen(port, () =>
+      console.log(`communication-service successfully running on port ${port}`)
+    );
+    if (instance) {
       const webSocketService = new WebSocketServer(
         redisService,
         chatRepository,
         joinSocket,
         updateMsgSeen,
-        app,
+        instance,
       );
       webSocketService.start();
     }
-    app?.listen(port, () =>
-      console.log(`communication-service successfully running on port ${port}`)
-    );
   } catch (error) {
     console.log(error);
   }  
