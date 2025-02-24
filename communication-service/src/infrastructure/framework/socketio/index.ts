@@ -26,7 +26,7 @@ export class WebSocketServer {
         methods: ["GET", "POST"],
         credentials: true,
       },
-      path: "/communicate/message-socket/",
+      path: "/communicate/message-socket",
     });
   }
 
