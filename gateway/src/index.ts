@@ -100,9 +100,6 @@ app.use(
     target: process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
     changeOrigin: true,
     ws: true,
-    pathRewrite: {
-      "^/communicate": "",
-    },
     on: {
       proxyReq: (proxyReq, req, res) => {
         if (req.headers.cookie) {
