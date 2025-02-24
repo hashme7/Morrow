@@ -108,7 +108,7 @@ export class RedisService implements IRedisService {
         const parsedMessage = JSON.parse(message);
         callback(channel, parsedMessage);
       } catch (error) {
-        console.log(`error pmessage subsriber`,error);
+        console.log(`error pmessage subsriber`,);
       }
     });
   }
