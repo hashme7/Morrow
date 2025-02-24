@@ -107,6 +107,10 @@ export class RedisService implements IRedisService {
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
       try {
+        console.log("---------------------");
+        console.log(message)
+        console.log("----------------");
+        
         const parsedMessage = JSON.parse(message);
         console.log(`parsed message from subscriber`, parsedMessage);
         callback(channel, parsedMessage);
