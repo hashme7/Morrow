@@ -14,21 +14,14 @@ import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 
-const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379, process.env.REDISPASS,process.env.REDISUSER || "default");
-const chatRepository = new ChatRepository();
+export const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379, process.env.REDISPASS,process.env.REDISUSER || "default");
+export const chatRepository = new ChatRepository();
 const rabbitMQService = new RabbitMQService();
 const messageWorker = new MessageWorker(rabbitMQService, chatRepository);
 messageWorker.start();
-const joinSocket = new JoinSocket(messageWorker);
-const updateMsgSeen = new UpdateMsgSeen(chatRepository);
-const webSocketService = new WebSocketServer(
-  9000,
-  redisService,
-  chatRepository,
-  joinSocket,
-  updateMsgSeen,
-);
-webSocketService.start();
+export const joinSocket = new JoinSocket(messageWorker);
+export const updateMsgSeen = new UpdateMsgSeen(chatRepository);
+
 const sendMessage = new SendMessage(rabbitMQService, redisService);
 const fetchMessages =new FetchMessages(chatRepository);
 const chatController = new ChatController(sendMessage,fetchMessages);
