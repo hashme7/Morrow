@@ -91,7 +91,8 @@ app.use(
 //       return proxyReqOpts;
 //     },
 //   })
-// );
+// );"^/communicate/socket.io": "/socket.io",
+
 app.use(
   "/communicate",
   authenticate,
@@ -100,18 +101,22 @@ app.use(
     changeOrigin: true,
     ws: true,
     pathRewrite: {
-      "^/communicate/socket.io": "/socket.io",
+      "^/communicate": "",
     },
     on: {
       proxyReq: (proxyReq, req, res) => {
         if (req.headers.cookie) {
           proxyReq.setHeader("cookie", req.headers.cookie);
         }
+        proxyReq.setHeader("origin", req.headers.origin || "");
+        proxyReq.setHeader("host", req.headers.host || "");
       },
       proxyReqWs: (proxyReq, req, socket, options, head) => {
         if (req.headers.cookie) {
           proxyReq.setHeader("cookie", req.headers.cookie);
         }
+        proxyReq.setHeader("origin", req.headers.origin || "");
+        proxyReq.setHeader("host", req.headers.host || "");
       },
     },
   })

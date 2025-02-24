@@ -24,11 +24,7 @@ export class WebSocketServer {
     this.httpServer = http.createServer();
     this.io = new Server(this.httpServer, {
       cors: {
-        origin: [
-          "https://morrow.hashim-dev007.online",
-          "https://morrow-frontend.vercel.app",
-          "http://localhost:5173",
-        ],
+        origin: ["https://morrow-frontend.vercel.app", "http://localhost:5173"],
         methods: ["GET", "POST"],
         credentials: true,
       },
