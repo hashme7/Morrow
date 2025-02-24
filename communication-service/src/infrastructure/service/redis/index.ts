@@ -111,7 +111,7 @@ export class RedisService implements IRedisService {
         console.log(`parsed message from subscriber`, parsedMessage);
         callback(channel, parsedMessage);
       } catch (error) {
-        console.log(`error pmessage subsriber`);
+        console.log(`error pmessage subsriber`,error);
       }
     });
   }
