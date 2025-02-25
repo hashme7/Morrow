@@ -10,6 +10,8 @@ export class GrpcClient {
   private client: UserServiceClient;
   constructor() {
     this.client = new UserServiceClient(
+
+      // 
       process.env.GRPC_USER_SERVICE_URI || "localhost:8080",
       credentials.createInsecure()
     );
