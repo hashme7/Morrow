@@ -13,7 +13,7 @@ export class GrpcServer {
   start(): void {
     this.server.addService(ProjectServiceService, this.projectService);
     this.server.bindAsync(
-      "0.0.0.0:8080",
+      "0.0.0.0:7070",
       ServerCredentials.createInsecure(),
       (error, port) => {
         if (error) {
