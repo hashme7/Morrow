@@ -30,7 +30,7 @@ export class ProjectService implements ProjectServiceServer {
       } catch (error) {
         console.log(`Error in getProjectDetails : ${error}`);
         callback({ code: 13, message: "unkown error occured." }, null);
-      }
+      } 
     };
     this["getProjectDetails"] = this.getProjectDetails;   
   }
