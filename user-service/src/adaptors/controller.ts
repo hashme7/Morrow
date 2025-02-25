@@ -118,7 +118,7 @@ class UserAuthController {
   }
   async updateProfile(req: Request, res: Response) {
     try {
-      const { userId, field } = req.params; // Extract userId and field from URL
+      const { userId, field } = req.params; 
       const { value } = req.body;
       console.log();
 
@@ -158,7 +158,8 @@ class UserAuthController {
   }
   async acceptReq(req: Request, res: Response) {
     try {
-      const { userId, requestId, teamId } = req.query;
+      const { requestId, teamId } = req.query;
+      const { userId } = req.params;
       const { status, message } = await this.joinProject.execute(
         userId as string,
         requestId as string,
@@ -172,7 +173,7 @@ class UserAuthController {
   }
   async declineReq(req: Request, res: Response) {
     try {
-      const { userId, requestId } = req.query;
+      const { requestId } = req.query;
       const { status, message } = await this.rejectRequest.execute(
         requestId as string
       );
