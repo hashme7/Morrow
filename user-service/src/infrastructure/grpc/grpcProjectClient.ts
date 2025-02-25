@@ -15,12 +15,12 @@ export class GrpcProjectClient implements IGrpcProjectClient{
     this.client = new ProjectServiceClient(
       // process.env.GRPC_PROJECT_SERVICE_URI ||
       //   "localhost:7070", 
-      "project-service-x86.morrow-name-space.local:7070",
+      "project-service-x86.morrow-name-space:7070",
       credentials.createInsecure()
     );
     console.log(
       `grpc client for project server is running`,
-      process.env.GRPC_PROJECT_SERVICE_URI
+      "project-service-x86.morrow-name-space:7070"
     );
   }
   async getProjectByTeamId(teamIds: string[]): Promise<ProjectsResponse>{
