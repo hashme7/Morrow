@@ -16,6 +16,7 @@ export class ProjectService implements ProjectServiceServer {
     ): Promise<void> => {
       try {
         const { teamIds } = call.request;
+        console.log(teamIds,"teamIds")
         const projects = (await repository.getProjectsByTeamIds(
           teamIds
         )).map((project) => ({
