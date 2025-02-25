@@ -56,8 +56,8 @@ export class WebSocketServer {
   public listenForPubSubEvents(): void {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
+      console.log("message formate from listenforpubsubevents:-", message);
       try {
-        console.log("message", message);
         this.io.to(roomId).emit("new_message", message);
       } catch (error) {
         throw error;
@@ -66,7 +66,7 @@ export class WebSocketServer {
   }
   public configureSocketEvents() {
     this.io.on("connection", (socket) => {
-      console.log(`User connected: ${socket.id}`);
+
       socket.on("ping", () => {
         socket.emit("pong");
       });
@@ -76,7 +76,6 @@ export class WebSocketServer {
           await this.redisService.addActiveUser(socket.id, userId);
           socket.join(roomId);
           await this.joinSocket.execute();
-          console.log(`User ${socket.id} joined room ${roomId}`);
         } catch (error) {
           throw error;
         }
@@ -85,7 +84,6 @@ export class WebSocketServer {
       socket.on("disconnect", async (userId) => {
         try {
           await this.redisService.removeActiveUser(socket.id, userId);
-          console.log(`User disconnected: ${socket.id}`);
         } catch (error) {
           throw error;
         }
