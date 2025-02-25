@@ -9,8 +9,8 @@ env:
   ECR_REPOSITORY: morrow/auth-service          # set this to your Amazon ECR repository name
   ECS_SERVICE: auth-service-x86                 # set this to your Amazon ECS service name
   ECS_CLUSTER: morrow-prod                     # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: auth-service-x86.json        # set this to the path to your Amazon ECS task definition
-                                                # file, e.g. .aws/task-definition.json
+  S3_BUCKET: morrow-json-storage   # set this to the path to your Amazon ECS task definition
+  S3_KEY: auth-service-x86.json                                            # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: auth-service-x86           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
@@ -51,11 +51,20 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+    - name: Download ECS Task Definition from S3
+      id: download-task-def
+      run: |
+        aws s3 cp s3://${{ env.S3_BUCKET }}/${{ env.S3_KEY }} ./task-definition.json
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ env.AWS_REGION }}
+
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: ./task-definition.json
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
