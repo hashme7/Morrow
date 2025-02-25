@@ -13,8 +13,9 @@ export class GrpcProjectClient implements IGrpcProjectClient{
   public client: ProjectServiceClient;
   constructor() {
     this.client = new ProjectServiceClient(
-      process.env.GRPC_PROJECT_SERVICE_URI ||
-        "localhost:7070", 
+      // process.env.GRPC_PROJECT_SERVICE_URI ||
+      //   "localhost:7070", 
+      "project-service-x86.morrow-name-space:7070",
       credentials.createInsecure()
     );
     console.log(
