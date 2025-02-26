@@ -83,9 +83,7 @@ export class Controller {
           userId,
         });
       } else {
-        res
-          .status(result.status)
-          .json({ message: result.message, token: result.tokens });
+         res.status(401).json({ message: "Invalid email or password" });
       }
     } catch (error: any) {
       console.log("Error on login:", error);
