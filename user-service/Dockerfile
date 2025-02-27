@@ -12,4 +12,4 @@ COPY tsconfig.json tsconfig.json
 
 RUN npm run build
 
-CMD ["node", "./dist/index.js"]
+CMD ["node", "start"]
