@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "del ./dist/*",
-    "build": "clean && tsc -b",
+    "build": "npm run clean && tsc -b",
     "dev": "npm run build && concurrently \"npm run tsc-watch\" \"npm run serve\"",
     "tsc-watch": "tsc --watch",
     "serve": "nodemon ./dist/index.js",
