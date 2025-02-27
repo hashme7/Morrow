@@ -16,14 +16,13 @@ export class signupUser {
   async execute(userData: IUserData) :Promise<IResponse>{
     try {
       const user = await this.repository.findByEmail(userData.email);
-      console.log(userData,user,"userdata and user......")
       if (user && user.isVerified) {
+        console.log("user already exists...");
         return {
-          status: 400,
+          status: 409,
           message: "User already exists",
         };  
       }
-      console.log("password",userData.password);
       const hashedPassword = await bcrypt.hash(
         userData.password,
         this.saltRounds
@@ -33,7 +32,7 @@ export class signupUser {
       const verificationCode = generateVerificationCode();
       await this.repository.saveOtp(newUser._id, verificationCode);
       const res =await this.nodemailer.sendMail(userData.email, verificationCode);
-      if (res) {
+      if (res) { 
         return {
           status: 201,
           message: "User created successfully",
