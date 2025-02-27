@@ -47,7 +47,6 @@ class UserAuthController {
     }
   }
   async updatePassword(req: Request, res: Response) {
-    console.log(req.body, "req.bdoy of updatePassword");
 
     const { currentPassword, newPassword } = req.body;
     const { userId } = req.params;

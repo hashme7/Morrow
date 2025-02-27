@@ -19,6 +19,12 @@ router
 router
   .route("/changeEmail")
   .put(modify, authControllerInstance.updateEmail.bind(authControllerInstance));
+router
+  .route("/changePassword")
+  .put(
+    modify,
+    authControllerInstance.updatePassword.bind(authControllerInstance)
+  );
 
 router
   .route("/users")
