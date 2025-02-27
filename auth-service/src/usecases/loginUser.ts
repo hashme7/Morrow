@@ -10,9 +10,6 @@ export class LoginUser {
         try {
           console.log(`password ${password}`)
           const user = await this.repository.findByEmail(email);
-          if(user){
-            console.log(user,!(await bcryptjs.compare(password,user.password)))
-          }
           if (!user || !(await bcryptjs.compare(password, user.password))) {
             return {
               status: 401,
@@ -28,7 +25,6 @@ export class LoginUser {
             String(user._id),
             user.isProjectManager ? "ProjectManager" : "Developer"
           );
-          console.log("refreshToken",refreshToken,"accessToken",accessToken,"_------------_______________---------------------________________");
           return {
             status: 200,
             message: "Login successfully completed",
@@ -36,7 +32,6 @@ export class LoginUser {
             userId:user._id
           };
         } catch (error) {
-          console.log("error on login", error);
           return { status: 500, message: "Internal server error" };
         }
       }
