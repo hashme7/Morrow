@@ -34,7 +34,7 @@ export class ChangePassword {
         };
       }
     } catch (error) {
-      return { status: 500, message: error };
+      return { status: 500, message: "Internel Server error" };
     }
     
   }
