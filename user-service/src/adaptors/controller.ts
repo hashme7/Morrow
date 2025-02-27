@@ -120,13 +120,13 @@ class UserAuthController {
     try {
       const { userId, field } = req.params; 
       const { value } = req.body;
-      console.log();
 
       if (!field || value === undefined) {
         res.status(400).json({ error: "Field and value are required." });
         return;
       }
       await this.updateProfileCases.execute(userId, field, value);
+      res.status(200).json({message:`${field} updated successfully`})
     } catch (error) {
       console.log(`Error on update profile Request : ${error}`);
       res.status(500).json({ message: "Internel Server error" });

@@ -320,6 +320,7 @@ class Repository implements IRepository {
         "No changes made. User not found or field value is the same."
       );
     }
+    return;
   }
   async getRole(teamId: string, userId: string) {
     try {
