@@ -56,6 +56,7 @@ export class WebSocketServer {
   public listenForPubSubEvents(): void {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
+      console.log("message formate from listenforpubsubevents:-", message);
       try {
         this.io.to(roomId).emit("new_message", message);
       } catch (error) {
@@ -79,6 +80,7 @@ export class WebSocketServer {
         }
       });
       socket.on("userTyping", ({ userId, roomId }) => {
+        console.log("user is Typeing", userId, roomId);
         socket.to(roomId).emit("typing", { userId, isTyping: true });
       });
       socket.on("userStoppedTyping", ({ userId, roomId }) => {
@@ -93,17 +95,8 @@ export class WebSocketServer {
         }
       });
       socket.on("message_seen", async ({ roomId,messageId, userId }) => {
-        console.log(`
-          
-          
-          
-          
-          
-          MESSAGE_SEEEN
-          
-        
-          message_seen`,messageId,userId)
         try {
+          
           const seenedMsg = await this.updateMsgSeen.execute({
             messageId,
             userId,
@@ -112,7 +105,6 @@ export class WebSocketServer {
           const senderId = await this.redisService.getActiveUser(userId);
           console.log("sender is found",senderId)
           if (!senderId) return;
-          console.log("room Id:",roomId)
           socket.to(roomId).emit("message_status", { seenedMsg });
         } catch (error) {
           console.log("error on message seen",error)
