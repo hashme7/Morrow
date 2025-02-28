@@ -34,7 +34,7 @@ export class ChatRepository implements IChatRepository {
     try {
       const updatedMsg = await ChatMessage.findByIdAndUpdate(
         messageId,
-        { $addToSet: { readBy: userId } },
+        { $addToSet: { readBy: userId } ,status:"seen"},
         { new: true }
       ).lean();
       if(!updatedMsg) throw new Error ('message not found')

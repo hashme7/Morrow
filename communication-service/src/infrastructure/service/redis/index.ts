@@ -34,28 +34,41 @@ export class RedisService implements IRedisService {
       keepAlive: 30000,
       stringNumbers: false,
     });
-    console.log(`redis client: ${this.subscriber.options} ,redis sub:${this.client.options}`);
+    console.log(
+      `redis client: ${this.subscriber.options} ,redis sub:${this.client.options}`
+    );
     this.addErrorListeners();
   }
-  
-  async addActiveUser(socketId: string, userId: string): Promise<void> {
+  async getActiveUser(
+    userId: string,
+  ): Promise<string | null> {
     try {
-      await this.client.set(userId, socketId);
+      return await this.client.get(`${userId}`);
     } catch (error) {
       throw error;
     }
   }
-  async removeActiveUser(socketId: string, userId: string): Promise<void> {
+
+  async addActiveUser(
+    socketId: string,
+    userId: string,
+  ): Promise<void> {
     try {
-      await this.client.del(userId, socketId);
+      await this.client.set(`${userId}`, socketId);
     } catch (error) {
-      // console.log(`error on removing the active user from redis service`);
       throw error;
     }
   }
-  async getActiveUser(userId: string): Promise<string | null> {
+
+  async removeActiveUser(
+    socketId: string,
+    userId: string
+  ): Promise<void> {
     try {
-      return await this.client.get(userId);
+      const storedSocketId = await this.client.get(`${userId}`);
+      if (storedSocketId === socketId) {
+        await this.client.del(`${userId}`);
+      }
     } catch (error) {
       throw error;
     }
@@ -104,11 +117,11 @@ export class RedisService implements IRedisService {
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
       try {
-        console.log("pmessage formate of message",message)
+        console.log("pmessage formate of message", message);
         const parsedMessage = JSON.parse(message);
         callback(channel, parsedMessage);
       } catch (error) {
-        console.log(`error pmessage subsriber`,);
+        console.log(`error pmessage subsriber`);
       }
     });
   }
