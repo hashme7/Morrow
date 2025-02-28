@@ -56,7 +56,6 @@ export class WebSocketServer {
   public listenForPubSubEvents(): void {
     this.redisService.subscribe("channel:room:*", (channel, message) => {
       const roomId = channel.split(":")[2];
-      console.log("message formate from listenforpubsubevents:-", message);
       try {
         this.io.to(roomId).emit("new_message", message);
       } catch (error) {
