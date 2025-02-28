@@ -80,6 +80,7 @@ export class WebSocketServer {
         }
       });
       socket.on("userTyping", ({ userId, roomId }) => {
+        console.log("Rooms:", socket.rooms);
         console.log("user is Typeing", userId, roomId);
         socket.to(roomId).emit("typing", { userId, isTyping: true });
       });
