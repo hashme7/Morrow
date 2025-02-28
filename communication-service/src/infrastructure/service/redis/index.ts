@@ -39,9 +39,7 @@ export class RedisService implements IRedisService {
     );
     this.addErrorListeners();
   }
-  async getActiveUser(
-    userId: string,
-  ): Promise<string | null> {
+  async getActiveUser(userId: string): Promise<string | null> {
     try {
       return await this.client.get(`${userId}`);
     } catch (error) {
@@ -49,10 +47,7 @@ export class RedisService implements IRedisService {
     }
   }
 
-  async addActiveUser(
-    socketId: string,
-    userId: string,
-  ): Promise<void> {
+  async addActiveUser(socketId: string, userId: string): Promise<void> {
     try {
       await this.client.set(`${userId}`, socketId);
     } catch (error) {
@@ -60,10 +55,7 @@ export class RedisService implements IRedisService {
     }
   }
 
-  async removeActiveUser(
-    socketId: string,
-    userId: string
-  ): Promise<void> {
+  async removeActiveUser(socketId: string, userId: string): Promise<void> {
     try {
       const storedSocketId = await this.client.get(`${userId}`);
       if (storedSocketId === socketId) {
@@ -96,7 +88,6 @@ export class RedisService implements IRedisService {
   async publish(channel: string, message: any): Promise<void> {
     try {
       await this.client.publish(channel, JSON.stringify(message));
-      // console.log(`Message published to channel: ${channel}`);
     } catch (err) {
       console.error(`Error publishing message to channel ${channel}:`, err);
     }
@@ -108,6 +99,7 @@ export class RedisService implements IRedisService {
     this.subscriber.psubscribe(channelPattern, (err, count) => {
       if (err) {
         // console.error(`Error subscribing to pattern ${channelPattern}:`, err);
+        throw err;
       } else {
         console.log(
           `Subscribed to ${count} channels matching pattern: ${channelPattern}`
@@ -117,11 +109,10 @@ export class RedisService implements IRedisService {
 
     this.subscriber.on("pmessage", (pattern, channel, message) => {
       try {
-        console.log("pmessage formate of message", message);
         const parsedMessage = JSON.parse(message);
         callback(channel, parsedMessage);
       } catch (error) {
-        console.log(`error pmessage subsriber`);
+        // console.log(`error pmessage subsriber`);
       }
     });
   }
