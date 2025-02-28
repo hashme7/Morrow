@@ -7,6 +7,8 @@ import {
   IVerifyOtp,
   IGoogleAuth,
   IGitHubAuth,
+  IForgotPassword,
+  IPasswordVerify,
 } from "../interface/usecase.interface";
 import { JWTService } from "morrow-common";
 import dotenv from "dotenv";
@@ -20,7 +22,9 @@ export class Controller {
     private loginUser: ILoginUser,
     private authenticateToken: IAuthenticateToken,
     private googleAuth: IGoogleAuth,
-    private gitHubAuth: IGitHubAuth
+    private gitHubAuth: IGitHubAuth,
+    private forgotPass: IForgotPassword,
+    private passwordVerify: IPasswordVerify
   ) {}
   async signUpUser(req: Request, res: Response) {
     try {
@@ -41,7 +45,7 @@ export class Controller {
       console.log(error);
     }
   }
-  
+
   async resendOtp(req: Request, res: Response) {
     try {
       const { userId } = req.body;
@@ -83,7 +87,7 @@ export class Controller {
           userId,
         });
       } else {
-         res.status(401).json({ message: "Invalid email or password" });
+        res.status(401).json({ message: "Invalid email or password" });
       }
     } catch (error: any) {
       console.log("Error on login:", error);
@@ -156,7 +160,6 @@ export class Controller {
         httpOnly: false,
         secure: true,
         sameSite: "none",
-        
       });
 
       res.clearCookie("refreshToken", {
@@ -238,6 +241,26 @@ export class Controller {
       });
     } catch (error) {
       console.log(error);
+      res.status(500).json({ message: "Internel Server Error" });
+    }
+  }
+  async forgotPassword(req: Request, res: Response) {
+    try {
+      const { status, message } = await this.forgotPass.execute(req.body.email);
+      res.status(status).json({ message });
+    } catch (error) {
+      res.status(500).json({ message: "Internel Server Error" });
+    }
+  }
+  async verifyPassword(req: Request, res: Response) {
+    try {
+      const { token } = req.params;
+      const { status, message } = await this.passwordVerify.execute({
+        password: req.body.password,
+        token,
+      });
+      res.status(status).json({ message });
+    } catch (error) {
       res.status(500).json({ message: "Internel Server Error" });
     }
   }

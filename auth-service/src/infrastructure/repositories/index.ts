@@ -7,6 +7,14 @@ import { IRepository } from "../../interface/repository.interface";
 
 export class Repository implements IRepository{
   constructor() {}
+  async updatePassword(userId: ObjectId, password: string): Promise<boolean> {
+    try {
+      await User.findOneAndUpdate({ _id: userId }, { $set: { password: password } });
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
   async findById(userId: ObjectId): Promise<(IUserData & Document) | null> {
     try {
       return (await User.findOne({_id:userId}));

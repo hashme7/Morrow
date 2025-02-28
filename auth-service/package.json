@@ -24,7 +24,7 @@
     "google-auth-library": "^9.15.0",
     "mongoose": "^8.8.2",
     "morgan": "^1.10.0",
-    "morrow-common": "^1.5.78",
+    "morrow-common": "^1.5.79",
     "nodemailer": "^6.9.16"
   },
   "devDependencies": {

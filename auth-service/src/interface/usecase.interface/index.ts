@@ -25,3 +25,9 @@ export interface IGoogleAuth{
 export interface IGitHubAuth{
     execute(code:string):Promise<IResponse>
 }
+export interface IForgotPassword{
+    execute(email:string):Promise<IResponse>
+}
+export interface IPasswordVerify{
+    execute({ token , password}:{ token: string; password: string }):Promise<IResponse>
+}

@@ -7,5 +7,6 @@ export interface IRepository {
   saveOtp(id: ObjectId | undefined, verificationCode: number): unknown;
   verifyOtp(userId: ObjectId, otp: number): unknown;
   markUserAsVerified(userId: ObjectId): Promise<void>;
-  findById(userId:ObjectId):Promise<IUserData & Document | null>
+  findById(userId: ObjectId): Promise<(IUserData & Document) | null>;
+  updatePassword(userId: ObjectId, password: string): Promise<boolean>;
 }
