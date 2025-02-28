@@ -49,7 +49,7 @@ class UserAuthController {
   async updatePassword(req: Request, res: Response) {
 
     const { currentPassword, newPassword } = req.body;
-    const { userId } = req.params;
+    const { userId } = req.params; 
     try {
       const userIdOb = new mongoose.Types.ObjectId(userId);
       const response = await this.changePasswordCases.execute(
