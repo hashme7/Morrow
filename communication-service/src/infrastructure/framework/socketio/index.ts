@@ -93,7 +93,7 @@ export class WebSocketServer {
           throw error;
         }
       });
-      socket.on("message_seen", async ({ messageId, userId }) => {
+      socket.on("message_seen", async ({ roomId,messageId, userId }) => {
         try {
           console.log(`
             
@@ -117,7 +117,7 @@ export class WebSocketServer {
           const senderId = await this.redisService.getActiveUser(userId);
           console.log("sender is found",senderId)
           if (!senderId) return;
-          socket.to(senderId).emit("message_status", { seenedMsg });
+          socket.to(roomId).emit("message_status", { seenedMsg });
         } catch (error) {
           console.log("error on message seen",error)
           throw error;
