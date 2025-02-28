@@ -6,14 +6,23 @@ import { IMessage } from '../types/Data';
 export interface IRedisService {
   connect(): Promise<void>;
   publish(channel: string, message: any): Promise<void>;
-  subscribe(channelPattern: string, callback: (channel: string, message: string) => void): void;
-  isValidJSON(message:string):boolean;
+  subscribe(
+    channelPattern: string,
+    callback: (channel: string, message: string) => void
+  ): void;
+  isValidJSON(message: string): boolean;
   getPublisher(): Redis;
   getSubscriber(): Redis;
   close(): Promise<void>;
-  addActiveUser(socketId: string, userId: string): Promise<void>;
-  removeActiveUser(socketId: string, userId: string): Promise<void>;
-  getActiveUser(userId: string): Promise<string | null>;
+  addActiveUser(
+    socketId: string,
+    userId: string
+  ): Promise<void>;
+  removeActiveUser(
+    socketId: string,
+    userId: string
+  ): Promise<void>;
+  getActiveUser(userId: string, projectId: string): Promise<string | null>;
 }
 export interface IMessageWorker {
   start(): void;  

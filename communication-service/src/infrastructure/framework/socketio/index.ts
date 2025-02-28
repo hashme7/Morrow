@@ -70,7 +70,6 @@ export class WebSocketServer {
       socket.on("ping", () => {
         socket.emit("pong");
       });
-
       socket.on("joinRoom", async (roomId: string, userId: string) => {
         try {
           await this.redisService.addActiveUser(socket.id, userId);
@@ -79,6 +78,12 @@ export class WebSocketServer {
         } catch (error) {
           throw error;
         }
+      });
+      socket.on("userTyping", ({ userId, roomId }) => {
+        socket.to(roomId).emit("typing", { userId, isTyping: true });
+      });
+      socket.on("userStoppedTyping", ({ userId, roomId }) => {
+        socket.to(roomId).emit("typing", { userId, isTyping: false });
       });
 
       socket.on("disconnect", async (userId) => {
@@ -90,14 +95,18 @@ export class WebSocketServer {
       });
       socket.on("message_seen", async ({ messageId, userId }) => {
         try {
+          console.log("message_seen",messageId,userId)
           const seenedMsg = await this.updateMsgSeen.execute({
             messageId,
             userId,
           });
+          console.log("seened Messages", seenedMsg);
           const senderId = await this.redisService.getActiveUser(userId);
+          console.log("sender is found",senderId)
           if (!senderId) return;
           socket.to(senderId).emit("message_status", { seenedMsg });
         } catch (error) {
+          console.log("error on message seen",error)
           throw error;
         }
       });
