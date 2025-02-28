@@ -29,7 +29,7 @@ class UserAuthController {
     private readonly getRequestDetails: IGetRequests,
     private readonly joinProject: IJoinProject,
     private readonly rejectRequest: IRejectRequest,
-    private readonly changeRole: IUpdateRole,
+    private readonly changeRole: IUpdateRole
   ) {}
   async getUser(req: Request, res: Response) {
     const { userId } = req.params;
@@ -47,9 +47,8 @@ class UserAuthController {
     }
   }
   async updatePassword(req: Request, res: Response) {
-
     const { currentPassword, newPassword } = req.body;
-    const { userId } = req.params; 
+    const { userId } = req.params;
     try {
       const userIdOb = new mongoose.Types.ObjectId(userId);
       const response = await this.changePasswordCases.execute(
@@ -117,7 +116,7 @@ class UserAuthController {
   }
   async updateProfile(req: Request, res: Response) {
     try {
-      const { userId, field } = req.params; 
+      const { userId, field } = req.params;
       const { value } = req.body;
 
       if (!field || value === undefined) {
@@ -125,7 +124,7 @@ class UserAuthController {
         return;
       }
       await this.updateProfileCases.execute(userId, field, value);
-      res.status(200).json({message:`${field} updated successfully`})
+      res.status(200).json({ message: `${field} updated successfully` });
     } catch (error) {
       console.log(`Error on update profile Request : ${error}`);
       res.status(500).json({ message: "Internel Server error" });
@@ -149,6 +148,9 @@ class UserAuthController {
         new ObjectId(userId as string),
         note as string
       );
+      if (!newRequest) {
+        res.status(400).json({ message: "Team id is not Found.." });
+      }
       res.status(201).json(newRequest);
     } catch (error) {
       console.log(`Error on create Request : ${error}`);
@@ -164,7 +166,7 @@ class UserAuthController {
         requestId as string,
         teamId as string
       );
-      res.status(status).json({message,requestId});
+      res.status(status).json({ message, requestId });
     } catch (error) {
       console.log(`Error on aceepting request:${error}`);
       res.status(500).json({ message: "Internel Server Error" });
@@ -186,7 +188,7 @@ class UserAuthController {
     try {
       const { userId } = req.params;
       if (!userId) {
-        res.status(401).json({ message: "athentication failed" })
+        res.status(401).json({ message: "athentication failed" });
         return;
       }
       const { status, data, message } = await this.getRequestDetails.execute(
@@ -202,7 +204,11 @@ class UserAuthController {
   async updateRole(req: Request, res: Response) {
     try {
       const { userId, teamId, role } = req.query;
-      const { status, data, message } = await this.changeRole.execute(userId as string, teamId as string, role as ("Developer" | "TeamLead" | "ProjectManager"));
+      const { status, data, message } = await this.changeRole.execute(
+        userId as string,
+        teamId as string,
+        role as "Developer" | "TeamLead" | "ProjectManager"
+      );
       res.status(status).json({ data, message });
     } catch (error) {
       console.log(`Error update Role : ${error}`);
