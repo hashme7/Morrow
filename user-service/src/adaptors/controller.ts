@@ -164,7 +164,7 @@ class UserAuthController {
         requestId as string,
         teamId as string
       );
-      res.status(status).json(message);
+      res.status(status).json({message,requestId});
     } catch (error) {
       console.log(`Error on aceepting request:${error}`);
       res.status(500).json({ message: "Internel Server Error" });
