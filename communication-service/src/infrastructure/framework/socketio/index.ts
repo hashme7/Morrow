@@ -94,21 +94,17 @@ export class WebSocketServer {
         }
       });
       socket.on("message_seen", async ({ roomId,messageId, userId }) => {
+        console.log(`
+          
+          
+          
+          
+          
+          MESSAGE_SEEEN
+          
+        
+          message_seen`,messageId,userId)
         try {
-          console.log(`
-            
-            
-            
-            
-            
-            MESSAGE_SEEEN ${messageId}
-            
-            
-            
-            
-            
-            
-            message_seen`,messageId,userId)
           const seenedMsg = await this.updateMsgSeen.execute({
             messageId,
             userId,
@@ -117,6 +113,7 @@ export class WebSocketServer {
           const senderId = await this.redisService.getActiveUser(userId);
           console.log("sender is found",senderId)
           if (!senderId) return;
+          console.log("room Id:",roomId)
           socket.to(roomId).emit("message_status", { seenedMsg });
         } catch (error) {
           console.log("error on message seen",error)
