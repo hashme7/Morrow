@@ -20,6 +20,89 @@ class Nodemailer implements mailerInterface {
       debug: true,
     });
   }
+  async sendForgotPassLink(email: string, link: string): Promise<boolean> {
+    let mailOption = {
+      from: process.env.GMAIL,
+      to: email,
+      subject: "Morrow Password Reset Request",
+      text: `Dear ${email},
+
+We received a request to reset your password for your Morrow account. Click the link below to reset your password:
+
+Reset Password Link: ${link}
+
+If you didn’t request this, you can safely ignore this email. This link will expire in 15 minutes.
+
+If you need any help, feel free to contact our support team at support@morrow.com.
+
+Best regards,  
+The Morrow Team
+`,
+      html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Your Morrow Password</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: auto;
+    }
+    .button {
+      display: inline-block;
+      background-color: #2980b9;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Password Reset Request</h2>
+    <p>Dear ${email},</p>
+    <p>We received a request to reset your password. Click the button below to proceed:</p>
+    <a class="button" href="${link}" target="_blank">Reset Password</a>
+    <p>If you didn’t request this, you can ignore this email. This link will expire in 15 minutes.</p>
+    <div class="footer">
+      <p>Need help? Contact our support team at <a href="mailto:support@morrow.com">support@morrow.com</a></p>
+      <p>- The Morrow Team</p>
+    </div>
+  </div>
+</body>
+</html>`,
+    };
+
+    try {
+      await this.transporter.sendMail(mailOption);
+      console.log("Password reset email sent successfully.");
+      return true;
+    } catch (error) {
+      console.log(`Error sending password reset email: ${error}`);
+      return false;
+    }
+  }
+
   async sendMail(email: string, code: number): Promise<boolean> {
     let mailOption = {
       from: process.env.GMAIL,

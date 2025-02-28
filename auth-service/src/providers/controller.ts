@@ -9,6 +9,8 @@ import { AuthenticateToken } from "../usecases/authenticateToken";
 import { GoogleAuth } from "../usecases/googleAuth";
 import { GithubAuth } from "../usecases/gitHubAuth";
 import { Github } from "./github";
+import { ForgotPassword } from "../usecases/forgotPassword";
+import { ResetPassword } from "../usecases/resetPassword";
 
 const nodemailerInstance = new Nodemailer();
 const githubInstance = new Github();
@@ -16,6 +18,8 @@ const githubInstance = new Github();
 const repositoryInstance = new Repository();
 
 const signupInstance = new signupUser(repositoryInstance, nodemailerInstance);
+const forgotPassword = new ForgotPassword(repositoryInstance, nodemailerInstance);
+const resetPassword = new ResetPassword(repositoryInstance);
 const verifyOtpInstance = new VerifyOtp(repositoryInstance);
 const reIssueOtpInstance = new ReIssueOtp(repositoryInstance);
 const loginUserInstance = new LoginUser(repositoryInstance);
@@ -30,5 +34,7 @@ export const controllerInstance = new Controller(
   loginUserInstance,
   authenticateTokenInstance,
   googleAuthInstance,
-  githubAuthInstance
+  githubAuthInstance,
+  forgotPassword,
+  resetPassword,
 );

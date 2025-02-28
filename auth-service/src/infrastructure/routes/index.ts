@@ -19,6 +19,12 @@ router
   .route("/validate-token")
   .get(controllerInstance.validateToken.bind(controllerInstance));
 router
+  .route("/forgot-password")
+  .post(controllerInstance.forgotPassword.bind(controllerInstance));
+router
+  .route("/verify-password/:token")
+  .post(controllerInstance.verifyPassword.bind(controllerInstance));
+router
   .route("/logout")
   .post(controllerInstance.logout.bind(controllerInstance));
 router
