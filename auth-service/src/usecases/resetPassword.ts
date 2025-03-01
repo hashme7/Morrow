@@ -18,6 +18,7 @@ export class ResetPassword {
         return { status: 200, message: "password changed successfully" };
       }
     } catch (error) {
+      console.error("Error resetting password:", error);
       if (error instanceof TokenExpiredError) {
         return {
           status: 401,
@@ -26,7 +27,8 @@ export class ResetPassword {
       }
       return {
         status: 500,
-        message: "An error occurred while resetting password.",
+        message:
+          error instanceof Error ? error.message : "Internal server error.",
       };
     }
   }
