@@ -22,7 +22,7 @@ router
   .route("/forgot-password")
   .post(controllerInstance.forgotPassword.bind(controllerInstance));
 router
-  .route("/verify-password/:token")
+  .route("/reset-password/:token")
   .post(controllerInstance.verifyPassword.bind(controllerInstance));
 router
   .route("/logout")
