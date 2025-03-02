@@ -9,7 +9,8 @@ export class ResetPassword {
     try {
       const decoded: JwtPayload = JWTService.verifyToken(token);
       if (!decoded) return { status: 403, message: "Token is Invalid token" };
-      const isUser =await this.repository.findById(decoded.id);
+      const isUser = await this.repository.findById(decoded.id);
+      console.log("isUser:", isUser);
       if (!isUser) {
         return { status: 400, message: "user is not there" };
       } else {
@@ -18,6 +19,7 @@ export class ResetPassword {
         return { status: 200, message: "password changed successfully" };
       }
     } catch (error) {
+      console.error("Error resetting password:", error);
       if (error instanceof TokenExpiredError) {
         return {
           status: 401,
@@ -26,7 +28,8 @@ export class ResetPassword {
       }
       return {
         status: 500,
-        message: "An error occurred while resetting password.",
+        message:
+          error instanceof Error ? error.message : "Internal server error.",
       };
     }
   }

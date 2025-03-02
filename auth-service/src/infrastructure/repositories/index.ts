@@ -12,7 +12,7 @@ export class Repository implements IRepository{
       await User.findOneAndUpdate({ _id: userId }, { $set: { password: password } });
       return true;
     } catch (error) {
-      throw error;
+      throw new Error(`Failed to update password: ${(error as Error).message}`);
     }
   }
   async findById(userId: ObjectId): Promise<(IUserData & Document) | null> {
