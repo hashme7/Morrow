@@ -9,7 +9,8 @@ export class ResetPassword {
     try {
       const decoded: JwtPayload = JWTService.verifyToken(token);
       if (!decoded) return { status: 403, message: "Token is Invalid token" };
-      const isUser =await this.repository.findById(decoded.id);
+      const isUser = await this.repository.findById(decoded.id);
+      console.log("isUser:", isUser);
       if (!isUser) {
         return { status: 400, message: "user is not there" };
       } else {
