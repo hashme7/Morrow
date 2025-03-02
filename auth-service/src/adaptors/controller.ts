@@ -255,8 +255,9 @@ export class Controller {
   async verifyPassword(req: Request, res: Response) {
     try {
       const { token } = req.params;
+
       const { status, message } = await this.passwordVerify.execute({
-        password: req.body.password,
+        password: req.query.password as string,
         token,
       });
       res.status(status).json({ message });

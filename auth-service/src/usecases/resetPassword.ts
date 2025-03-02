@@ -7,6 +7,7 @@ export class ResetPassword {
   constructor(readonly repository: IRepository) {}
   async execute({ token, password }: { token: string; password: string }) {
     try {
+      console.log("password:", password);
       const decoded: JwtPayload = JWTService.verifyToken(token);
       if (!decoded) return { status: 403, message: "Token is Invalid token" };
       const isUser = await this.repository.findById(decoded.id);
