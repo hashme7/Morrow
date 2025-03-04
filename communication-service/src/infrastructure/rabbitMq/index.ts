@@ -14,7 +14,7 @@ export class RabbitMQService {
     try {
       this.connection = await amqplib.connect(
         process.env.RABBITMQ_URL || "amqp://localhost"
-      );
+      ) as amqplib.Connection;
       this.channel = await this.connection.createChannel();
       this.isConnected = true;
 
