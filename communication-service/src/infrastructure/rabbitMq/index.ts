@@ -12,11 +12,10 @@ export class RabbitMQService {
 
   async connect(): Promise<void> {
     try {
-      const conn: Connection = await amqplib.connect(
+      this.connection = await amqplib.connect(
         process.env.RABBITMQ_URL || "amqp://localhost"
       );
-      this.connection = conn; 
-      this.channel = await conn.createChannel();
+      this.channel = await this.connection.createChannel();
       this.isConnected = true;
 
       console.log("🐇 Connected to RabbitMQ and channel created.");
