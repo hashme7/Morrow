@@ -1,4 +1,4 @@
-import amqplib, { Connection, Channel } from "amqplib";
+import {connect, Connection, Channel } from "amqplib";
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
@@ -13,7 +13,7 @@ export class RabbitMQService {
 
   async connect(): Promise<void> {
     try {
-      this.connection = await amqplib.connect(
+      this.connection = await connect(
         process.env.RABBITMQ_URL || "amqp://localhost"
       );
       this.channel = await this.connection.createChannel();
