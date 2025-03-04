@@ -72,9 +72,11 @@ export class WebSocketServer {
       });
       socket.on("joinRoom", async (roomId: string, userId: string) => {
         try {
+          console.log(`joining room:{ roomId:${roomId}`)
           await this.redisService.addActiveUser(socket.id, userId);
           socket.join(roomId);
           await this.joinSocket.execute();
+          console.log("roomids when joined room", socket.rooms);
         } catch (error) {
           throw error;
         }
@@ -85,6 +87,7 @@ export class WebSocketServer {
         socket.to(roomId).emit("typing", { userId, isTyping: true });
       });
       socket.on("userStoppedTyping", ({ userId, roomId }) => {
+        console.log("userStoppedTyping",userId,roomId);
         socket.to(roomId).emit("typing", { userId, isTyping: false });
       });
 
