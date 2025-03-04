@@ -11,7 +11,7 @@ export class RabbitMQService {
 
   constructor() {
     this.connect();
-  }
+  }  
 
   private async connect(attempt:number = 1): Promise<void> {
     try {
