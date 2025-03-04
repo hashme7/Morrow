@@ -26,8 +26,6 @@ export class AddTeamConsumer {
       console.log(message)
       if (message) {
         try {
-          const projectData = message.content.toString();
-          
           await this.createTeamCases.execute(message);
           this.channel.ack(message);
         } catch (error) {
