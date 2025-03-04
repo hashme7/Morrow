@@ -18,7 +18,7 @@ export class WebSocketServer {
     public chatRepository: IChatRepository,
     public joinSocket: IJoinSocket,
     public updateMsgSeen: IUpdateMsgSeen,
-    public httpServer:any
+    public httpServer: any
   ) {
     this.io = new Server(httpServer, {
       cors: {
@@ -66,13 +66,12 @@ export class WebSocketServer {
   }
   public configureSocketEvents() {
     this.io.on("connection", (socket) => {
-
       socket.on("ping", () => {
         socket.emit("pong");
       });
       socket.on("joinRoom", async (roomId: string, userId: string) => {
         try {
-          console.log(`joining room:{ roomId:${roomId}`)
+          console.log(`joining room:{ roomId:${roomId}`);
           await this.redisService.addActiveUser(socket.id, userId);
           socket.join(roomId);
           await this.joinSocket.execute();
@@ -82,12 +81,17 @@ export class WebSocketServer {
         }
       });
       socket.on("userTyping", ({ userId, roomId }) => {
-        console.log("Rooms:", socket.rooms);
-        console.log("user is Typeing", userId, roomId);
-        socket.to(roomId).emit("typing", { userId, isTyping: true });
+        try {
+          console.log("Rooms:", socket.rooms);
+          console.log("user is Typeing", userId, roomId);
+          socket.to(roomId).emit("typing", { userId, isTyping: true });
+        } catch (error) {
+          console.log("error:", error);
+        }
+        
       });
       socket.on("userStoppedTyping", ({ userId, roomId }) => {
-        console.log("userStoppedTyping",userId,roomId);
+        console.log("userStoppedTyping", userId, roomId);
         socket.to(roomId).emit("typing", { userId, isTyping: false });
       });
 
@@ -98,20 +102,19 @@ export class WebSocketServer {
           throw error;
         }
       });
-      socket.on("message_seen", async ({ roomId,messageId, userId }) => {
+      socket.on("message_seen", async ({ roomId, messageId, userId }) => {
         try {
-          
           const seenedMsg = await this.updateMsgSeen.execute({
             messageId,
             userId,
           });
           console.log("seened Messages", seenedMsg);
           const senderId = await this.redisService.getActiveUser(userId);
-          console.log("sender is found",senderId)
+          console.log("sender is found", senderId);
           if (!senderId) return;
           socket.to(roomId).emit("message_status", { seenedMsg });
         } catch (error) {
-          console.log("error on message seen",error)
+          console.log("error on message seen", error);
           throw error;
         }
       });
