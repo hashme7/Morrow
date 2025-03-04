@@ -12,10 +12,11 @@ export class RabbitMQService {
 
   async connect(): Promise<void> {
     try {
-      this.connection = await amqplib.connect(
+      const conn: Connection = await amqplib.connect(
         process.env.RABBITMQ_URL || "amqp://localhost"
       );
-      this.channel = await this.connection.createChannel();
+      this.connection = conn; 
+      this.channel = await conn.createChannel();
       this.isConnected = true;
 
       console.log("🐇 Connected to RabbitMQ and channel created.");
@@ -31,7 +32,7 @@ export class RabbitMQService {
       });
     } catch (error) {
       console.error("🚨 Error connecting to RabbitMQ:", error);
-      setTimeout(() => this.reconnect(), 5000); // Retry after 5 seconds
+      setTimeout(() => this.reconnect(), 5000);
     }
   }
 
