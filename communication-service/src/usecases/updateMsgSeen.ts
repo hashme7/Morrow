@@ -2,7 +2,6 @@ import { Types } from "mongoose";
 import { IChatRepository } from "../interfaces/chatRepository.interface";
 import { IUpdateMsgSeen } from "../interfaces/usecases.interface";
 import { IMessage } from "../interfaces/types/Data";
-import { IMessageWorker } from "../interfaces/providers.interface";
 
 export class UpdateMsgSeen implements IUpdateMsgSeen{
     constructor(private repsitory: IChatRepository) {}
@@ -10,6 +9,7 @@ export class UpdateMsgSeen implements IUpdateMsgSeen{
         try {
             const updatedMsg = await this.repsitory.updateMsg(new Types.ObjectId(messageId), new Types.ObjectId(userId));
             if (updatedMsg) {
+                console.log("updated....",updatedMsg);
                 return updatedMsg;
             } else {
                 return undefined;
