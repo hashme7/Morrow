@@ -104,6 +104,7 @@ export class WebSocketServer {
       });
       socket.on("message_seen", async ({ roomId, messageId, userId }) => {
         try {
+          console.log("seened Messages");
           const seenedMsg = await this.updateMsgSeen.execute({
             messageId,
             userId,
