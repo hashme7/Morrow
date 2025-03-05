@@ -18,7 +18,7 @@
     "@bufbuild/protobuf": "^2.2.1",
     "@grpc/grpc-js": "^1.12.3",
     "@grpc/proto-loader": "^0.7.13",
-    "amqplib": "^0.10.5",
+    "amqplib": "0.10.3",
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
@@ -39,7 +39,7 @@
     "typescript": "^5.7.2"
   },
   "devDependencies": {
-    "@types/amqplib": "^0.10.5",
+    "@types/amqplib": "0.10.3",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.7",
