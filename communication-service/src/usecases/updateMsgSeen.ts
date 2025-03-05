@@ -3,21 +3,41 @@ import { IChatRepository } from "../interfaces/chatRepository.interface";
 import { IUpdateMsgSeen } from "../interfaces/usecases.interface";
 import { IMessage } from "../interfaces/types/Data";
 
-export class UpdateMsgSeen implements IUpdateMsgSeen{
-    constructor(private repsitory: IChatRepository) {}
-    async execute({ messageId, userId }: { messageId: string; userId: string; }): Promise<IMessage | undefined> {
-        try {
-            const updatedMsg = await this.repsitory.updateMsg(new Types.ObjectId(messageId), new Types.ObjectId(userId));
-            if (updatedMsg) {
-                console.log("updated....",updatedMsg);
-                return updatedMsg;
-            } else {
-                return undefined;
-            }   
-        } catch (error) {
-            console.log(`error on updat msg seen :${error}`)   
-            throw error;
+export class UpdateMsgSeen implements IUpdateMsgSeen {
+  constructor(private repository: IChatRepository) {}
+  async execute({
+    messageId,
+    userId,
+  }: {
+    messageId: string;
+    userId: string;
+  }): Promise<IMessage | undefined> {
+    let attempts = 0;
+    const maxRetries = 5;
+    const retryDelay = 500;
+
+    while (attempts < maxRetries) {
+      try {
+        const updatedMsg = await this.repository.updateMsg(
+          new Types.ObjectId(messageId),
+          new Types.ObjectId(userId)
+        );
+
+        if (updatedMsg) {
+          console.log("Message seen updated:", updatedMsg);
+          return updatedMsg;
         }
+      } catch (error) {
+        console.log(`Error updating message seen status: ${error}`);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      attempts++;
     }
-  
+
+    console.log(
+      `Failed to update seen status for message ${messageId} after ${maxRetries} retries`
+    );
+    return undefined;
+  }
 }

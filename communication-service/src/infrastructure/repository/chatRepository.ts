@@ -14,7 +14,7 @@ export class ChatRepository implements IChatRepository {
   async getMessages(
     roomId: string,
     page: number = 1,
-    limit: number = 20
+    limit: number = 30
   ): Promise<IMessage[]> {
     try {
       const skip = (page - 1) * limit;

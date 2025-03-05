@@ -5,8 +5,8 @@ import { IMessage } from "../../interfaces/types/Data";
 
 export class MessageWorker implements IMessageWorker{
   private batch: IMessage[] = [];
-  private readonly BATCH_SIZE = 50;
-  private readonly FLUSH_INTERVAL = 200;   
+  private readonly BATCH_SIZE = 100;
+  private readonly FLUSH_INTERVAL = 50;   
   constructor(
     private rabbitMQService: RabbitMQService,
     private chatRepository: IChatRepository
