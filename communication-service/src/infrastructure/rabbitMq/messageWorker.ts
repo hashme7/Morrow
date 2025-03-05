@@ -5,7 +5,7 @@ import { IMessage } from "../../interfaces/types/Data";
 
 export class MessageWorker implements IMessageWorker{
   private batch: IMessage[] = [];
-  private readonly BATCH_SIZE = 200;
+  private readonly BATCH_SIZE = 50;
   private readonly FLUSH_INTERVAL = 200;   
   constructor(
     private rabbitMQService: RabbitMQService,
@@ -33,7 +33,6 @@ export class MessageWorker implements IMessageWorker{
         message.status = 'delivered';
       })
       await this.chatRepository.saveMessages(batchToSave);
-      console.log("Batch saved successfully");
     } catch (error) {
       console.error("Error saving batch:", error);
     }

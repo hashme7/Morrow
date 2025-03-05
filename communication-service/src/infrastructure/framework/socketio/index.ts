@@ -71,51 +71,37 @@ export class WebSocketServer {
       });
       socket.on("joinRoom", async (roomId: string, userId: string) => {
         try {
-          console.log(`joining room:{ roomId:${roomId}`);
           await this.redisService.addActiveUser(socket.id, userId);
           socket.join(roomId);
           await this.joinSocket.execute();
-          console.log("roomids when joined room", socket.rooms);
         } catch (error) {
           throw error;
         }
       });
       socket.on("userTyping", ({ userId, roomId }) => {
-        try {
-          console.log("Rooms:", socket.rooms);
-          console.log("user is Typeing", userId, roomId);
-          socket.to(roomId).emit("typing", { userId, isTyping: true });
-        } catch (error) {
-          console.log("error:", error);
-        }
-        
+        socket.to(roomId).emit("typing", { userId, isTyping: true });
       });
       socket.on("userStoppedTyping", ({ userId, roomId }) => {
-        console.log("userStoppedTyping", userId, roomId);
         socket.to(roomId).emit("typing", { userId, isTyping: false });
       });
 
-      socket.on("disconnect", async (userId) => {
-        try {
-          await this.redisService.removeActiveUser(socket.id, userId);
-        } catch (error) {
-          throw error;
-        }
-      });
       socket.on("message_seen", async ({ roomId, messageId, userId }) => {
         try {
-          console.log("seened Messages");
           const seenedMsg = await this.updateMsgSeen.execute({
             messageId,
             userId,
           });
           console.log("seened Messages", seenedMsg);
-          const senderId = await this.redisService.getActiveUser(userId);
-          console.log("sender is found", senderId);
-          if (!senderId) return;
           socket.to(roomId).emit("message_status", { seenedMsg });
         } catch (error) {
           console.log("error on message seen", error);
+          throw error;
+        }
+      });
+      socket.on("disconnect", async (userId) => {
+        try {
+          await this.redisService.removeActiveUser(socket.id, userId);
+        } catch (error) {
           throw error;
         }
       });
