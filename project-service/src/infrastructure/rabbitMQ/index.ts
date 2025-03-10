@@ -15,6 +15,7 @@ export class RabbitMQService {
 
   private async connect(attempt:number = 1): Promise<void> {
     try {
+      console.log(rabbitMQConfig.uri,'rabbitmq')
       this.connection = await amqplib.connect(rabbitMQConfig.uri);
       this.channel = await this.connection.createChannel();
       console.log(`RabbitMQ is connected successfully. ${rabbitMQConfig.uri},${this.connection}`);

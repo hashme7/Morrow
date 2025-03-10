@@ -14,7 +14,7 @@ export class UpdateMsgSeen implements IUpdateMsgSeen {
   }): Promise<IMessage | undefined> {
     let attempts = 0;
     const maxRetries = 5;
-    const retryDelay = 500;
+    const retryDelay = 300;
 
     while (attempts < maxRetries) {
       try {
