@@ -18,6 +18,9 @@ services:
       - "6379:6379"
     networks:
       - morrow_network
+    command: redis-server --requirepass mysecretpassword
+    environment:
+     REDIS_PASSWORD: mysecretpassword
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
@@ -79,6 +82,7 @@ services:
       - rabbitmq
     networks:
       - morrow_network
+    restart: on-failure
 
   project-service:
     build:
@@ -105,18 +109,20 @@ services:
     container_name: communication-service
     ports:
       - "2000:2000"
-      - "9000:9000"
     environment:
       PORT: 2000
       MONGO_URL: mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Communications?retryWrites=true&w=majority&appName=Morrow
       REDISPORT: 6379
       RABBITMQ_URL: amqp://rabbitmq:5672
       REDISHOST: redis
+      REDISUSER: default
+      REDISPASS: mysecretpassword
     depends_on:
       - rabbitmq
       - redis
     networks:
       - morrow_network
+    restart: on-failure
 
   task-service:
     build:
@@ -133,17 +139,17 @@ services:
       - rabbitmq
     networks:
       - morrow_network
-  frontend:
-    build:
-      context: ./Morrow-frontend
-      dockerfile: Dockerfile
-    container_name: morrow-frontend
-    ports:
-      - "5173:5173"
-    depends_on:
-      - api-gateway
-    networks:
-      - morrow_network
+  # frontend:
+  #   build:
+  #     context: ./Morrow-Frontend
+  #     dockerfile: Dockerfile
+  #   container_name: morrow-frontend
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - api-gateway
+  #   networks:
+  #     - morrow_network
 
 networks:
   morrow_network:

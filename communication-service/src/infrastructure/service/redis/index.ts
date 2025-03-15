@@ -13,13 +13,12 @@ export class RedisService implements IRedisService {
     private password?: string,
     private user?: string
   ) {
+    console.log(user);
     this.client = new Redis({
       host: this.host,
       port: this.port,
       password: this.password,
-      username: this.user,
       maxRetriesPerRequest: 100,
-      tls: {},
       keepAlive: 30000,
       stringNumbers: false,
     });
@@ -28,9 +27,7 @@ export class RedisService implements IRedisService {
       host: this.host,
       port: this.port,
       password: this.password,
-      username: this.user,
       maxRetriesPerRequest: 100,
-      tls: {},
       keepAlive: 30000,
       stringNumbers: false,
     });

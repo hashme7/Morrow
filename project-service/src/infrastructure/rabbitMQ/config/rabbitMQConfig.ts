@@ -8,8 +8,8 @@ dotenv.config({ path: path.resolve(__dirname, "../../../../.env") });
 console.log(process.env.RABBITMQ_URI, "uriii");
 
 export const rabbitMQConfig = {
-  uri: process.env.RABBITMQ_URI || "amqp://localhost" ,
+  uri: process.env.RABBITMQ_URI || "amqp://rabbitmq:5672",
   queueName1: "project.team.creation",
-  queueName2:"project.teamId.updation",
-  queueName3:"project.getProject",
+  queueName2: "project.teamId.updation",
+  queueName3: "project.getProject",
 };

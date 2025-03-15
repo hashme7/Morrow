@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export const DBConfig = async () => {
   try {
     const DB_URL = process.env.MONGO_URL as string;
+    console.log(process.env.MONGO_URL)
     await mongoose.connect(DB_URL);
     console.log("user-service : database is succesfully connected");
   } catch (error) {

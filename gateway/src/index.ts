@@ -78,20 +78,6 @@ app.use(
     },
   })
 );
-// app.use(
-//   "/communicate",
-//   authenticate,
-//   proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
-//     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-//       proxyReqOpts.headers = {
-//         ...proxyReqOpts.headers,
-//         ...srcReq.header,
-//         cookie: srcReq.headers.cookie || "",
-//       };
-//       return proxyReqOpts;
-//     },
-//   })
-// );"^/communicate/socket.io": "/socket.io",
 
 app.use(
   "/communicate",
@@ -134,7 +120,7 @@ app.use(
 );
 app.use(
   "/auth",
-  proxy(process.env.AUTH_SERVICE || "http://localhost:9090", {
+  proxy(process.env.AUTH_SERVICE || "http://localhost:90909090", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
