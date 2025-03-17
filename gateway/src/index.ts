@@ -62,7 +62,7 @@ app.use(
       return proxyReqOpts;
     },
   }) 
-);
+); 
 app.use(
   "/user",
   authenticate,
