@@ -1,77 +1,125 @@
-name: Deploy to Amazon ECS
+# name: Deploy to Amazon ECS
+
+# on:
+#   push:
+#     branches: [ "deploy-br" ]
+#     paths: ["project-service/**"]
+
+# env:
+#   AWS_REGION: eu-north-1                   # Set your preferred AWS region
+#   ECR_REPOSITORY: morrow/project-service   # Set your Amazon ECR repository name
+#   ECS_SERVICE: project-service-x86         # Set your Amazon ECS service name
+#   ECS_CLUSTER: morrow-prod                 # Set your Amazon ECS cluster name
+#   S3_BUCKET: morrow-json-storage           # Replace with your S3 bucket name
+#   S3_KEY: project-service-x86.json         # Replace with your S3 object key
+#   CONTAINER_NAME: project-service-x86      # Set the name of the container in the ECS task definition
+
+# permissions:
+#   contents: read
+
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-22.04
+#     environment: production
+
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v4
+
+#     - name: Configure AWS credentials
+#       uses: aws-actions/configure-aws-credentials@v4
+#       with:
+#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         aws-region: ${{ env.AWS_REGION }}
+
+#     - name: Login to Amazon ECR
+#       id: login-ecr
+#       uses: aws-actions/amazon-ecr-login@v2
+
+#     - name: Build, tag, and push image to Amazon ECR
+#       id: build-image
+#       env:
+#         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#         IMAGE_TAG: ${{ github.sha }}
+#       run: |
+#         # Build a docker container and
+#         # push it to ECR so that it can
+#         # be deployed to ECS.
+#         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG project-service/
+#         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+#     - name: Download ECS Task Definition from S3
+#       id: download-task-def
+#       run: |
+#         aws s3 cp s3://${{ env.S3_BUCKET }}/${{ env.S3_KEY }} ./task-definition.json
+#       env:
+#         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#         AWS_REGION: ${{ env.AWS_REGION }}
+
+#     - name: Fill in the new image ID in the Amazon ECS task definition
+#       id: task-def
+#       uses: aws-actions/amazon-ecs-render-task-definition@v1
+#       with:
+#         task-definition: ./task-definition.json
+#         container-name: ${{ env.CONTAINER_NAME }}
+#         image: ${{ steps.build-image.outputs.image }}
+
+#     - name: Deploy Amazon ECS task definition
+#       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#       with:
+#         task-definition: ${{ steps.task-def.outputs.task-definition }}
+#         service: ${{ env.ECS_SERVICE }}
+#         cluster: ${{ env.ECS_CLUSTER }}
+#         wait-for-service-stability: true
+
+name: CI/CD Morrow/project-service
 
 on:
   push:
-    branches: [ "deploy-br" ]
+    branches: ["deploy-br"]
     paths: ["project-service/**"]
-
-env:
-  AWS_REGION: eu-north-1                   # Set your preferred AWS region
-  ECR_REPOSITORY: morrow/project-service   # Set your Amazon ECR repository name
-  ECS_SERVICE: project-service-x86         # Set your Amazon ECS service name
-  ECS_CLUSTER: morrow-prod                 # Set your Amazon ECS cluster name
-  S3_BUCKET: morrow-json-storage           # Replace with your S3 bucket name
-  S3_KEY: project-service-x86.json         # Replace with your S3 object key
-  CONTAINER_NAME: project-service-x86      # Set the name of the container in the ECS task definition
-
-permissions:
-  contents: read
-
 jobs:
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-22.04
-    environment: production
-
+  build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG project-service/
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-project-service:latest ./gateway
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-project-service:latest
+      - name: Set up AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Download ECS Task Definition from S3
-      id: download-task-def
-      run: |
-        aws s3 cp s3://${{ env.S3_BUCKET }}/${{ env.S3_KEY }} ./task-definition.json
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ env.AWS_REGION }}
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: "latest"
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ./task-definition.json
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
-
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+      - name: Configure Kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig --name morrow-cluster --region ${{ secrets.AWS_REGION }}
+          
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/project-service project-service=${{ secrets.DOCKER_HUB_USERNAME }}/morrow-project-service:latest
+          kubectl rollout status deployment/project-service
+          kubectl get pods -o wide
