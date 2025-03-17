@@ -10,7 +10,7 @@ import {
   IJoinProject,
   IRejectRequest,
   IUpdateImg,
-  IUpdateProfile,
+  IUpdateProfile,  
   IUpdateRole,
 } from "../interfaces/usecases.interface/index.js";
 import { Request, Response } from "express";
