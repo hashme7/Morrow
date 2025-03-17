@@ -16,7 +16,7 @@ spec:
         - name: user-service
           image: hashme7/morrow-user-service:latest
           ports:  
-            - containerPort: 4000
+            - containerPort: 3000
             - containerPort: 8080
           envFrom:
             - secretRef:

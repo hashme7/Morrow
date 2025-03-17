@@ -17,20 +17,10 @@ spec:
           image: mongo:latest
           ports:
             - containerPort: 27017
-          env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mongo-secret
-                  key: MONGO_USERNAME
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              valueFrom: 
-                secretKeyRef:
-                  name: mongo-secret
-                  key: MONGO_PASSWORD
+          args: ["--noauth"]  
           volumeMounts:
             - name: mongodb-storage
-              mountPath: /data/db  # MongoDB default storage path
+              mountPath: /data/db
       volumes:
         - name: mongodb-storage
           persistentVolumeClaim:

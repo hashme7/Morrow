@@ -2,25 +2,30 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: morrow-ingress
-  namespace: morrow  # Fixed typo (name_space → namespace)
+  namespace: default  
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/websocket-services: "communication-service"
     nginx.ingress.kubernetes.io/proxy-body-size: 20m
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - morrow-backend.hashim-dev007.online
+    secretName: morrow-backend-tls  
   rules:
-  - host: morrow.local
+  - host: morrow-backend.hashim-dev007.online
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: api-gateway
+            name: gateway-service
             port:
               number: 8000
-      - path: /ws  # Fixed indentation
+      - path: /ws 
         pathType: Prefix
         backend:
           service:

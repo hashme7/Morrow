@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-service
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: project-service
+  template:
+    metadata:
+      labels:
+        app: project-service
+    spec:
+      containers:
+        - name: project-service
+          image: hashme7/morrow-project-service:latest
+          ports:
+            - containerPort: 4000
+            - containerPort: 7070
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://postgres:postgres@postgres-service:5432/projectdb"
+            - name: GRPC_USER_SERVICE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: general-secret
+                  key: GRPC_USER_SERVICE_URI
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: general-secret
+                  key: RABBITMQ_URI
