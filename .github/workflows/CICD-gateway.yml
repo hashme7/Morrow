@@ -27,8 +27,11 @@
 name: CI/CD Morrow/api-gateway
 
 on:
-  push: ["deploy-br"]
-  paths: ["gateway/**"]
+  push:
+    branches:
+      - deploy-br  # ✅ Fix: Correct way to specify branches
+  paths:
+    - "gateway/**"
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
