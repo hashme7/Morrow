@@ -40,7 +40,7 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
     res.header("Access-Control-Allow-Credentials", "true");
     res.sendStatus(200);
     return;
-  }
+  }    
   next();
 });
 
