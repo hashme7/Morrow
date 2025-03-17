@@ -48,7 +48,7 @@ app.use("/health", (req: Request, res: Response) => {
   console.log("health checking... 123");
   res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
-app.use(
+app.use( 
   "/project",
   authenticate,
   proxy(process.env.PROJECT_SERVICE || "http://localhost:4000", {

@@ -28,7 +28,7 @@ name: CI/CD Morrow/api-gateway
 
 on:
   push:
-    branches: [ "deploy-br" ]
+    branches: ["deploy-br"]
     paths: ["gateway/**"]
 jobs:
   build-and-deploy:
@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -45,27 +45,32 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      
+
       - name: Build and Push Docker Image
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-gateway:latest ./gateway
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-gateway:latest
+      - name: Set up AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: 'latest'
-      
-      - name: Configure Kubeconfig
+          version: "latest"
+
+      - name: Configure Kubeconfig for EKS
         run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" | base64 --decode > $HOME/.kube/config
+          aws eks update-kubeconfig --name morrow-cluster --region ${{ secrets.AWS_REGION }}
+          
       - name: Deploy to Kubernetes
         run: |
           kubectl set image deployment/gateway gateway=${{ secrets.DOCKER_HUB_USERNAME }}/morrow-gateway:latest
           kubectl rollout status deployment/gateway
           kubectl get pods -o wide
-
 
 # name: Deploy to Amazon ECS
 
