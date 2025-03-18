@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import { authenticate } from "morrow-common/dist";
 import dotenv from "dotenv";
 import path from "path";
-// import { createProxyMiddleware } from "http-proxy-middleware";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -86,52 +86,52 @@ app.use(
   })
 );
 
-app.use(
-  "/communicate",
-  authenticate,
-  proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
-    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
-      console.log("cookies of user:", srcReq.headers.cookie);
-      proxyReqOpts.headers = {
-        ...proxyReqOpts.headers,
-        ...srcReq.headers,
-        cookie: srcReq.headers.cookie || "",
-      };
-      return proxyReqOpts;
-    },
-  })
-);
-
 // app.use(
 //   "/communicate",
 //   authenticate,
-//   createProxyMiddleware({
-//     target: process.env.COMMUNICATION_SERVICE || "communication-service:2000",
-//     changeOrigin: true,
-//     ws: false,
-//     on: {
-//       proxyReq: (proxyReq, req, res) => {
-//         console.log("on the proxy req......");
-//         console.log("Proxying request to:", process.env.COMMUNICATION_SERVICE);
-//         if (req.headers.cookie) {
-//           proxyReq.setHeader("cookie", req.headers.cookie);
-//         }
-//         proxyReq.setHeader("origin", req.headers.origin || "");
-//         proxyReq.setHeader("host", req.headers.host || "");
-//       },
-//       proxyReqWs: (proxyReq, req, socket, options, head) => {
-//         if (req.headers.cookie) {
-//           proxyReq.setHeader("cookie", req.headers.cookie);
-//         }
-//         proxyReq.setHeader("origin", req.headers.origin || "");
-//         proxyReq.setHeader("host", req.headers.host || "");
-//       },
-//       error: (err, req, res) => {
-//         console.error("❌ Proxy error:", err)
-//       },
+//   proxy(process.env.COMMUNICATION_SERVICE || "http://localhost:2000", {
+//     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+//       console.log("cookies of user:", srcReq.headers.cookie);
+//       proxyReqOpts.headers = {
+//         ...proxyReqOpts.headers,
+//         ...srcReq.headers,
+//         cookie: srcReq.headers.cookie || "",
+//       };
+//       return proxyReqOpts;
 //     },
 //   })
 // );
+
+app.use(
+  "/communicate",
+  authenticate,
+  createProxyMiddleware({
+    target: process.env.COMMUNICATION_SERVICE || "communication-service:2000",
+    changeOrigin: true,
+    ws: true,
+    on: {
+      proxyReq: (proxyReq, req, res) => {
+        console.log("on the proxy req......");
+        console.log("Proxying request to:", process.env.COMMUNICATION_SERVICE);
+        if (req.headers.cookie) {
+          proxyReq.setHeader("cookie", req.headers.cookie);
+        }
+        proxyReq.setHeader("origin", req.headers.origin || "");
+        proxyReq.setHeader("host", req.headers.host || "");
+      },
+      proxyReqWs: (proxyReq, req, socket, options, head) => {
+        if (req.headers.cookie) {
+          proxyReq.setHeader("cookie", req.headers.cookie);
+        }
+        proxyReq.setHeader("origin", req.headers.origin || "");
+        proxyReq.setHeader("host", req.headers.host || "");
+      },
+      error: (err, req, res) => {
+        console.error("❌ Proxy error:", err)
+      },
+    },
+  })
+);
 app.use(
   "/task",
   authenticate,
