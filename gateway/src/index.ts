@@ -27,6 +27,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(cookieParser());
+console.log(
+  process.env.PROJECT_SERVICE,
+  process.env.USER_SERVICE,
+  process.env.COMMUNICATION_SERVICE,
+  process.env.TASK_SERVICE,
+  process.env.AUTH_SERVICE,
+);
 
 app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.method === "OPTIONS") {
@@ -40,7 +47,7 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
     res.header("Access-Control-Allow-Credentials", "true");
     res.sendStatus(200);
     return;
-  }    
+  }
   next();
 });
 
@@ -48,7 +55,7 @@ app.use("/health", (req: Request, res: Response) => {
   console.log("health checking... 123");
   res.status(200).json({ message: "gateway is running successfully on 8000" });
 });
-app.use( 
+app.use(
   "/project",
   authenticate,
   proxy(process.env.PROJECT_SERVICE || "http://localhost:4000", {
@@ -61,8 +68,8 @@ app.use(
       };
       return proxyReqOpts;
     },
-  }) 
-); 
+  })
+);
 app.use(
   "/user",
   authenticate,
