@@ -20,7 +20,7 @@ export class ChatController {
         receiverId,
         content,
         status: "pending",
-        timestamp: new Date(),   
+        timestamp: new Date(),      
         readBy: [],
       });
       res.status(status).json({ message });
