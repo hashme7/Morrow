@@ -6,7 +6,7 @@ import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const startServer = async (): Promise<void> => {
-  try {
+  try { 
     await DBConfig();  
     const port = process.env.PORT || 3000;
     const app = createServer();
