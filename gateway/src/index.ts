@@ -85,7 +85,7 @@ app.use(
   createProxyMiddleware({
     target: process.env.COMMUNICATION_SERVICE || "communication-service:2000",
     changeOrigin: true,
-    ws: true,
+    ws: false,
     on: {
       proxyReq: (proxyReq, req, res) => {
         console.log("on the proxy req......");
