@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: auth-service
+      annotations:
+        rollme: "{{randAlphaNum 5}}"
     spec:
       containers:
         - name: auth-service

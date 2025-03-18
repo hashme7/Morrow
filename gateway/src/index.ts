@@ -83,11 +83,12 @@ app.use(
   "/communicate",
   authenticate,
   createProxyMiddleware({
-    target: process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
+    target: process.env.COMMUNICATION_SERVICE || "communication-service:2000",
     changeOrigin: true,
     ws: true,
     on: {
       proxyReq: (proxyReq, req, res) => {
+        console.log("on the proxy req......");
         if (req.headers.cookie) {
           proxyReq.setHeader("cookie", req.headers.cookie);
         }
@@ -120,7 +121,7 @@ app.use(
 );
 app.use(
   "/auth",
-  proxy(process.env.AUTH_SERVICE || "http://localhost:90909090", {
+  proxy(process.env.AUTH_SERVICE || "http://localhost:9090", {
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,

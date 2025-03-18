@@ -7,6 +7,8 @@ spec:
   selector:
     matchLabels:
       app: task-service 
+    annotations:
+        rollme: "{{randAlphaNum 5}}"
   template:
     metadata:
       labels:

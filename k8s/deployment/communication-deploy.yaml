@@ -11,6 +11,8 @@ spec:
     metadata:
       labels:
         app: communication-service
+      annotations:
+        rollme: "{{randAlphaNum 5}}"
     spec:
       containers:
         - name: communication-service
