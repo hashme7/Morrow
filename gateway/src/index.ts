@@ -85,7 +85,7 @@ app.use(
   createProxyMiddleware({
     target: process.env.COMMUNICATION_SERVICE || "communication-service:2000",
     changeOrigin: true,
-    ws: true,
+    ws: false,
     on: {
       proxyReq: (proxyReq, req, res) => {
         console.log("on the proxy req......");
@@ -102,6 +102,9 @@ app.use(
         proxyReq.setHeader("origin", req.headers.origin || "");
         proxyReq.setHeader("host", req.headers.host || "");
       },
+      error: (err, req, res) => {
+        console.error("❌ Proxy error:", err);
+      }
     },
   })
 );
