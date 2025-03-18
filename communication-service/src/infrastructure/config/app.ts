@@ -8,6 +8,18 @@ import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 export const createServer = () => {
   try {
+
+    console.log(`
+      ********************************
+      
+      
+     on the config file............. 
+      
+      
+      
+      **********************************
+      
+      `)
     const app = express();
     app.use(morgan('tiny'))
     app.use(express.json({ limit: "50mb" }));
