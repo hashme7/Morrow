@@ -102,6 +102,9 @@ app.use(
         proxyReq.setHeader("origin", req.headers.origin || "");
         proxyReq.setHeader("host", req.headers.host || "");
       },
+      error: (err, req, res) => {
+        console.error("❌ Proxy error:", err);
+      }
     },
   })
 );
