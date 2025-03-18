@@ -13,13 +13,6 @@ import dotenv from "dotenv";
 import path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-console.log(
-  process.env.REDISHOST ,
-  Number(process.env.REDISPORT),
-  process.env.REDISPASS,
-  process.env.REDISUSER,"*************************"
-);
-
 export const redisService = new RedisService(process.env.REDISHOST || "localhost", Number(process.env.REDISPORT) || 6379, process.env.REDISPASS,process.env.REDISUSER || "default");
 export const chatRepository = new ChatRepository();
 const rabbitMQService = new RabbitMQService();
