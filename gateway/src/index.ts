@@ -126,8 +126,18 @@ app.use(
         proxyReq.setHeader("origin", req.headers.origin || "");
         proxyReq.setHeader("host", req.headers.host || "");
       },
+      proxyRes: (proxyRes, req, res) => {
+        proxyRes.headers["Access-Control-Allow-Origin"] =
+          req.headers.origin || "*";
+        proxyRes.headers["Access-Control-Allow-Methods"] =
+          "GET, POST, PUT, DELETE, OPTIONS";
+        proxyRes.headers["Access-Control-Allow-Headers"] =
+          "Content-Type, Authorization, Cookie";
+        proxyRes.headers["Access-Control-Allow-Credentials"] = "true"; // If cookies are involved
+        console.log("Response headers modified with CORS:", proxyRes.headers);
+      },
       error: (err, req, res) => {
-        console.error("❌ Proxy error:", err)
+        console.error("❌ Proxy error:", err);
       },
     },
   })
