@@ -83,7 +83,7 @@ app.use(
   "/communicate",
   authenticate,
   createProxyMiddleware({
-    target: process.env.COMMUNICATION_SERVICE || "http://localhost:2000",
+    target: process.env.COMMUNICATION_SERVICE || "communication-service:2000",
     changeOrigin: true,
     ws: true,
     on: {
