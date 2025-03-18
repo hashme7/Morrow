@@ -89,6 +89,7 @@ app.use(
     on: {
       proxyReq: (proxyReq, req, res) => {
         console.log("on the proxy req......");
+        console.log("Proxying request to:", process.env.COMMUNICATION_SERVICE);
         if (req.headers.cookie) {
           proxyReq.setHeader("cookie", req.headers.cookie);
         }
@@ -104,7 +105,7 @@ app.use(
       },
       error: (err, req, res) => {
         console.error("❌ Proxy error:", err);
-      }
+      },
     },
   })
 );
