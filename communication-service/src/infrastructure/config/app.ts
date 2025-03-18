@@ -27,7 +27,7 @@ export const createServer = () => {
 
     app.use( 
       cors({
-        origin: ["https://morrow-frontend.vercel.app","http://localhost:5173"],
+        origin: "*",
         credentials: true,
       })
     );
