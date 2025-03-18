@@ -53,7 +53,7 @@ services:
     environment:
       MONGO_URL: mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Users?retryWrites=true&w=majority&appName=Morrow
       GPASSWORD: dhaupxvdrvjptfpb
-      GMAIL: morrowshp@gmail.com
+      GMAIL: morrow.shp@gmail.com
       GOOGLE_CLIENT_ID: 830837464571-lb91s99nkkbaghpoidd1pn8ijjq61ov3.apps.googleusercontent.com
       GITHUB_CLIENT_ID: Ov23liQLEQjkuY7FHHPO
       GITHUB_CLIENT_SECRET: 29f46230258fdb0112f5a39877626f05f3aa1da6

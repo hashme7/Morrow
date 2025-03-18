@@ -6,7 +6,12 @@ spec:
   selector:
     app: project-service
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 4000
       targetPort: 4000
+    - name: grpc 
+      protocol: TCP
+      port: 7070      
+      targetPort: 7070
   type: ClusterIP 
