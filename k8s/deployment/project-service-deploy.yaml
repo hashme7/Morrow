@@ -31,3 +31,4 @@ spec:
                 secretKeyRef:
                   name: general-secret
                   key: RABBITMQ_URI
+          command: [ "sh", "-c", "npx prisma migrate deploy && node dist/index.js"]

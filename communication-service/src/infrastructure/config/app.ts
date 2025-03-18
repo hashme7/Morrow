@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import morgan from 'morgan'
 import chatRouter from '../routes/chatRoutes';
@@ -19,6 +19,27 @@ export const createServer = () => {
         credentials: true,
       })
     );
+    app.use((req: Request, res: Response, next: NextFunction): void => {
+      if (req.method === "OPTIONS") {
+        console.log(
+          "req.headers.orgin from options method",
+          req.headers.origin
+        );
+        res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+        res.header(
+          "Access-Control-Allow-Methods",
+          "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+        );
+        res.header(
+          "Access-Control-Allow-Headers",
+          "Content-Type, Authorization"
+        );
+        res.header("Access-Control-Allow-Credentials", "true");
+        res.sendStatus(200);
+        return;
+      }
+      next();
+    });
     
     app.use("/", chatRouter);
     return app;
