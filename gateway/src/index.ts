@@ -94,7 +94,7 @@ app.use(
       console.log("cookies of user:", srcReq.headers.cookie);
       proxyReqOpts.headers = {
         ...proxyReqOpts.headers,
-        ...srcReq.header,
+        ...srcReq.headers,
         cookie: srcReq.headers.cookie || "",
       };
       return proxyReqOpts;
