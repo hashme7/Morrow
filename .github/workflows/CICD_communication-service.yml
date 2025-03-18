@@ -99,7 +99,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-communication-service:latest ./gateway
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-communication-service:latest ./communication-service
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/morrow-communication-service:latest
       - name: Set up AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
