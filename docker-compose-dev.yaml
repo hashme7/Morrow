@@ -20,12 +20,34 @@ services:
       - morrow_network
     command: redis-server --requirepass mysecretpassword
     environment:
-     REDIS_PASSWORD: mysecretpassword
+      REDIS_PASSWORD: mysecretpassword
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 3
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb 
+    ports:
+      - "27017:27017"
+    networks: 
+      - morrow_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: morrow
+      POSTGRES_PASSWORD: morrowpassword
+      POSTGRES_DB: morrowdb
+    networks:
+      - morrow_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   api-gateway:
     build:
@@ -51,7 +73,7 @@ services:
     ports:
       - "9090:9090"
     environment:
-      MONGO_URL: mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Users?retryWrites=true&w=majority&appName=Morrow
+      MONGO_URL: mongodb://mongodb:27017/Users
       GPASSWORD: dhaupxvdrvjptfpb
       GMAIL: morrow.shp@gmail.com
       GOOGLE_CLIENT_ID: 830837464571-lb91s99nkkbaghpoidd1pn8ijjq61ov3.apps.googleusercontent.com
@@ -59,6 +81,8 @@ services:
       GITHUB_CLIENT_SECRET: 29f46230258fdb0112f5a39877626f05f3aa1da6
     networks:
       - morrow_network
+    depends_on:
+      - mongodb
 
   user-service:
     build:
@@ -69,17 +93,18 @@ services:
       - "3000:3000"
       - "8080:8080"
     environment:
-      MONGO_URL: mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Users?retryWrites=true&w=majority&appName=Morrow
+      MONGO_URL: mongodb://mongodb:27017/Users
       PORT: 3000
       RABBITMQ_URI: amqp://rabbitmq:5672
       JWT_SECRET: secret_key
       GMAIL: morrowshp@gmail.com
-      GPASSWORD: dhaupxvdrvjptfpb
+      GPASSWORD: ptayqrklwdwywwqb
       GITHUB_CLIENT_ID: Ov23liQLEQjkuY7FHHPO
       GITHUB_CLIENT_SECRET: 02e4bb399e68fad50b85077cbfaccc9c9e95286f
       GRPC_PROJECT_SERVICE_URI: project-service:7070
     depends_on:
       - rabbitmq
+      - mongodb
     networks:
       - morrow_network
     restart: on-failure
@@ -93,11 +118,12 @@ services:
       - "4000:4000"
       - "7070:7070"
     environment:
-      DATABASE_URL: postgres://avnadmin:AVNS_7l_ZOpVFIasK0V6jCyS@pg-161e3054-hashimkakkaden-13b4.c.aivencloud.com:21417/defaultdb?sslmode=require
+      DATABASE_URL: postgres://morrow:morrowpassword@postgres:5432/morrowdb
       RABBITMQ_URI: amqp://rabbitmq:5672
       GRPC_USER_SERVICE_URI: user-service:8080
     depends_on:
       - rabbitmq
+      - postgres
     networks:
       - morrow_network
     restart: on-failure
@@ -111,7 +137,7 @@ services:
       - "2000:2000"
     environment:
       PORT: 2000
-      MONGO_URL: mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Communications?retryWrites=true&w=majority&appName=Morrow
+      MONGO_URL: mongodb://mongodb:27017/Communications
       REDISPORT: 6379
       RABBITMQ_URL: amqp://rabbitmq:5672
       REDISHOST: redis
@@ -120,6 +146,7 @@ services:
     depends_on:
       - rabbitmq
       - redis
+      - mongodb
     networks:
       - morrow_network
     restart: on-failure
@@ -132,25 +159,32 @@ services:
     ports:
       - "5000:5000"
     environment:
-      MONGO_URL: mongodb+srv://hashimkakkadan1:o2nLlfKiJ9boV7Ns@morrow.pcq64.mongodb.net/Tasks?retryWrites=true&w=majority&appName=Morrow
+      MONGO_URL: mongodb://mongodb:27017/Tasks
       RABBITMQ_URI: amqp://rabbitmq:5672
       PORT: 5000
     depends_on:
       - rabbitmq
+      - mongodb
     networks:
       - morrow_network
-  # frontend:
-  #   build:
-  #     context: ./Morrow-Frontend
-  #     dockerfile: Dockerfile
-  #   container_name: morrow-frontend
-  #   ports:
-  #     - "5173:5173"
-  #   depends_on:
-  #     - api-gateway
-  #   networks:
-  #     - morrow_network
+
+  frontend:
+    build:
+      context: ./Morrow-Frontend
+      dockerfile: Dockerfile
+    container_name: morrow-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api-gateway
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    networks:
+      - morrow_network
 
 networks:
   morrow_network:
     driver: bridge
+
+volumes:
+  postgres_data:
