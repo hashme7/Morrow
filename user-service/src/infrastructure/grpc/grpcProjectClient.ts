@@ -20,7 +20,7 @@ export class GrpcProjectClient implements IGrpcProjectClient{
     );
     console.log(
       `grpc client for project server is running`,
-      "project-service-x86.morrow-name-space:7070"
+      process.env.GRPC_PROJECT_SERVICE_URI
     );
   }
   async getProjectByTeamId(teamIds: string[]): Promise<ProjectsResponse>{
