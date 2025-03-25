@@ -36,8 +36,8 @@ router
 router
   .route("/profileImg")
   .put(
-    modify,
     upload.single("avatar"),
+    modify,
     authControllerInstance.updateImage.bind(authControllerInstance)
   );
 
