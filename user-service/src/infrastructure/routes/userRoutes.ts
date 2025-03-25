@@ -33,13 +33,19 @@ router
     authControllerInstance.findAllUsers.bind(authControllerInstance)
   );
 
-router
-  .route("/profileImg")
-  .put(
-    upload.single("avatar"),
-    modify,
-    authControllerInstance.updateImage.bind(authControllerInstance)
-  );
+router.route("/profileImg").put(
+  (req, res, next) => {
+    upload.single("avatar")(req, res, (err) => {
+      if (err) {
+        console.error("Multer error:", err);
+        return res.status(400).json({ message: err.message });
+      }
+      next();
+    });
+  },
+  modify,
+  authControllerInstance.updateImage.bind(authControllerInstance)
+);
 
 router
   .route("/getTeamMembers")
