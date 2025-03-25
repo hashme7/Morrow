@@ -36,6 +36,8 @@ router
 router.route("/profileImg").put(
   (req, res, next) => {
     upload.single("avatar")(req, res, (err) => {
+      console.log("Headers:", req.headers);
+      console.log("Raw body (before Multer):", req.body);
       if (err) {
         console.error("Multer error:", err);
         return res.status(400).json({ message: err.message });
