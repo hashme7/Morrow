@@ -12,7 +12,7 @@ export class ApiController {
     private sendApi: ISendRequest,
     private checkApi: ICheckApi,
     private uploadApi: IUploadApi,
-    private fetchApis:IFetchApis,
+    private fetchApis: IFetchApis
   ) {}
   async sendToTargetApi(req: Request, res: Response) {
     try {
@@ -37,17 +37,17 @@ export class ApiController {
       if (alreadythere) {
         console.log(alreadythere);
         res.status(302).json("API request is Already saved in Db");
-      } else {
-        const data = await this.uploadApi.execute({
-          projectId,
-          url,
-          method,
-          body,
-          response,
-        });
-        if (response) {
-          res.status(201).json(data);
-        }
+        return;
+      }
+      const data = await this.uploadApi.execute({
+        projectId,
+        url,
+        method,
+        body,
+        response,
+      });
+      if (data) {
+        res.status(201).json(data);
       }
     } catch (error) {
       res.status(500).json("Internel Server Error");
@@ -59,7 +59,7 @@ export class ApiController {
       const data = await this.fetchApis.execute(Number(projectId));
       res.status(200).json(data);
     } catch (error) {
-     res.status(500).json("Internel Server Error");
+      res.status(500).json("Internel Server Error");
     }
   }
 }
