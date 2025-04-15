@@ -33,7 +33,6 @@ export class TaskController {
         teamId: new Types.ObjectId(team_id),
         assignee: typedAssignee,
       });
-      console.log("fkd",newTask,"fkd");
       res.status(201).json(newTask);
     } catch (error) {
       console.error(`Error creating task: ${error}`);
@@ -44,7 +43,6 @@ export class TaskController {
     try {
       const { teamId } = req.params;
       console.log("task teamid", teamId);
-      
       const tasks = await this.fetchTask.execute(new ObjectId(teamId));
       res.status(200).json(tasks);
     } catch (error) {
