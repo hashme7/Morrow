@@ -1,4 +1,9 @@
-apiVersion: apps/v1
+Hashim@MacBookAir ~/D/B/Morrow (main)> kubectl get pods -n morrow
+NAME                        READY   STATUS                       RESTARTS   AGE
+mongodb-7ccbd845dc-4t2fq    1/1     Running                      0          12m
+postgres-65c499ffd6-j7crf   0/1     CreateContainerConfigError   0          2m10s
+redis-6978f666f9-fsc2z      1/1     Running                      0          15m
+Hashim@MacBookAir ~/D/B/Morrow (main)> apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gateway

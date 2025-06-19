@@ -21,4 +21,4 @@ spec:
             - containerPort: 5000
           env:
             - name: MONGO_URL
-              value: "mongodb://hashimkakkaden:Hashim1002@mongodb-service:27017/Tasks"
+              value: "mongodb://mongodb-service:27017/Tasks"
